@@ -29,7 +29,10 @@ Math: `E = Wemb[ids]` (Sx128 s8); `X0 = requant(E @ Wp + b)`, Wp 128x768 s8.
 
 Tokens only in ID_FIFO/X0_DBUF. Weights (Wemb, Wp, bias) stationary in SRAM.
 Golden: HF `AlbertTokenizer` + `modeling_albert` embedding lookup + matmul.
-Unresolved: exact proxy dtype (assumed int8/s32); vocab size (full vs pruned);
-requant shift/bias values.
+Pinned in PARAMS §1 (full vocab 30000, pruned-5k option) + §2 (int8/s32;
+requant shift/bias via sweep vs HF golden).
+Scope: single-sentence bring-up only — no segment/position embedding banks
+yet. Sentence-pair tasks add a SegEmb SRAM bank (`E += Seg[seg]`) + driver
+seg column at step 3; segment ids ride the same ID_FIFO valid/ready path.
 
 Interface tag: SW/digital-only; re-enters via ILP/OLP valid/ready (09 §2).

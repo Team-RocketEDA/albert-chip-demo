@@ -1,6 +1,9 @@
 # L1.5 LAYERNORM_STAGE x2 (digital norm pipeline, 2-pass)
 
 Parent I/O: `x[Sx768]` FXP16 + `resid[Sx768]` FXP16 -> `y[Sx768]` FXP16.
+Entry: tile int8 dequant s8<<8 (exact, PARAMS §2); resid acc saturate-to-s8
+then <<8. Exit: `y` requant → int8 (shift+clip, per-use sweep) for
+tile/loop re-entry.
 Math: `t = x+r`; `mu = mean(t)`; `v = mean((t-mu)^2)`; `xh = (t-mu)/sqrt(v+eps)`;
 `y = gamma*xh + beta`. DTYPE: FXP16 = signed16 Q8.8; ACC32 = signed32 Q16.16
 guard; REC16 unsigned16. Valid/ready on all stream ports. Weight-stationary:
@@ -39,8 +42,8 @@ or DFFRAM; FIFOs BaseJump `bsg_fifo_1r1w_small`; divider/sqrt Berkeley
 HardFloat `divSqrtRecFN_small` or hand NR FSM; sim Verilator+cocotb, synth
 LibreLane/OpenSTA (`run_hdl_test/run_synth/run_timing`). Golden: HF
 `AlbertLayerNorm` + numpy FXP16 replica. Results exit via 2-deep skid FIFO.
-Unresolved: ADC/dequant resolution in; eps (assumed 1e-12, match HF);
-Q-format sign-off needs quantization sweep vs HF golden.
+Pinned in PARAMS §2 (eps=1e-12; Q8.8; 7b codes via slope/offset dequant;
+sweep acceptance = GLUE-subset within −1.8% ref).
 
 Interface tag: SW/digital-only; residual restore + re-entry via ILP/OLP
 valid/ready (09 §2).

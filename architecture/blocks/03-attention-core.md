@@ -1,9 +1,11 @@
 # L1.3 ATTENTION_CORE (digital island, no weights)
 
 Parent I/O: `Q,K,V[Sx768]` each -> `Y[Sx768]`.
+`Y` requant → int8 for outProj tile re-entry (shift+clip, per-use sweep,
+PARAMS §2); streams as 512b words via out_fifo.
 Math: `L = QK^T/sqrt(64)` [SxS]; `A = softmax_row(L)`; `Y = A*V`.
 d_model=768, H=12, d_k=64 (inferred from sqrt64 + ALBERT-base; confirm vs HF
-config). Q/K/V stream from analog inProj OLPs via FIFOs. No weights here.
+config). Q/K/V stream from digital inProj OLP FIFOs. No weights here.
 
 Top ports: `q/k/v_stream: in: 512b` word + valid/ready; `s_cfg: in: 7b`
 (S<=64/128); `y_stream: out: 512b`. 1 tile-row per tick, non-pipelined
@@ -21,7 +23,7 @@ across layer-blocks.
    `k_col: in: 768x8b`; `logit: out: 24b acc`.
    `L_raw[i][j] = sum_d Q[i][d]*K[j][d]` (S^2*768 MACs). 8x8=64-PE array,
    12-way head-split MUX at input + edge FIFO (2 rows deep).
-   OSS: BaseJump-STL systolic / fixed-point ALU; func: HF BERT attention.
+   OSS: BaseJump-STL systolic / fixed-point ALU; func: HF MobileLLM attention.
 5. scale_shifter (shifter, stop). `L = L_raw/8` = arith >>3 (Q6.10).
 6. softmax_pipe:
    - rowmax_tree (comparator+reg): `m = max_j L[i][j]`, streaming tree.
@@ -36,8 +38,8 @@ across layer-blocks.
 8. av_mac_array (OPERATION: multiplier+adder). `Y[i][d] = sum_j A[i][j]*V[j][d]`.
    Same 8x8 PE array reused or second instance; head-concat MUX out
    (12x[Sx64] -> [Sx768]).
-9. out_fifo (FIFO, stop). 512b words, depth 4. CDC to outProj ILP duration
-   encoder (DAC boundary).
+9. out_fifo (FIFO, stop). 512b words, depth 4. CDC to outProj ILP
+   tile FIFO (digital boundary).
 
 ## Storage / OSS
 
@@ -46,7 +48,7 @@ Q/K/V 3x2x48KB @S=64/8b; score 4KB; LUTs 2x512B ROM; FIFOs depth 2-4.
 Proxy may narrow to 256-wide datapath, fold 768 by 3 passes.
 OSS: HF transformers + aihwkit; OpenRAM + sky130_sram_macros via OpenLane;
 Yosys/Verilator/cocotb/OpenSTA per engine flow; gdsfactory skywater130.
-Unresolved: H=12/d_k=64 confirm; fixed-point width (8b vs 4b-equiv);
-no committed RTL yet — sizes are proposal.
+Pinned in PARAMS §1 (H=12/d_k=64, reverify vs HF) + §2 (8b acts, 4b-equiv
+sweep variant). No committed RTL yet — sizes stand per PARAMS §9 checklist.
 
 Interface tag: SW/digital-only; QKV in via OLP FIFOs, AV out via ILP FIFOs (09 §2).

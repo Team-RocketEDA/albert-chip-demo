@@ -74,9 +74,12 @@ throughout: weights pinned in PCM tiles or shadow SRAM, only tokens move.
 | Performance counters | Cycle/stall/layer tallies, score | Bring-up, trace-dump counts |
 | AXI master / slave | Standard bus bridge | Overflow DRAM master + MCU CSR slave |
 
-No committed RTL exists: widths/depths are proposals (S≤64 vs 512, 8b vs
-4b-equiv, FIFO 8 vs 16, C=256×3, T_RECAL/drift, DAC/ADC scales). H=12/d_k=64
-and eps/Q-formats need HF-config + quantization-sweep sign-off.
+No committed RTL exists, but widths/depths are no longer open proposals:
+all demo values are pinned in PARAMS.md (S≤64 default 32, 8b acts with
+4b-equiv sweep variant, FIFO DEPTH 8, C=256×3, T_RECAL/alpha sweep with
+nu=0 default, V_read=0.2V/T_lsb=10ns sim-proven, H=12/d_k=64, eps=1e-12,
+Q8.8/Q4.12). HF-config + quantization-sweep sign-off is tracked in
+PARAMS §9 (bring-up checklist, not an architecture gap).
 
 ## D. Popular-block quick index (headstart + companions)
 
@@ -101,7 +104,51 @@ subtractor/diff amp (`Vout=(Rf/R1)(V2−V1)` — ± PCM pair subtract),
 integrator (`Vout=−1/RC∫Vin`, duration-MAC), differentiator, analog multiplier
 (Gilbert/translinear/log-antilog), analog divider (log amp → subtract → antilog,
 or multiplier-in-feedback loop), comparator, Schmitt trigger, S/H, peak
-detector, rectifier, V-to-I / I-to-V (TIA), current mirror (§A), bandgap, LDO,
-charge pump, PLL (phase detector + charge pump + VCO — ties two §A rows together),
-DLL, ADC (flash/SAR/ΣΔ/slope), DAC (R-string/current-steering), analog switch MUX,
+detector, rectifier, V-to-I / I-to-V (TIA), current mirror (see section A),
+bandgap, LDO,
+charge pump, PLL (phase detector + charge pump + VCO — ties two section-A rows together),
+DLL, ADC (flash/SAR/slope), DAC (R-string/current-steering), analog switch MUX,
 chopper stabilization.
+
+Analog rows above (section A, analog techniques in section B) are REFERENCE ONLY
+for the out-of-repo mixed-signal side quest — no analog block is instantiated by
+any L1 tile in this package (100 percent digital RTL pivot).
+
+## E. Parametric synthesizable RTL library (the ONLY implementation leaves)
+
+Every leaf below is a Verilog parametric module (`data_bit_width` parameter;
+SystemVerilog generate where noted). Weight-stationary everywhere: weights pin
+in per-tile SRAM, input tokens stream via `in_fifo`. Reusable across all tiles.
+Implementation rule: leaves are plain Verilog operators (`+`, `*`, `>>`,
+compares) — Yosys inside LibreLane infers and maps them, no hand-rolled
+datapath cells, no custom arithmetic macros. The engineering lives one level
+up: stitching these operators into the nonlinear pipes (softmax_d,
+layernorm_d, GELU/SiLU, div_unit). Keep a Verilog reference + the slang
+language server (`run_syntax`) at hand so the leaf list never grows past
+what the stitching actually needs. Selection = `if`/`else` or `case` (no mux cells);
+arithmetic = plain operators. Leaf modules are documentation of intent —
+the implementation is one-line expressions Yosys infers.
+
+| Module | Ports | Equation / behavior |
+|---|---|---|
+| `fifo_sync #(W,D)` | `wdata[W],wr,rd,clk,rst -> rdata[W],full,empty` | sync FIFO, DEPTH D, valid/ready |
+| `regfile_dp #(W,N)` | `ra,rb,wa,wdata,we,clk -> rda,rdb` | dual-port scratch |
+| `sram_1r1w #(W,N)` | `ra,wa,wdata,we,clk -> rdata` | weight-stationary tile SRAM bank |
+| `dram_ctrl` | `req,addr -> rdata,ack` | off-chip DRAM (embed spill only) |
+| `muxN #(W,N)` | `sel,din[N] -> dout` | datapath steering |
+| `adder #(W)` / `sub #(W)` / `mult #(W)` | `a,b -> y (+flags)` | add / subtract / multiply |
+| `div_unit #(W)` | `numer,denom,start -> quot,done` | restoring/NR divider (softmax recip, norm mean/var) |
+| `mac_unit #(W)` | `a,b,acc_in -> acc_out` | `acc += a*b`, 1 MAC/cycle (folded) |
+| `mac_array #(W,P)` | `avec[P],bvec[P],acc_in -> acc_out` | P-wide parallel MACs (cycles/P) |
+| `dotK #(W,K)` | `avec,bvec -> y` | K-fold MAC loop reuse (DOT128 = K=128) |
+| `dff #(W)` / `dff_en` / `dff_sr` | `d,clk(,en/rst) -> q` | pipeline regs; toggle chain = div-2N clock divider |
+| `alu_bit #(W,OPS)` | `a,b,op -> y,flags` | ALU slice for FSM-adjacent ops |
+| `shifter #(W)` | `din,shamt -> dout` | requant scale-by-shift |
+| `requant #(W)` | `acc_wide,scale,zero -> act_int` | accum to int8 rescale |
+| `cmp #(W)` / `maxK` | `a,b -> y,flags` | softmax-max / top-k compare trees |
+| `exp_lut` / `gelu_lut` / `tanh_lut` | `x -> y` | table-lookup nonlinearities |
+| `layernorm_d #(W)` | `vec,gamma,beta -> y` | mean/var normalize datapath |
+| `softmax_d #(W)` | `scores -> probs` | max-sub / exp-LUT / sum / div pipe |
+| `seq_fsm` | `irq_row/irq_tile/irq_frame -> phase_sel,layer_idx,cal_addr,lane_en,fifo_rd` | hardwired phase sequencer (ADR-0001; 08-D layer counter + phase decoder) |
+| `irq_sync` | `irq_async,clk -> irq` | 2-flop synchronizer into `seq_fsm` |
+| `embed_lut #(E,H)` | `token_id -> vec` | embedding lookup (ROM/SRAM) |

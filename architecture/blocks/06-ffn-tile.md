@@ -1,56 +1,47 @@
-# L1.6 FFN_TILE (analog-digital: FC1 -> SRAM -> GELU -> FC2)
+# L1.6 FFN_TILE (digital: FC1 -> SRAM -> GELU -> FC2)
 
 Parent math: `X[Sx768] -> H = GELU(X*W1^T) -> Y = H*W2^T` [Sx768];
-W1:[3072x768], W2:[768x3072], int8-quant, pre-programmed, never move.
-Top ports: `X_in: in: S*768 int8` rows; `Y_out: out: S*768 int8/fxp16`;
-clk/rst_n/start/done; `cfg_pcm_prog: in: analog` (one-time only).
+W1:[3072x768], W2:[768x3072], int8-quant, pinned in SRAM, never move.
+Top ports: `X_in: in: S*768 int8` rows; `Y_out: out: S*768 int8`;
+clk/rst_n/start/done.
 
-## Inner blocks
+## Inner blocks (all §00-E RTL)
 
-1. fc1_atile (FC1 analog tile array, replicated over out-cols x in-slices).
-   `I_part = A_slice * W1_slice^T` per 512-wide in-chunk; full row
-   `H_pre[j] = sum` over ceil(768/512)=2 chunks (512+256 padded), accumulated digitally.
-   Children (primitives only): fc1_in_fifo (FIFO, 2x512B double buffer);
-   dur_encoder (comparator+counter: `PW = |x|*T0`, sign to +/- MUX);
-   fc1_dac_row (DAC x512); fc1_xbar (multiplier/mixer + summer + amplifier;
-   PCM 4-dev/weight: Gpos_MSB/LSB, Gneg_MSB/LSB differential;
-   `I = w*x` via Ohm, col sum via Kirchhoff);
-   fc1_integrator (integrator: charge `I*T_pw`; OPERATION duration-MAC ->
-   op-amp integrator + capacitor); fc1_adc (ADC+comparator: ramp ADC =
-   integrator+comparator+counter; behavioral Verilog-A first, Sky130 SAR later);
-   fc1_shiftacc (shifter+adder+regfile: MSB/LSB recombine + +/- subtract +
-   2-slice accumulate; `D = (MSB*256+LSB)_pos - (..)_neg`).
+1. fc1_mtile (FC1 digital MAC tile). `I_part = A_slice * W1_slice^T` per
+   256-wide in-chunk; full row `H_pre[j] = sum` over 3 chunks (768 = 3x256),
+   accumulated in `fc1_accum` regfile.
+   Children (primitives only): fc1_in_fifo (`fifo_sync` 2x512B double buffer);
+   fc1_wsram (`sram_1r1w` W1 slice, stationary); fc1_mac
+   (`mac_array #(8,32)`); fc1_shiftacc (`shifter`+`adder`+regfile: 3-chunk
+   accumulate + dequant rescale).
 2. h_sram_buffer (H pre-GELU store). `H_pre[Sx3072]` latch, double-buffered
-   ping/pong (FC1 writes A while GELU reads B). 64*3072*2B = 384KB/bank demo
-   (192KB @S=32); S=512 full would be 3MB/bank (tile the S loop in demo).
-   OSS: OpenRAM Sky130 macros (1024x1024b cuts / 32KB banks) + regfile wrapper.
+   ping/pong (FC1 writes A while GELU reads B). 64*3072B = 192KB/bank demo
+   (96KB @S=32). OpenRAM Sky130 macros (32KB banks) + regfile wrapper.
 3. gelu_dpipe (digital GELU tanh-approx pipeline).
    `GELU(x) = 0.5x(1+tanh(c0(x+0.044715x^3)))`, c0 ~ 0.79788456.
-   Children: gelu_in_fifo (FIFO depth 8); gelu_mac1 (multiplier+adder+regfile:
-   cubic `u`, then `v = c0*u`); gelu_tanh_lut (SRAM/regfile: tanh(v) 1024x16b
-   LUT + linear interp via 1 multiplier + 1 adder; clamp |v|>4 -> +/-1);
-   gelu_mac2 (multiplier+adder: `y = 0.5*x*(1+t)`); gelu_out_fifo (FIFO depth 8).
-   OPERATION mapping: cubic/MAC -> fixed-point MAC ALU; tanh -> ROM LUT
-   (digital counterpart of diff-pair tanh cell). FXP Q4.12 (TBD).
-4. fc2_atile (FC2 analog tile array). `Y[i] = sum` over ceil(3072/512)=6 chunks
-   of `H_chunk * W2_chunk^T` (6x the accumulations of FC1; matches 6 ILP/OLP
-   lane parallelism). Same leaf set as FC1 + fc2_shiftacc (6-chunk digital
-   accumulation + dequant rescale).
-5. tile_ctrl (digital sequencer). counter+comparator FSM + MUX selects
-   (chunk/col/row counters, ping-pong bank MUX, lane MUX). Schedule per token
-   row: 2x FC1 chunks -> SRAM flip -> GELU stream -> 6x FC2 chunks -> Y FIFO.
+   Children: gelu_in_fifo (`fifo_sync` depth 8); gelu_mac1
+   (`mult`+`adder`+regfile: cubic `u`, then `v = c0*u`); gelu_tanh_lut
+   (SRAM/ROM: tanh(v) 1024x16b LUT + linear interp via 1 `mult` + 1 `adder`;
+   clamp |v|>4 -> +/-1); gelu_mac2 (`mult`+`adder`: `y = 0.5*x*(1+t)`);
+   gelu_out_fifo (`fifo_sync` depth 8). FXP Q4.12 (pinned, PARAMS §2).
+4. fc2_mtile (FC2 digital MAC tile). `Y[i] = sum` over ceil(3072/256)=12
+   chunk passes of `H_chunk * W2_chunk^T`. Same leaf set as FC1 +
+   fc2_shiftacc (12-chunk accumulation + dequant rescale).
+5. tile_ctrl (digital sequencer). `seq_fsm` leaf: counter+comparator FSM +
+   MUX selects (chunk/col/row counters, ping-pong bank MUX, lane MUX).
+   Schedule per token row: 3x FC1 chunks -> SRAM flip -> GELU stream ->
+   12x FC2 chunks -> Y FIFO.
 
-## OSS / sizing
+## Storage
 
-Golden Py: HF `albert-base-v2` FC1 Linear + GELU; PCM/DAC/ADC: Verilog-A
-compacts (Stanford RRAM / IBM PCM) for sim, Sky130 tapeout later; FIFOs
-BaseJump `bsg_fifo_1r1w`; SRAM OpenRAM; ALU plain Verilog fxp16 + ROM.
-Demo: S=32 default; FC cols in 512-wide OLP groups (1-2 groups instantiated).
-Unresolved: differential vs MSB/LSB gain; 34-tile FC1/FC2/GELU partition;
-Q-formats + tanh entries; no committed FFN RTL (all picks are proposals).
+H buffer 192KB + W1 2.25MB + W2 2.25MB (full; proxy slices smaller) in OpenRAM
+Sky130; FIFOs `fifo_sync` depth 8; tanh LUT 2KB ROM. Golden: HF MobileLLM
+FC1 Linear + SwiGLU/GELU; sim: iverilog `mac_array` tb + GELU pipe tb vs numpy.
+Pinned in PARAMS §4 (chunk factor 256) + §2 (GELU Q4.12, tanh LUT 1024x16b).
+Demo: S=32 default; FC cols in 256-wide groups.
 
 ## Interface integration (09-interface.md)
 
-FC1 = analog-sum mode (cap-share pair, ONE digitization per output, cleanest);
-FC2 = 6x-digital-accum (6x ADC noise path, worst variation) + per-chunk coeff
-count. p2 owns whole OLP fabric one wave; p3 drains 6 row-tiles separately.
+FC1 = chunk-accumulate-then-requant (one requant per output, cleanest);
+FC2 = 12-chunk digital accum + per-chunk coeff count. p2 owns the whole lane
+fabric one wave; p3 drains row-tiles separately.

@@ -1,38 +1,53 @@
-# ALBERT Analog Inference — Top-Level Architecture (theoretical demo)
+# ALBERT-class Encoder — Pure-Digital RTL Architecture
 
-Paper: `s41467-025-63794-4.md` (14 nm PCM CIM, ALBERT-base, 12 shared layers).
-Status: proof-of-concept only. Dims below are paper reference values; the demo
-proxy runs smaller S and fewer columns. Interactive diagram: `albert-top.html`.
+Functional spec: `s41467-025-63794-4.md` (ALBERT-base math, 12x shared layer,
+4 FC blocks >99% weights). Implementation vehicle: 100% digital RTL, parametric
+`data_bit_width`, weight-stationary SRAM, tokens streamed via FIFOs.
+No analog, no PCM, no ADC/DAC (mixed-signal side quests live out-of-repo and
+are NOT this package). Open-weight vehicle (Meta only):
+`facebook/MobileLLM-125M` (see `DEEP_RESEARCH_tiny-models.md`);
+sim proxy scales dims down on the same RTL.
+Status: proof-of-concept only. Interactive diagram: `albert-top.html`
+(regeneration via archify finalize pending — .md is source of truth).
 
 ## L0 block diagram
 
 ```mermaid
 flowchart TB
-  subgraph ALBERT_base["ALBERT-base: 7.7M unique / 7.1M analog / 28.3M PCM"]
-    EMB["Token embedding + proj 128->768 (SW)"]
-    L12["12x SHARED encoder layer (loopback x12, same weights)"]
-    POOL["Pooler 768->768 + tanh (SW)"]
-    CLS["Classifier 768->2 (x6 tasks) / 768->3 MNLI (SW)"]
-    EMB --> L12 --> POOL --> CLS
+  subgraph ALBERT_top["ALBERT-class encoder: 1 shared layer x12 loopback"]
+    TOK["tok_in ids[S]u15"]
+    EMB["EMBED_TOP LUT+DOT+requant"]
+    LOOP["LOOP12 12x shared layer, seq_fsm"]
+    POOL["POOLER_CLS tanh+argmax"]
+    GLUE["GLUE scoreboard (SW sink)"]
+    TOK --> EMB --> LOOP --> POOL --> GLUE
   end
-  subgraph Layer["ONE shared layer: x [Sx768]"]
+  subgraph Layer["ONE shared layer: x[Sx768]s8"]
     direction TB
-    INP["inProj 768->2304 = Q/K/V (HW-FC)"]
-    ATT["QK^T/scale + softmax + AV (SW/digital)"]
-    OUTP["outProj 768->768 (HW-FC)"]
-    LN1["Add & LayerNorm (SW)"]
-    FC1["FC1 768->3072 (HW-FC)"]
-    GELU["GELU (SW)"]
-    FC2["FC2 3072->768 (HW-FC)"]
-    LN2["Add & LayerNorm (SW)"]
-    INP --> ATT --> OUTP --> LN1 --> FC1 --> GELU --> FC2 --> LN2
+    P0["p0 INPROJ_MAC 768->2304 QKV"]
+    ATTN["ATTN QK^T/scale + softmax + AV"]
+    P1["p1 OUTPROJ_MAC 768->768"]
+    LN1["LN1 add + LayerNorm"]
+    P2["p2 FC1_MAC 768->3072"]
+    GELU["GELU tanh-approx pipe"]
+    P3["p3 FC2_MAC 3072->768"]
+    LN2["LN2 add + LayerNorm"]
+    P0 --> ATTN --> P1 --> LN1 --> P2 --> GELU --> P3 --> LN2
   end
-  L12 <--> Layer
-  subgraph Chip["PCM CIM: 512x512 tiles, 4PCM/w, 6ILP/6OLP, 4-phase"]
-    INP
-    OUTP
-    FC1
-    FC2
+  LOOP <--> Layer
+  subgraph RTLchip["DIGITAL RTL: 4 MAC tiles + islands, one clock"]
+    P0
+    P1
+    P2
+    P3
+    WMEM["W SRAM banks (stationary)"]
+    SEQ["seq_fsm hardwired IRQ FSM"]
+    WMEM -.-> P0
+    WMEM -.-> P1
+    WMEM -.-> P2
+    WMEM -.-> P3
+    SEQ -.-> P0
+    SEQ -.-> P3
   end
 ```
 
@@ -40,44 +55,46 @@ Signal path: `X0 = Wproj*E128(ids)` → repeat 12x
 `X(l+1) = LN2(FC2(GELU(FC1(LN1(outProj(Attn(inProj(Xl))))))))` →
 `logits = Wcls*tanh(Wpool*X12[0]) + b`, compare vs labels.
 
-## Block table (math + I/O)
+## Block table (math + I/O + widths)
 
 | Block | Math | I/O | Home |
 |---|---|---|---|
-| Embed + proj (SW) | `X0 = Wproj*E128(ids)` | `[S] -> [Sx768]` | digital/SW |
-| inProj (HW-FC) | `Y = X*W^T`, `W:[2304x768]`, split into Q,K,V | `[Sx768] -> [Sx2304]` | analog tile |
-| Attention core (SW) | `A = softmax(QK^T/sqrt64)*V`, `O(S^2*64/head)` | `[Sx2304] -> [Sx768]` | digital |
-| outProj (HW-FC) | `Y = X*W^T`, `W:[768x768]` | `[Sx768] -> [Sx768]` | analog tile |
-| LayerNorm (SW) | `y = g*(x-u)/s + b`, residual add first | `[Sx768]` | digital |
-| FC1 (HW-FC) | `H = X*W1^T+b1`, `W1:[3072x768]` | `[Sx768] -> [Sx3072]` | analog tile |
-| GELU (SW) | `GELU(h) = h*Phi(h)`, tanh approx | `[Sx3072]` | digital |
-| FC2 (HW-FC) | `Y = H*W2^T+b2`, `W2:[768x3072]` | `[Sx3072] -> [Sx768]` | analog tile |
-| Pooler/cls (SW) | `h = tanh(Wp*x+b)`, `logits = Wc*h` | `768 -> 768 -> 2 (3 MNLI)` | digital |
-| Codec (HW) | duration-encode rows, 7-bit OLP digitize | vec <-> pulse train | analog tile |
-| Loop/MCU (SW) | 4-phase seq, calib + drift tables | control + SRAM | digital |
+| tok_in (SW stim) | ids = Tok(text) | text -> `[S]u15` | SW testbench |
+| EMBED_TOP | `X0 = requant(Wp*E128(ids)+b)` | `[S]u15 -> [Sx768]s8` | DIG RTL `embed.gds` |
+| p0 INPROJ_MAC | `Y = X*W^T`, `W:[2304x768]`, split Q/K/V | `[Sx768]s8 -> [Sx2304]s8` | DIG RTL tile (`mac_array`+SRAM) |
+| ATTENTION_CORE | `A = softmax(QK^T/sqrt64)*V`, `O(S^2*64/head)` | `[Sx2304]s8 -> [Sx768]s8` | DIG RTL `attn.gds` |
+| p1 OUTPROJ_MAC | `Y = X*W^T`, `W:[768x768]` | `[Sx768]s8 -> [Sx768]s8` | DIG RTL tile (`mac_array`+SRAM) |
+| LAYERNORM x2 | `y = g*(x-u)/s + b`, residual add first | `[Sx768]fxp16` | DIG RTL `ln.gds` |
+| p2 FC1_MAC | `H = X*W1^T+b1`, `W1:[3072x768]` | `[Sx768]s8 -> [Sx3072]s8` | DIG RTL tile (`mac_array`+SRAM) |
+| GELU pipe | `GELU(h) = h*Phi(h)`, tanh approx | `[Sx3072]fxp16` | DIG RTL `gelu_pipe.gds` |
+| p3 FC2_MAC | `Y = H*W2^T+b2`, `W2:[768x3072]` | `[Sx3072]s8 -> [Sx768]s8` | DIG RTL tile (`mac_array`+SRAM) |
+| POOLER_CLS | `h = tanh(Wp*x+b)`, `logits = Wc*h` | `768 -> 768 -> 2 (3 MNLI)` | DIG RTL `head.gds` |
+| LOOP_MEM_SEQ | 12x loopback, FIFOs, SRAM banks | control + SRAM | DIG RTL `seq.gds` |
+| Weights (Wemb/Wp/W/b/gamma/beta) | pinned once, never move | SRAM macros | DIG SRAM (OpenRAM) |
+| GLUE compare | accuracy vs HF golden + labels | `logits[16b] -> hits/total[32u]` | SW scoreboard (sink) |
+| seq_fsm | hardwired phase/IRQ sequencer, NO RV32 | `irq -> phase_sel/addrs/fifo_rd` | DIG RTL (ADR-0001; `mcu_fw.c` = golden C model) |
 
 ## Dataflow rule (locked)
 
-WEIGHT-STATIONARY always. Weights pinned in tiles, never move. Token vectors
-stream in through input FIFOs at the landing pads (512-elem duration vectors),
-partial sums accumulate in place, results stream out through output FIFOs.
-One physical layer-block set is reused 12x via loopback. Analog and digital
-areas never share a layout; they meet at tile I/O (FIFOs) and at the top-level
-compare table. Full contract: [blocks/09-interface.md](blocks/09-interface.md).
+WEIGHT-STATIONARY always. Weights pinned in per-tile SRAM banks, never move.
+Token vectors stream in through input FIFOs; partial sums accumulate in
+accumulator regfiles; results stream out through output FIFOs. All ports are
+digital bit-vectors + valid/ready. One physical layer-block set is reused 12x
+via loopback. Full contract: [blocks/09-interface.md](blocks/09-interface.md).
 
 ### Phase → block order (paper L58, locked)
 
-| Phase | Block | ILP lanes | OLP lanes |
+| Phase | Block | Lanes in | Lanes out |
 |---|---|---|---|
 | p0 | INPROJ X→QKV | 0-1 | 0-4 |
 | p1 | OUTPROJ | 0-1 | 0-2 |
-| p2 | FC1 (analog-pair sum, one digitization) | 0-1 | 0-5 |
-| p3 | FC2 (6x separate digitize + digital accum) | 0-5 | 0-1 + half-share |
+| p2 | FC1 | 0-1 | 0-5 |
+| p3 | FC2 | 0-5 | 0-1 |
 
-Mesh rules: ILP enters tile WEST sides; OLP leaves SOUTH/NORTH; 2x256 implicit
-concat into OLP; no-crossing; phases never overlap; tile groups ordered in
-phase order; the 2 white squares (no tiles/mesh) are hard keep-outs — FC2's
-6-wide corridor stays clear of them. Detail: [blocks/09-interface.md](blocks/09-interface.md).
+Lane groups time-mux the digital MAC tiles over chunks; phases never overlap;
+frame order `p0→p1→ATTN_WAIT→LN1→p2→GELU_WAIT→p3→LN2→LOOPBACK→RECAL_CHECK`
+(now a requant-coeff check — no PCM drift exists). Detail:
+[blocks/09-interface.md](blocks/09-interface.md).
 
 ## RNN contrast (Fig1a lock)
 
@@ -87,19 +104,22 @@ unrolled `h_t = f_theta(x_t,h_{t-1})` with tied theta (analogous to ALBERT's
 
 ## Demo plan (Nov 4)
 
-1. SHIP: tiny sky130 analog MAC or bandgap tile via
-   `run_spice` + `run_drc` + `run_lvs` + `generate_views` (all fixtures live).
-2. STRETCH: 1-layer ALBERT FC/outProj ngspice tile fed by HF `albert-base-v2`
-   minus-last-layer hidden states; compare table (cosine/R2 vs SW, GLUE -1.8%
-   budget ref, 4-bit sweep ref).
-3. FALLBACK: pure-digital sky130 MAC sim+synth (GDS needs openroad re-proof).
+1. SHIP: 1-layer proxy digital sim (L=1,H=32,ff=64,S=8,int8,
+   ~12K params, ~70K MACs) in iverilog from `$readmemh` — ~6 s serial,
+   sub-second with an 8-wide MAC array, no VCD. Text in → tokens out.
+2. STRETCH: full MobileLLM-125M (124.6M, 30 layers; exact MAC budget from
+   opened config at bring-up, PARAMS §9) under Verilator (30–100x) +
+   parallel MAC array; gen-subset compare table vs HF golden.
+3. REFERENCE: ALBERT-base math stays the functional spec (this doc);
+   open weights come from Meta only (MobileLLM-125M); proxy dims ride the
+   same parametric RTL.
+   Numbers: [DEEP_RESEARCH_tiny-models.md](../DEEP_RESEARCH_tiny-models.md).
 
-## Open items (unresolved, affect reading)
+## Open items (scope notes, not blockers)
 
-- No figure image files in repo; Fig1c sizes, Fig1d CDF bins, Fig2h per-block
-  tile counts are aggregates only (34 tiles / 79.4% / 512x512).
-- Vocab 30000 / E=128 / 12 heads x64 are standard ALBERT-base (Lan et al.),
-  not stated in this paper's text.
-- Duration-encoding pulse params + 7-bit OLP transfer model assumed.
-- No live sim run yet; torch/transformers install, sax_mzi qualification,
-  openlayout deck location still unverified.
+- No live sim run yet beyond `rtl/embed` (EMBED PASS); inProj MAC + seq_fsm
+  RTL next in BUILD_MAP order.
+- HF-config + `AlbertLayerNorm` reverify, requant sweeps, S=64 full-frame run:
+  PARAMS §9 (bring-up checklist).
+- albert-top.html / candidate.json refresh via archify finalize pending
+  (no archify CLI on this machine) — .md files are the contract source.

@@ -1,6 +1,8 @@
 # Drill-down hub: ALBERT top-down hierarchy
 
 Top: [top-level doc](../top-level.md) · [interactive diagram](../albert-top.html) · [drill-down tree](../blocks-tree.html) · [router](../albert-router.html) (click any block → nested page; hash routes, react-router style).
+Build: [BUILD_MAP.md](../BUILD_MAP.md) (every block → ANA subckt or DIG RTL, IO ports with A/D domains, magic stitch plan) · [TESTBENCH.md](../TESTBENCH.md) (text→tokens→SPICE→labels + sim-time benchmarks) · [PARAMS.md](../PARAMS.md) (pinned demo decisions: model, dtypes, analog electrical, tiles, memory, clocks, pooler, recal).
+Closure rule: every diagram block is on the inference path or feeds it per-phase. Parked (not hanging, just out of schema): AXI overflow/DRAM spill (conditional, S≤64 never spills) and perf-counters/trace (testbench-only).
 Rebuild rule: `archify finalize` overwrites injected links — re-run `scripts/drill_links.py` after every finalize.
 Rule: click a block below to go one level in. All leaves resolve into
 [00-primitive-library.md](00-primitive-library.md): analog workhorses (§A),

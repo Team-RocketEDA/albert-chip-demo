@@ -6,13 +6,14 @@ Dtypes: INT8 weights (Q1.7), INT16 acts (Q4.12/Q8.8), INT32 accum, INT16
 h/logits; host quantizes from HF golden.
 
 Top ports: `tok_stream_in: in: 768xW_ACT` (FIFO valid/ready); `seq_start: in: 1b`;
-`label_in: in: 2b`; `cfg_num_classes: in: 2b`; `logits_out: out: 3x16b` (debug);
+`label_in: in: 2b`; `cfg_num_classes: in: 2b`; `logits_out: out: 3x16b` (debug); `margin_out: out: 16b` (max − runner-up, early-exit source for MCU MARGIN);
 `pred_out: out: 2b`; `correct/total_count: out: 32u`; `done: out: 1b`.
 
 ## Inner blocks
 
 A. CLS-slot MUX (select token 0). `fifo_dout: in: 768xW_ACT`; drop/forward so
-   `cls_vec = stream[0]`; rest drained. Inner: input double-buffer FIFO
+   `cls_vec = stream[0]`; rest drained. Loopback snoop arrives int8 →
+   W_ACT (Q8.8) via s8<<8 (PARAMS §2). Inner: input double-buffer FIFO
    (depth S<=64, 96KB @16b / 48KB @8b, ping-pong) + counter + valid MUX.
    OSS: OpenTitan `prim_fifo_sync` / Forencich FIFO; Sky130 stdcells.
 B. Pooler engine `h = tanh(Wp x + b)`, Wp 768x768, b 768:
@@ -21,8 +22,7 @@ B. Pooler engine `h = tanh(Wp x + b)`, Wp 768x768, b 768:
      OSS: OpenRAM `sram1rw` banked 8x 768x96B.
    - MAC array: `pre[i] = sum_j Wp[i,j]*x[j] + b[i]`. MultiplierLane
      (multiplier) -> AdderTree (adder + accumulator regfile).
-     OPERATION mul/add: digital synthesized ALU (analog op-amp mapping applies
-     only if ported to a PCM tile). OSS: Verilog MAC, cocotb+Verilator; golden:
+     OPERATION mul/add: digital synthesized ALU. OSS: Verilog MAC, cocotb+Verilator; golden:
      HF pooler. Full-768 vs 32/64-lane time-mux tradeoff open.
    - Tanh unit: `h = tanh(pre)` via PWL/LUT+lerp: RangeCompare (comparator) ->
      CoefLUT (SRAM/ROM 32-64 segs) -> LerpMAC (multiplier+adder).
@@ -34,10 +34,12 @@ D. Argmax tree: C=2: `pred = (z1>z0)`; C=3: two-stage max.
 E. Label FIFO + scoreboard: `hit = (pred==label)`; `correct += hit; total += 1`
    (divide left to host SW). Inner: LabelFIFO (FIFO, 128-1024 x 2b) ->
    EqCompare (comparator) -> Counters (adder+reg). Verified vs HF `run_glue.py`.
+   Margin tap: `margin = max - runner-up` (C=2: |z1-z0| via SUB+ABS;
+   C=3: stage-2 diff, already computed) -> `margin_out: out: 16b` to MCU.
 
 WEIGHT-STATIONARY: Wp/Wc/b in OpenRAM; only token vectors/results move.
-Unresolved: fixed-point widths + tanh PWL segs vs accuracy (needs quant sweep);
-MAC parallelism vs SRAM read width; FIFO depths beyond S<=64 assumed.
+Pinned in PARAMS §2 (INT8 Q1.7 / INT16 / INT32; tanh PWL 32-seg) + §5
+(32-lane MAC, 256b/cycle SRAM, FIFO depths at S≤64).
 
 ## Interface integration (09-interface.md)
 

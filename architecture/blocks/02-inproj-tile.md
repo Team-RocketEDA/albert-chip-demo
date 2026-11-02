@@ -1,47 +1,40 @@
-# L1.2 INPROJ_TILE_ARRAY (analog MAC slice, weight-stationary)
+# L1.2 INPROJ_TILE_ARRAY (digital MAC tile, weight-stationary)
 
 Parent I/O: `Xl[Sx768]` int8 -> `Y[Sx2304]` int8. Math: `Y = Xl*W^T`,
-W:[2304x768] pinned, never moves. One slice covers 512x512 weights;
-full inProj = 5x2 tiles; 768-col input split 512+256 with digital post-sum.
-Demo proxy: S<=64, single 512-col slice.
+W:[2304x768] pinned in SRAM, never moves. One tile time-muxes over 768-col
+input in chunks of C=256 (3 passes); full inProj = Q/K/V thirds separable
+per OLP lane for ATTN handoff. Demo proxy S<=64.
 
-Top ports: `tok_in: in: Sx768 int8` (512-chunks); `w_pinned: internal: 512x512
-analog-G` (4PCM/weight, static); `y_out: out: Sx512 int8-calibrated`;
-`cfg_slope/cfg_offset: in: 512x16b`; clk/rst/valid-ready.
+Top ports: `tok_in: in: Sx768 int8` (chunked rows); `y_out: out: Sx2304
+int8`; `cfg_scale/cfg_zero: in: 16b per chunk`; clk/rst/valid-ready.
+Weights live ONLY in `w_sram` (stationary); tokens stream through FIFOs.
 
-## Inner blocks (per slice)
+## Inner blocks (per tile, all §00-E RTL)
 
-1. input_vector_FIFO. `in_tok: in: 512x8b`; `out_chunk: out: 512x8b`.
-   Double buffer, 64-entry x 512B ring in SRAM (~1KB/buffer).
-   Decomp: SRAM bank + regfile rd/wr pointers + comparator + MUX.
-2. row_DAC_driver_array (512 rows). `d_in: in: 512x8b` -> `t_pulse/v_row: out: analog`.
-   `T_on[i]=|x[i]|*T_lsb`, sign selects +/- driver.
-   Decomp: 8b latch + down-counter (ALU+comparator) + IDAC + driver amplifier.
-   OPERATION duration-encode -> counter + current-steering DAC + op-amp driver.
-3. pcm_crossbar_core. `v_row: in: 512xV` -> `i_col: out: 512xI`.
-   `I_j = sum_i V_i*(G+_ij - G-_ij)`, 4PCM/weight (2 pairs).
-   Decomp: PCM cell mixer array (`I=V*G`) + column wire summer (Kirchhoff).
-   Weights live ONLY here as conductance, programmed once closed-loop.
-4. column_summer_integrator_array (512 cols). `V_j=(1/C)*int(I_j dt)-Vcm`,
-   +/- pair subtracted. Decomp: subtractor + amplifier/TIA + capacitor.
-   OPERATION add/integrate -> op-amp adder/integrator.
-5. olp_ADC_quantizer_array. `v_int: in: 512xV` -> `d_raw: out: 512x7b`.
-   Decomp: comparator bank + SAR register + internal DAC + shifter.
-   OPERATION quantize -> SAR ADC (7b per paper OLP).
-6. per_col_calib_offset_add (digital). `d_raw: in: 512x7b` ->
-   `y_cal = clip_int8(d_raw*slope_j + off_j)`.
-   Decomp: multiplier + adder + shifter + comparator + 512x32b coeff regfile.
+1. input_vector_fifo (`fifo_sync`). `in_tok: in: 768x8b`; `out_chunk: out:
+   256x8b`. Double buffer, 64-entry ring in SRAM.
+2. w_sram_bank (`sram_1r1w`, STATIONARY). Holds W slice `[2304x768]` int8
+   (1.7MB full; proxy slices smaller). Wide row read, no write port during
+   inference; host-loaded once.
+3. mac_array (`mac_array #(8,32)`). `avec,bvec: in: 32x8b` -> `psum: out:
+   32b`. `psum_out[j] += sum_p a[p]*b[p]` per cycle; 32 MACs/cycle;
+   chunk loop over K=768 in 24 passes of 32.
+4. accum_regfile (`regfile_dp`). 2304x s32 psums per row (9KB), cleared per
+   token row via FSM.
+5. bias_add (`adder`). `biased[j] = acc[j]+b[j]`; bias 2304x s32 ROM bank.
+6. requant_clip (`requant` + `cmp`). `y = clip_int8((acc*scale)>>shift +
+   zero)`; per-chunk scale/zero from coeff SRAM (12 layer-use sets resident,
+   selected by `cal_addr.layer4b`).
+7. out_fifo (`fifo_sync`). Packs Q/K/V thirds; streams 512b words to ATTN.
 
-## Storage / OSS
+## Storage
 
-W: PCM crossbar only (static). Tokens: input double-buffer SRAM FIFO
-(2xSx512x8b, 32KB max demo) + output bank + OLP FIFO. Coeffs: slope+offset
-regfile. Golden: HF ALBERT `Linear(768->2304)` slice; analog in Verilog-A/ngspice.
-Functional control: Verilog counter/FIFO + Sky130 IDAC/op-amp cells.
-Unresolved: exact DAC LSB / V_read / T_window; ADC full-scale/signedness;
-256-col remainder pairing (analog vs digital sum point).
+W: `w_sram_bank` only (stationary). Tokens: input double-buffer SRAM FIFO +
+output bank. Coeffs: scale/zero regfile per layer-use. Golden: HF MobileLLM qkv-proj slice; sim: iverilog tb driving `mac_array`
++ requant vs numpy. Pinned in PARAMS §3 (sysclk 100MHz, 1 MAC/cycle/PE, 32-lane
+default) + §2 (int8/s32; requant shift/scale per-use sweep).
 
 ## Interface integration (09-interface.md)
 
 5-lane OLP drain (p0: olp0-4); QKV thirds separable per lane for direct
-ATTN_WAIT handoff. Duration-encode/digitize/calib chain per interface §4-6.
+ATTN_WAIT handoff. Chunk loop + requant per interface §4-6.
