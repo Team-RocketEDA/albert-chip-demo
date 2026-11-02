@@ -20,10 +20,10 @@ causal LM, FAIR non-commercial-research license, ungated, custom
 golden + gen-subset eval. Runner-up `facebook/opt-125m` (125M decoder,
 license other); large anchor `meta-llama/Llama-3.2-1B` (1.24B, gated, Llama
 Community License). Decoder spec: causal mask, KV cache, RoPE, RMSNorm,
-SwiGLU, 32k embeddings (tied assumed — card/training-config tie
-discrepancy is a §9 reverify item, decides the W_lm bank count),
-last-token LM head; eval is zero-shot commonsense/generation vs HF golden,
-not classification. Sim proxy on the same parametric RTL:
+SwiGLU, 32k embeddings (embed table reused for the head: the finetuned
+checkpoint carries no `lm_head` tensor, so W_lm is baked as an embed copy
+— §9), last-token LM head; eval is zero-shot commonsense/generation vs
+HF golden, not classification. Sim proxy on the same parametric RTL:
 L=1/H=32/ff=64/S=8/int8 (~12K params, ~70K MACs) — see
 DEEP_RESEARCH_tiny-models.md. Proxy dims ride `data_bit_width` + S/H
 parameters; full dims need Verilator + MAC array, never iverilog serial.
@@ -86,9 +86,9 @@ FIFOs (09 frame-order note). Closes the 08 clock-split item.
 FINAL-only: last-token slice of X_29 post-LOOPBACK into LAST_BUF;
 `logits = x_last*W_lm^T` over 32k classes, argmax -> pred id (07). No CLS
 slot, no tanh, no scoreboard: the SW testbench compares the gen-subset vs
-HF golden (TESTBENCH). W_lm/embed-table sharing is ASSUMED tied per the
-model card and must be reverified vs the training config at bring-up (tie
-discrepancy, §9). Closes 08 head item.
+HF golden (TESTBENCH). No `lm_head` tensor ships in the finetuned
+checkpoint: W_lm is baked as a copy of the embed table (two 18MB banks).
+Reverify vs HF base at bring-up (§9). Closes 08 head item.
 
 ## 8. Requant rotation (no drift in digital)
 
@@ -106,9 +106,10 @@ wcal holds all 30 layer-uses resident: 720KB (inProj QKV 3.75 + outProj 2.25
 
 1. H/heads/vocab/eps/RoPE vs HF `facebook/MobileLLM-125M` config (30L/576H/
    9Q+3KV/1536/32000, `rms_norm_eps` 1e-5, `rope_theta` 10000.0,
-   `max_position_embeddings` 2048) + tokenizer hash; tie_word_embeddings
-   discrepancy (card says shared, training config says false) decides the
-   W_lm bank count (one shared 18MB vs two).
+   `max_position_embeddings` 2048) + tokenizer hash; finetuned checkpoint
+   carries no `lm_head` tensor (272 tensors verified: 30x9 + embed + norm),
+   so W_lm is baked as an embed copy — two 18MB banks; base reverify still
+   open).
 2. Requant shifts and 4b-equiv sweeps vs HF golden, gen-subset
    within −1.8% ref.
 3. T_RECAL from frame budget (CRC rotation, no drift — 08-E); RoPE
