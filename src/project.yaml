@@ -1,0 +1,55 @@
+# albert-chip-demo — rocket-engine project manifest
+project_id: albert-chip-demo
+ledger: .rocket/projects/albert-chip-demo   # engine-owned (ledger.yaml, events.yaml, runs/, snapshots/)
+head: p12
+format: engine components/ + scripts/ conventions (service.py: plain documents by unix path)
+
+# Every module below is STRUCTURAL ONLY: ports + submodule wiring, no logic.
+# Implementation is a later parallel pursuit, leaf by leaf.
+blocks:
+  albert_top:        { doc: architecture/top-level.md,                 rtl: src/components/albert_top.v }
+  embed_top:         { doc: architecture/blocks/01-embed.md,            rtl: src/components/embed_top.v }
+  inproj_tile:       { doc: architecture/blocks/02-inproj-tile.md,      rtl: src/components/inproj_tile.v }
+  attention_core:    { doc: architecture/blocks/03-attention-core.md,   rtl: src/components/attention_core.v }
+  outproj_tile:     { doc: architecture/blocks/04-outproj-tile.md,     rtl: src/components/outproj_tile.v }
+  layernorm_stage:  { doc: architecture/blocks/05-layernorm.md,        rtl: src/components/layernorm_stage.v }
+  ffn_tile:         { doc: architecture/blocks/06-ffn-tile.md,         rtl: src/components/ffn_tile.v }
+  pooler_cls_head:  { doc: architecture/blocks/07-pooler-classifier.md, rtl: src/components/pooler_cls_head.v }
+  loop_mem_seq:     { doc: architecture/blocks/08-loop-mem-seq.md,     rtl: src/components/loop_mem_seq.v }
+leaves:
+  fifo_sync:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/fifo_sync.v }
+  regfile_dp:       { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/regfile_dp.v }
+  sram_1r1w:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/sram_1r1w.v }
+  dram_ctrl:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/dram_ctrl.v }
+  muxN:             { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/muxN.v }
+  adder:            { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/adder.v }
+  sub:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/sub.v }
+  mult:             { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/mult.v }
+  mac_unit:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/mac_unit.v }
+  mac_array:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/mac_array.v }
+  dotK:             { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/dotK.v }
+  dff:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/dff.v }
+  alu_bit:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/alu_bit.v }
+  shifter:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/shifter.v }
+  requant:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/requant.v }
+  cmp:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/cmp.v }
+  exp_lut:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/exp_lut.v }
+  silu_lut:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/silu_lut.v }
+  tanh_lut:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/tanh_lut.v }
+  layernorm_d:      { doc: architecture/blocks/05-layernorm.md,        rtl: src/components/layernorm_d.v }
+  softmax_d:        { doc: architecture/blocks/03-attention-core.md,   rtl: src/components/softmax_d.v }
+  div_unit:         { doc: architecture/blocks/03-attention-core.md,   rtl: src/components/div_unit.v }
+  embed_lut:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/embed_lut.v }
+  irq_sync:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/irq_sync.v }
+  seq_fsm:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/seq_fsm.v }
+target: MobileLLM-125M decoder (L=30/H=576/GQA-kv3/I=1536/SwiGLU/RMSNorm/RoPE)
+dims: {S: 64, H: 576, KV: 192, FF: 1536, L: 30, V: 32000}
+conventions:
+  data_bit_width: W           # parametric Verilog parameter on every datapath leaf
+  clock: single sysclk + rst_n (PARAMS §6)
+  streams: bit-vector + valid/ready (never bare wires across blocks)
+  weights: stationary in sram_1r1w banks, host-loaded, no write port in inference
+weights:
+  dir: weights/mobilellm-125m   # gated Meta checkpoint; fetched by user, never ledgered
+  manifest: weights/MANIFEST.md
+  fetch: weights/fetch_weights.sh   # needs HF_TOKEN (user account, license accepted)
