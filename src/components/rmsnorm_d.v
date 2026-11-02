@@ -1,8 +1,7 @@
-// layernorm_d — mid-level wiring, STRUCTURAL ONLY (children + wires, no logic).
+// rmsnorm_d — mid-level wiring, STRUCTURAL ONLY (children + wires, no logic).
 // Contract: MobileLLM RMSNorm. y = x / sqrt(mean(x^2) + eps) * g.
 // One reduction (mean of squares), no mean subtraction, no beta bias.
-// Same sqrt/divide core as before, fewer reductions.
-module layernorm_d #(
+module rmsnorm_d #(
   parameter W = 16
 )(
   input  wire             clk,

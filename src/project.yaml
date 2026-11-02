@@ -7,14 +7,14 @@ format: engine components/ + scripts/ conventions (service.py: plain documents b
 # Every module below is STRUCTURAL ONLY: ports + submodule wiring, no logic.
 # Implementation is a later parallel pursuit, leaf by leaf.
 blocks:
-  albert_top:        { doc: architecture/top-level.md,                 rtl: src/components/albert_top.v }
+  mobilellm_top:     { doc: architecture/top-level.md,                 rtl: src/components/mobilellm_top.v }
   embed_top:         { doc: architecture/blocks/01-embed.md,            rtl: src/components/embed_top.v }
   inproj_tile:       { doc: architecture/blocks/02-inproj-tile.md,      rtl: src/components/inproj_tile.v }
   attention_core:    { doc: architecture/blocks/03-attention-core.md,   rtl: src/components/attention_core.v }
   outproj_tile:     { doc: architecture/blocks/04-outproj-tile.md,     rtl: src/components/outproj_tile.v }
-  layernorm_stage:  { doc: architecture/blocks/05-layernorm.md,        rtl: src/components/layernorm_stage.v }
+  rmsnorm_stage:    { doc: architecture/blocks/05-rmsnorm.md,          rtl: src/components/rmsnorm_stage.v }
   ffn_tile:         { doc: architecture/blocks/06-ffn-tile.md,         rtl: src/components/ffn_tile.v }
-  pooler_cls_head:  { doc: architecture/blocks/07-pooler-classifier.md, rtl: src/components/pooler_cls_head.v }
+  lm_head:          { doc: architecture/blocks/07-lm-head.md,          rtl: src/components/lm_head.v }
   loop_mem_seq:     { doc: architecture/blocks/08-loop-mem-seq.md,     rtl: src/components/loop_mem_seq.v }
 leaves:
   fifo_sync:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/fifo_sync.v }
@@ -35,8 +35,7 @@ leaves:
   cmp:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/cmp.v }
   exp_lut:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/exp_lut.v }
   silu_lut:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/silu_lut.v }
-  tanh_lut:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/tanh_lut.v }
-  layernorm_d:      { doc: architecture/blocks/05-layernorm.md,        rtl: src/components/layernorm_d.v }
+  rmsnorm_d:        { doc: architecture/blocks/05-rmsnorm.md,          rtl: src/components/rmsnorm_d.v }
   softmax_d:        { doc: architecture/blocks/03-attention-core.md,   rtl: src/components/softmax_d.v }
   div_unit:         { doc: architecture/blocks/03-attention-core.md,   rtl: src/components/div_unit.v }
   embed_lut:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/embed_lut.v }

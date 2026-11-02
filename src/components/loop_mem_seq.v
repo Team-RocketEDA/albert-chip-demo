@@ -23,7 +23,7 @@ module loop_mem_seq #(
   output wire [5:0]        fifo_lane_en_olp,
   output wire              theta_req,   // to parent store
   input  wire              theta_ack,
-  input  wire [768*32-1:0] sw_result_in, // SW-leg re-entry (768xacc)
+  input  wire [576*32-1:0] sw_result_in, // SW-leg re-entry (576xacc)
   input  wire              recal_trig   // periodic coeff rotation
 );
   wire [S*(H+384)*8-1:0] p0_y; // full QKV thirds (576+192+192), split below
@@ -38,11 +38,11 @@ module loop_mem_seq #(
   wire [22:0]      coeff_addr;
   wire             p_valid;
 
-  sram_1r1w #(.W(8), .N(8192)) u_xbank (
+  sram_1r1w #(.W(8), .N(36864)) u_xbank ( // S*H frame bytes, S=64/H=576
     .clk(clk), .ra(), .wa(), .wdata(8'b0), .we(x_in_valid), .rdata()
   );
-  sram_1r1w #(.W(16), .N(32768)) u_wcal (
-    .clk(clk), .ra(coeff_addr[14:0]), .wa(), .wdata(16'b0),
+  sram_1r1w #(.W(16), .N(368640)) u_wcal ( // 720KB: 30 uses x 24KB/use
+    .clk(clk), .ra(coeff_addr[18:0]), .wa(), .wdata(16'b0),
     .we(1'b0), .rdata()
   );
   // 6 ILP + 6 OLP lanes, DEPTH 8 (chunk-group drain at implementation).
@@ -77,7 +77,7 @@ module loop_mem_seq #(
     .clk(clk), .rst_n(rst_n), .z_in(attn_y), .z_valid(p_valid),
     .z_ready(), .slice_out(p1_slice), .slice_valid()
   );
-  layernorm_stage #(.S(S), .H(H)) u_ln1 (
+  rmsnorm_stage #(.S(S), .H(H)) u_ln1 (
     .clk(clk), .rst_n(rst_n), .x_in(ln1_x), .resid_in(x_in),
     .in_valid(p_valid), .in_ready(), .y_out(ln1_y), .y_valid()
   );
@@ -89,7 +89,7 @@ module loop_mem_seq #(
     .clk(clk), .rst_n(rst_n), .x_in(ffn_x), .x_valid(p_valid),
     .start(x_in_valid), .x_ready(), .y_out(p3_y), .y_valid(), .done()
   );
-  layernorm_stage #(.S(S), .H(H)) u_ln2 (
+  rmsnorm_stage #(.S(S), .H(H)) u_ln2 (
     .clk(clk), .rst_n(rst_n), .x_in(p3_y), .resid_in(attn_y),
     .in_valid(p_valid), .in_ready(), .y_out(), .y_valid(x_out_valid)
   );
@@ -116,7 +116,7 @@ module loop_mem_seq #(
   // mcu_if: hardwired into u_layerseq; golden C in firmware/mcu_fw.c.
   // theta_req/ack + sw_result_in terminate at integration (parent store /
   // SW-leg re-entry); overflow parked.
-  // x_out floats: LN fxp16->int8 narrowing + loopback MUX wire at
+  // x_out floats: RMS fxp16->int8 narrowing + loopback MUX wire at
   // implementation.
 
   // phase/layer_idx/coeff_addr/lane enables fan out from u_layerseq above.

@@ -1,9 +1,9 @@
-// layernorm_stage — L1 wiring, STRUCTURAL ONLY (children + wires, no logic).
-// Contract: blocks/05-layernorm.md. x[Sx768]fxp16 + resid -> y[Sx768]fxp16.
-module layernorm_stage #(
+// rmsnorm_stage — L1 wiring, STRUCTURAL ONLY (children + wires, no logic).
+// Contract: blocks/05-layernorm.md. x[Sx576]s8 + resid -> y[Sx576]fxp16.
+module rmsnorm_stage #(
   parameter S = 64,
   parameter H = 576
-)( // RMSNorm: int8 in, fxp16 out; mean/var detail in layernorm_d
+)( // RMSNorm: int8 in, fxp16 out; mean-square detail in rmsnorm_d
   input  wire              clk,
   input  wire              rst_n,
   input  wire [S*H*8-1:0] x_in, // int8 entry; s8<<8 widen inside (doc 05)
@@ -16,11 +16,11 @@ module layernorm_stage #(
   wire [15:0] norm_y;
   wire        norm_valid;
 
-  layernorm_d #(.W(16)) u_norm (
+  rmsnorm_d #(.W(16)) u_norm (
     .clk(clk), .rst_n(rst_n), .x(x_in[15:0]), .resid(resid_in[15:0]),
     .gamma(16'b0), .y(norm_y), .y_valid(norm_valid)
   );
-  sram_1r1w #(.W(16), .N(98304)) u_tbuf ( // 192KB: 2 banks x S*D x16b
+  sram_1r1w #(.W(16), .N(73728)) u_tbuf ( // 144KB: 2 banks x S*D x16b, S=64/D=576
     .clk(clk), .ra(), .wa(), .wdata(norm_y), .we(norm_valid), .rdata()
   );
   seq_fsm u_ctrl (
