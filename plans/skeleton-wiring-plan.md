@@ -4,10 +4,12 @@ Objective: one wiring-only Verilog skeleton per architecture block, ports from
 the typed I/O tables, hierarchy mirroring blocks/01–09. Zero implementation.
 Implementation is a later parallel pursuit, leaf by leaf.
 
-Mode: direct (no git in this workspace). Engine project `albert-chip-demo`
+Mode: git-backed repo. Engine project `albert-chip-demo`
 initialized via `ProjectService.create_project` (ledger at
-`.rocket/projects/albert-chip-demo/`, head p12). Sources live in-repo at
-`src/` per engine `components/` + `scripts/` conventions.
+`.rocket/projects/albert-chip-demo/`, head p12). Engine project id stays
+`albert-chip-demo` until the repo itself is renamed (user owns that step).
+Sources live in-repo at `src/` per engine `components/` + `scripts/`
+conventions.
 
 ## Steps
 
@@ -16,14 +18,15 @@ initialized via `ProjectService.create_project` (ledger at
 3. `src/scripts/elab.sh` — elaboration gate (`iverilog -tnull`, all sources).
 4. §00-E leaves (ports only): fifo_sync, regfile_dp, sram_1r1w, dram_ctrl,
    muxN, adder, sub, mult, mac_unit, mac_array, dotK, dff, alu_bit, shifter,
-   requant, cmp, exp_lut, gelu_lut, tanh_lut, layernorm_d, softmax_d,
+   requant, cmp, exp_lut, silu_lut, rmsnorm_d, softmax_d, div_unit,
    embed_lut, irq_sync, seq_fsm. Two are wiring mid-levels (softmax_d,
-   layernorm_d) since the docs give their inner pipes.
-5. L1 wiring (one file per top-level block): albert_top, embed_top,
-   loop_mem_seq, inproj_tile, attention_core, outproj_tile, layernorm_stage,
-   ffn_tile, pooler_cls_head. Children + wires only.
-6. Handroll HTML refresh (albert-top.html, blocks-tree.html, phase pages) —
-   digital labels/sublabels/tags/cards; drill links untouched.
+   rmsnorm_d) since the docs give their inner pipes. (`gelu_lut.v` and
+   `tanh_lut.v` retired to `/tmp/retired-20261102/` with the ALBERT encoder.)
+5. L1 wiring (one file per top-level block): mobilellm_top, embed_top,
+   loop_mem_seq, inproj_tile, attention_core, outproj_tile, rmsnorm_stage,
+   ffn_tile, lm_head. Children + wires only.
+6. Handroll HTML refresh (mobilellm-top.html, blocks-tree.html, phase pages) —
+   digital labels/sublabels/tags/cards; drill links re-pointed by route.
 7. Park `rtl/embed` + `rtl/common` implementation spikes under
    `rtl/reference-spikes/` (evidence preserved, out of the contract tree).
 8. Contract tests (`TestSkeleton`): module-per-file, hierarchy closure

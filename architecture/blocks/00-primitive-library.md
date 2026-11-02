@@ -42,7 +42,7 @@ throughout: weights pinned in PCM tiles or shadow SRAM, only tokens move.
 | Fixed-point MAC lane | Y += A·B, wide accum + round/sat | Every digital island | Exact-to-LSB then quantized, 1 MAC/cycle/PE |
 | Carry-save accumulator | Redundant S,C held, 1 CPA at end | Systolic accum, chunk recombine, mean/var trees | Bit-exact, O(1)/add + 1 CPA |
 | Shift-add | P = Σ b_k·A<<k iterative | Calib slope, requant, NR iters, serial PEs | Exact, tiny area, N-cycle |
-| LUT-based mult | P ≈ LUT(v) + slope·delta | softmax exp/recip, sqrt seed, GELU tanh | Approx, 1–2 cyc, ROM+mult+add |
+| LUT-based mult | P ≈ LUT(v) + slope·delta | softmax exp/recip, sqrt seed, SiLU | Approx, 1–2 cyc, ROM+mult+add |
 | Log-domain mult | logP = logA+logB, add, antilog | Requant/scale, approx scores only | Approx, small, needs converters |
 | Translinear/Gilbert analog | Iout ≈ Ix·Iy/Ibias | Rejected alt for norm/exp/tanh, NOT PCM path | Approx (mismatch/drift), compact |
 | Switched-cap mult | Q=C·V sampled, charge-shared | Integrator/accumulate, MDAC alt | ~8–10b (cap match), kT/C noise |
@@ -55,11 +55,11 @@ throughout: weights pinned in PCM tiles or shadow SRAM, only tokens move.
 | Block | Function | Consumed by |
 |---|---|---|
 | Systolic array / PE | 2-D MAC array, Q rows vs K cols, reused for A·V | Attention qk_systolic + av_mac_array |
-| SIMD lane | Replicated narrow MAC over heads/rows (folded) | Attention head-split + 768-wide datapath |
-| Scoreboard | Track outstanding tile/layer ops, retire in order | Loop FSM (12-state layer_fsm + ATTN_WAIT) |
+| SIMD lane | Replicated narrow MAC over heads/rows (folded) | Attention head-split + 576-wide datapath |
+| Scoreboard | Track outstanding tile/layer ops, retire in order | Loop FSM (13-state layer_fsm + ATTN_WAIT) |
 | Arbiter | Grant shared tile/FIFO-lane access | Phase decoder tile_sel/fifo_lane_en (6 ILP/6 OLP) |
 | Crossbar switch | All-to-all steering of slices to banks | OLP concat_mux slice steering |
-| NoC router | Packetized token-vector routing (overkill demo-scale) | 12x X loopback + tile-lane routing |
+| NoC router | Packetized token-vector routing (overkill demo-scale) | 30x X loopback + tile-lane routing |
 | DMA engine | Block mover without MCU per-beat | EXT overflow AXI4 mover (X spill, embed fetch, trace) |
 | Address generator / AGU | Addresses as base+cnt·stride | x_bank addr_gen, calib/ref rows |
 | Barrel shifter | Single-cycle variable shift | Attention >>3, OLP requant >>shift |
@@ -123,7 +123,7 @@ Implementation rule: leaves are plain Verilog operators (`+`, `*`, `>>`,
 compares) — Yosys inside LibreLane infers and maps them, no hand-rolled
 datapath cells, no custom arithmetic macros. The engineering lives one level
 up: stitching these operators into the nonlinear pipes (softmax_d,
-layernorm_d, GELU/SiLU, div_unit). Keep a Verilog reference + the slang
+rmsnorm_d, SiLU, div_unit). Keep a Verilog reference + the slang
 language server (`run_syntax`) at hand so the leaf list never grows past
 what the stitching actually needs. Selection = `if`/`else` or `case` (no mux cells);
 arithmetic = plain operators. Leaf modules are documentation of intent —
@@ -146,8 +146,8 @@ the implementation is one-line expressions Yosys infers.
 | `shifter #(W)` | `din,shamt -> dout` | requant scale-by-shift |
 | `requant #(W)` | `acc_wide,scale,zero -> act_int` | accum to int8 rescale |
 | `cmp #(W)` / `maxK` | `a,b -> y,flags` | softmax-max / top-k compare trees |
-| `exp_lut` / `gelu_lut` / `tanh_lut` | `x -> y` | table-lookup nonlinearities |
-| `layernorm_d #(W)` | `vec,gamma,beta -> y` | mean/var normalize datapath |
+| `exp_lut` / `silu_lut` | `x -> y` | table-lookup nonlinearities (`gelu_lut`/`tanh_lut` retired with the ALBERT encoder) |
+| `rmsnorm_d #(W)` | `vec,gamma -> y` | mean-square normalize datapath |
 | `softmax_d #(W)` | `scores -> probs` | max-sub / exp-LUT / sum / div pipe |
 | `seq_fsm` | `irq_row/irq_tile/irq_frame -> phase_sel,layer_idx,cal_addr,lane_en,fifo_rd` | hardwired phase sequencer (ADR-0001; 08-D layer counter + phase decoder) |
 | `irq_sync` | `irq_async,clk -> irq` | 2-flop synchronizer into `seq_fsm` |

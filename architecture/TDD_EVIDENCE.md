@@ -1,5 +1,11 @@
 # TDD evidence: ALBERT architecture contract
 
+> NOTE (2026-11-03): the design identity below this line is the pre-rename
+> record — ALBERT encoder, 12x loopback, pooler/GLUE, `albert_top`. It stays
+> as the evidence of what that suite proved at the time. The live contract
+> is now the MobileLLM-125M decoder (`mobilellm_top`, 30x, LM head,
+> GenEval): see top-level.md, PARAMS.md, and the current test suite.
+
 Runner: `python3 -m unittest discover -s architecture/tests` (stdlib only,
 no install). No coverage tool applies to docs/diagrams — these 18 contract
 tests ARE the coverage mechanism (see table).

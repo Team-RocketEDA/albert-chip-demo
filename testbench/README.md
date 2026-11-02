@@ -41,4 +41,4 @@ and overall accuracy correctly on synthetic logits.
 1. SW golden end-to-end — pending (needs HF weights; torch absent here).
 2. One tile-column transient vs golden MAC — DONE (this dir).
 3. Full p0..p3 loop one layer, digital in the loop — next.
-4. 12x loopback + pooler tap → GLUE-subset accuracy + benchmarks — queued.
+4. 30x loopback + LM head → gen-subset accuracy + benchmarks — queued.
