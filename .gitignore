@@ -218,3 +218,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-local runtime state: never commit, re-fetchable or regenerable.
+# vendor/ = nested clone of iic-jku/SKY130_SAR-ADC1 (re-clone to restore).
+# .rocket/ = engine ledger + run state (churns on every engine op).
+# graphify-out/ = tool cache. .archify run dirs = generated archify
+# reports (already-tracked candidate.json files stay tracked).
+# weights/mobilellm-125m/ = gated Meta checkpoint binaries fetched by
+# the user, never ledgered.
+/vendor/
+/.rocket/
+/graphify-out/
+weights/mobilellm-125m/
+.archify/architecture-*/
+.archify/pages-*/
