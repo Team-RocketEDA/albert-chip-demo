@@ -20,22 +20,22 @@ PAGES = {
     "02-inproj": ("pages/02-inproj-tile.html", "INPROJ_TILE"),
     "03-attn": ("pages/03-attention-core.html", "ATTENTION_CORE"),
     "04-outproj": ("pages/04-outproj-tile.html", "OUTPROJ_TILE"),
-    "05-ln": ("pages/05-layernorm.html", "LAYERNORM"),
+    "05-rms": ("pages/05-rmsnorm.html", "RMSNORM"),
     "06-ffn": ("pages/06-ffn-tile.html", "FFN_TILE"),
-    "07-pool": ("pages/07-pooler-classifier.html", "POOLER_HEAD"),
+    "07-lm": ("pages/07-lm-head.html", "LM_HEAD"),
     "08-loop": ("pages/08-loop-mem-seq.html", "LOOP_MEM_SEQ"),
 }
 BLOCK_DOCS = [f"{i:02d}-{n}.md" for i, n in [
     (0, "primitive-library"), (1, "embed"), (2, "inproj-tile"),
-    (3, "attention-core"), (4, "outproj-tile"), (5, "layernorm"),
-    (6, "ffn-tile"), (7, "pooler-classifier"), (8, "loop-mem-seq"),
+    (3, "attention-core"), (4, "outproj-tile"), (5, "rmsnorm"),
+    (6, "ffn-tile"), (7, "lm-head"), (8, "loop-mem-seq"),
     (9, "interface")]]
 ROUTE_KEYS = ["", "tree", "01-embed", "02-inproj", "03-attn", "04-outproj",
-              "05-ln", "06-ffn", "07-pool", "08-loop"]
+              "05-rms", "06-ffn", "07-lm", "08-loop"]
 
 
 def load_router():
-    return (ROOT / "albert-router.html").read_text()
+    return (ROOT / "mobilellm-router.html").read_text()
 
 
 def routes_from_router():
@@ -74,7 +74,7 @@ def route_up(key):
 
 class TestRouter(unittest.TestCase):
     def test_router_file_exists(self):
-        self.assertTrue((ROOT / "albert-router.html").exists())
+        self.assertTrue((ROOT / "mobilellm-router.html").exists())
 
     def test_skip_link_and_live_region(self):
         h = load_router()
@@ -141,7 +141,7 @@ class TestCandidates(unittest.TestCase):
 
     def test_every_component_has_sublabel(self):
         for rel, c in self._cands().items():
-            if rel not in ("albert-top.html", "blocks-tree.html") \
+            if rel not in ("mobilellm-top.html", "blocks-tree.html") \
                     and "/pages/" not in rel:
                 continue
             for n in c.get("components", []):
@@ -157,7 +157,7 @@ class TestCandidates(unittest.TestCase):
 
     def test_phase_decode_panels(self):
         cands = self._cands()
-        c = cands["albert-top.html"]
+        c = cands["mobilellm-top.html"]
         titles = [k.get("title") for k in c.get("cards", [])]
         self.assertIn("Interface (09)", titles)
         for rel in ("pages/02-inproj-tile.html", "pages/04-outproj-tile.html",
@@ -191,7 +191,7 @@ class TestDrillLinks(unittest.TestCase):
         return re.findall(r"<g\b[^>]*data-node-id=\"([^\"]+)\"", no_script)
 
     def test_no_unwrapped_nodes(self):
-        for rel in ("albert-top.html", "blocks-tree.html"):
+        for rel in ("mobilellm-top.html", "blocks-tree.html"):
             h = (ROOT / rel).read_text()
             ids = self._node_ids(h)
             self.assertTrue(ids, f"no nodes found in {rel}")
@@ -209,7 +209,7 @@ class TestDrillLinks(unittest.TestCase):
 class TestParams(unittest.TestCase):
     PARAM_SECTIONS = ["Model config", "Datatypes", "Digital timing",
                       "Tile population", "Memory and FIFO", "Clocks",
-                      "Pooler placement", "Requant rotation", "Reverification"]
+                      "LM-head placement", "Requant rotation", "Reverification"]
 
     def test_params_doc_exists(self):
         self.assertTrue((ROOT / "PARAMS.md").exists(), "PARAMS.md missing")
@@ -297,19 +297,19 @@ class TestPaperGrounding(unittest.TestCase):
 class TestBoundaryDtypes(unittest.TestCase):
     def test_dequant_rule_pinned(self):
         self.assertIn("s8<<8", (ROOT / "PARAMS.md").read_text())
-        self.assertIn("<<8", (ROOT / "blocks" / "05-layernorm.md")
+        self.assertIn("<<8", (ROOT / "blocks" / "05-rmsnorm.md")
                       .read_text())
 
-    def test_ln_exit_requant_pinned(self):
-        text = (ROOT / "blocks" / "05-layernorm.md").read_text()
+    def test_rms_exit_requant_pinned(self):
+        text = (ROOT / "blocks" / "05-rmsnorm.md").read_text()
         self.assertRegex(text, r"[Rr]equant.*int8|int8.*[Rr]equant")
 
     def test_attn_output_requant_pinned(self):
         text = (ROOT / "blocks" / "03-attention-core.md").read_text()
         self.assertRegex(text, r"[Rr]equant.*int8|int8.*[Rr]equant")
 
-    def test_pooler_snoop_width_pinned(self):
-        text = (ROOT / "blocks" / "07-pooler-classifier.md").read_text()
+    def test_lmhead_entry_width_pinned(self):
+        text = (ROOT / "blocks" / "07-lm-head.md").read_text()
         self.assertIn("<<8", text)
 
 
@@ -369,7 +369,7 @@ class TestDiagramCurrency(unittest.TestCase):
                     if "cal_addr" in item and "layer" not in item:
                         bad.append(f"{cand.parent.name}: {item}")
         for html in list((ROOT / "pages").glob("*.html")) + \
-                [ROOT / "albert-top.html", ROOT / "blocks-tree.html"]:
+                [ROOT / "mobilellm-top.html", ROOT / "blocks-tree.html"]:
             for i, line in enumerate(html.read_text().splitlines(), 1):
                 if "cal_addr" in line and "layer" not in line:
                     bad.append(f"{html.name}:{i}")
@@ -464,11 +464,11 @@ class TestSkeleton(unittest.TestCase):
     LEAVES = {"fifo_sync", "regfile_dp", "sram_1r1w", "dram_ctrl", "muxN",
               "adder", "sub", "mult", "mac_unit", "mac_array", "dotK",
               "dff", "alu_bit", "shifter", "requant", "cmp", "exp_lut",
-              "silu_lut", "tanh_lut", "embed_lut", "irq_sync", "seq_fsm",
+              "silu_lut", "embed_lut", "irq_sync", "seq_fsm",
               "div_unit"}
-    WIRING = {"albert_top", "embed_top", "loop_mem_seq", "inproj_tile",
-              "attention_core", "outproj_tile", "layernorm_stage",
-              "ffn_tile", "pooler_cls_head", "softmax_d", "layernorm_d"}
+    WIRING = {"mobilellm_top", "embed_top", "loop_mem_seq", "inproj_tile",
+              "attention_core", "outproj_tile", "rmsnorm_stage",
+              "ffn_tile", "lm_head", "softmax_d", "rmsnorm_d"}
     NO_LOGIC = ["always", "assign", "initial"]
     SYSTEM_FNS = {"clog2"}
     KEYWORDS = {"generate", "end", "for", "begin", "genvar", "if", "else",

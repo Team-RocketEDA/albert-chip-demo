@@ -1,7 +1,0 @@
-# albert skeleton slang lint (engine scenario format, cf. rocket-engine/scenarios/)
-name: albert skeleton slang lint
-engine: {project_id: albert-chip-demo, actor: {kind: user}, revision: "p49"}
-steps:
-  - submit: {request_id: scen-albert-syntax-1, operation: run_syntax, target: albert_top}
-  - run_live: {backend: syntax, sources: [components/albert_top.v, components/embed_top.v, components/loop_mem_seq.v, components/inproj_tile.v, components/attention_core.v, components/outproj_tile.v, components/layernorm_stage.v, components/ffn_tile.v, components/pooler_cls_head.v, components/layernorm_d.v, components/softmax_d.v, components/fifo_sync.v, components/regfile_dp.v, components/sram_1r1w.v, components/dram_ctrl.v, components/muxN.v, components/adder.v, components/sub.v, components/mult.v, components/div_unit.v, components/mac_unit.v, components/mac_array.v, components/dotK.v, components/dff.v, components/alu_bit.v, components/shifter.v, components/requant.v, components/cmp.v, components/exp_lut.v, components/gelu_lut.v, components/tanh_lut.v, components/embed_lut.v, components/irq_sync.v, components/seq_fsm.v]}
-  - assert_verdict: PASS
