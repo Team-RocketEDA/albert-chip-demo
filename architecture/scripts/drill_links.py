@@ -2,18 +2,20 @@
 """Handrolled drill-down links (repo-local, archify untouched).
 
 Wraps archify node <g data-node-id="..."> groups in <a href="router-route">
-anchors so blocks click through to their nested page inside albert-router.html
-(hash routes, react-router style). Idempotent: skips already-wrapped nodes.
+anchors so blocks click through to their nested page inside
+mobilellm-router.html (hash routes, react-router style). Idempotent:
+skips already-wrapped nodes.
 
-Re-run after every `archify finalize` of albert-top.html / blocks-tree.html,
-which overwrites these links. Part of the demo build, not the tool.
+Re-run after every `archify finalize` of mobilellm-top.html /
+blocks-tree.html, which overwrites these links. Part of the demo build,
+not the tool.
 """
 import re
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent  # architecture/
-ROUTER = "albert-router.html"
+ROUTER = "mobilellm-router.html"
 
 TOP_MAP = {
     "tok_in": "01-embed", "embed": "01-embed",
@@ -21,24 +23,25 @@ TOP_MAP = {
     "p0": "02-inproj",
     "attn": "03-attn",
     "p1": "04-outproj",
-    "ln1": "05-ln", "ln2": "05-ln",
+    "ln1": "05-rms", "ln2": "05-rms",
     "p2": "06-ffn", "p3": "06-ffn",
-    "pool": "07-pool", "glue": "07-pool",
+    "pool": "07-lm", "glue": "07-lm",
 }
 TREE_L1 = {
     "embed": "01-embed", "inproj": "02-inproj", "attn": "03-attn",
-    "outproj": "04-outproj", "ln": "05-ln", "ffn": "06-ffn",
-    "pool": "07-pool", "loop": "08-loop",
+    "outproj": "04-outproj", "ln": "05-rms", "ffn": "06-ffn",
+    "pool": "07-lm", "loop": "08-loop",
 }
 TREE_L2_PARENT = {
-    "id_fifo": "01-embed", "emb_lut": "01-embed", "dot_mac": "01-embed",
-    "x0_dbuf": "01-embed", "in_fifo": "02-inproj", "dac_drv": "02-inproj",
-    "pcm_xbar": "02-inproj", "sar_adc": "02-inproj", "qkv_buf": "03-attn",
+    "id_fifo": "01-embed", "emb_lut": "01-embed", "xbuf": "01-embed",
+    "x0_dbuf": "01-embed", "in_fifo": "02-inproj", "wsram": "02-inproj",
+    "qkv_buf": "03-attn",
     "syst": "03-attn", "smax": "03-attn", "score": "03-attn",
     "ofifo": "04-outproj", "oxbar": "04-outproj", "cmux": "04-outproj",
-    "tbuf": "05-ln", "divsqrt": "05-ln", "aff": "05-ln",
-    "fc1": "06-ffn", "hbuf": "06-ffn", "gelu": "06-ffn", "fc2": "06-ffn",
-    "pmac": "07-pool", "tanh": "07-pool", "amax": "07-pool",
+    "tbuf": "05-rms", "divsqrt": "05-rms", "aff": "05-rms",
+    "fc1": "06-ffn", "hbuf": "06-ffn", "silu": "06-ffn", "fc2": "06-ffn",
+    "pmac": "07-lm", "logits": "07-lm", "amax": "07-lm",
+    "lastbuf": "07-lm", "predfifo": "07-lm", "headseq": "07-lm",
     "xbank": "08-loop", "sfifo": "08-loop", "lfsm": "08-loop", "mcu": "08-loop",
 }
 
@@ -95,7 +98,7 @@ def main(files: list[str]) -> int:
     mapping = dict(TOP_MAP)
     mapping.update(TREE_L1)
     mapping.update(TREE_L2_PARENT)
-    mapping["albert_top"] = ""
+    mapping["mobilellm_top"] = ""
     for rel in files:
         p = HERE / rel
         html = p.read_text()
@@ -108,5 +111,5 @@ def main(files: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    targets = sys.argv[1:] or ["albert-top.html", "blocks-tree.html"]
+    targets = sys.argv[1:] or ["mobilellm-top.html", "blocks-tree.html"]
     main(targets)

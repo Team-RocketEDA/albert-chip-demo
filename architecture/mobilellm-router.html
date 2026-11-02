@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ALBERT drill-down router</title>
+<title>MobileLLM drill-down router</title>
 <style>
   html,body{margin:0;height:100%;font-family:system-ui,sans-serif;background:#0b0e14;color:#e6edf3}
   .skip{position:absolute;left:-999px;top:0;background:#1f6feb;color:#fff;padding:8px 12px;border-radius:0 0 8px 0;z-index:10}
@@ -29,34 +29,34 @@
 <body>
 <a class="skip" href="#frame">Skip to diagram</a>
 <header>
-  <h1 id="pg" tabindex="-1">ALBERT drill-down <span class="crumb" id="crumb"></span></h1>
+  <h1 id="pg" tabindex="-1">MobileLLM drill-down <span class="crumb" id="crumb"></span></h1>
   <nav aria-label="Hierarchy and visible blocks">
     <div id="ctxbar"></div>
   </nav>
 </header>
 <p id="announcer" class="sr" role="status" aria-live="polite"></p>
-<iframe id="frame" title="ALBERT diagram" tabindex="-1"></iframe>
+<iframe id="frame" title="MobileLLM diagram" tabindex="-1"></iframe>
 <script>
 "use strict";
 const ROUTES = {
-  "":  {f:"albert-top.html", l:"L0 Top", up:null,
-        ents:[["tok_in","Token IDs","01-embed"],["embed","Embed+proj","01-embed"],["loop","Layer loop","08-loop"],["wmem","Weights","08-loop"],["p0","p0 INPROJ","02-inproj"],["attn","Attention","03-attn"],["p1","p1 OUTPROJ","04-outproj"],["ln1","LN-1","05-ln"],["p2","p2 FC1+GELU","06-ffn"],["p3","p3 FC2","06-ffn"],["ln2","LN-2","05-ln"],["pool","Pooler+Cls","07-pool"],["glue","GLUE","07-pool"],["mcu","MCU","08-loop"]]},
+  "":  {f:"mobilellm-top.html", l:"L0 Top", up:null,
+        ents:[["tok_in","Token IDs","01-embed"],["embed","Embed","01-embed"],["loop","Layer loop","08-loop"],["wmem","Weights","08-loop"],["p0","p0 INPROJ","02-inproj"],["attn","Attention","03-attn"],["p1","p1 OUTPROJ","04-outproj"],["ln1","RMS-1","05-rms"],["p2","p2 SwiGLU","06-ffn"],["p3","p3 FC2","06-ffn"],["ln2","RMS-2","05-rms"],["pool","LM head","07-lm"],["glue","GenEval","07-lm"],["mcu","SEQ","08-loop"]]},
   "tree": {f:"blocks-tree.html", l:"Tree", up:"",
-        ents:[["embed","EMBED_TOP","01-embed"],["inproj","INPROJ_TILE","02-inproj"],["attn","ATTENTION","03-attn"],["outproj","OUTPROJ_TILE","04-outproj"],["ln","LAYERNORM","05-ln"],["ffn","FFN_TILE","06-ffn"],["pool","POOLER+CLS","07-pool"],["loop","LOOP_MEM_SEQ","08-loop"]]},
+        ents:[["embed","EMBED_TOP","01-embed"],["inproj","INPROJ_TILE","02-inproj"],["attn","ATTENTION","03-attn"],["outproj","OUTPROJ_TILE","04-outproj"],["ln","RMSNORM","05-rms"],["ffn","FFN_TILE","06-ffn"],["pool","LM_HEAD","07-lm"],["loop","LOOP_MEM_SEQ","08-loop"]]},
   "01-embed": {f:"pages/01-embed.html", l:"01 Embed", up:"",
-    chips:[["ID_FIFO","64xu15 in"],["EMB_LUT","32000x576 s8"],["DOT576_MAC","576-lane s8"],["ACCUM_RF","576xs32"],["BIAS_ADD","+b s32"],["REQUANT",">>shift clip"],["X0_DBUF","2x64x576 s8"],["PROJ_W","576x576 tied"]]},
+    chips:[["ID_FIFO","64xu15 in"],["EMB_LUT","32000x576 s8"],["XBUF","576B skid"],["X0_DBUF","2x64x576 s8"],["SEQ_FSM","frame ctrl"]]},
   "02-inproj": {f:"pages/02-inproj-tile.html", l:"02 inProj", up:""
     ,chips:[["IN_FIFO","2x576B"],["W_SRAM","stationary slice"],["MAC_ARRAY","32-lane MAC"],["ACCUM_RF","960xs32"],["REQUANT","clip int8"],["CALIB_ALU","slope+offset"]]},
   "03-attn": {f:"pages/03-attention-core.html", l:"03 Attention", up:""
     ,chips:[["QKV_BUF","Q2x36+KV2x12KB"],["SYSTOLIC","8x8 PE"],["SCALE",">>3 /sqrt64"],["SOFTMAX","max/LUT/recip+causal"],["SCORE","SxS 4KB"],["AV_MAC","reuse PEs"],["OUT_FIFO","to tile FIFO"]]},
   "04-outproj": {f:"pages/04-outproj-tile.html", l:"04 outProj", up:""
     ,chips:[["IN_FIFO","36KB DBUF"],["W_SRAM","stationary slice"],["MAC_ARRAY","576x256 pinned"],["ACCUM","psum s32"],["SCALE_SHIFT","shift+bias"],["REQUANT","scale+shift"],["OUT_FIFO","16KB/slice"],["CONCAT_MUX","disjoint concat"]]},
-  "05-ln": {f:"pages/05-layernorm.html", l:"05 LayerNorm", up:""
-    ,chips:[["RES_ADD","t=x+r FXP16"],["MEANSQ","mul+DIV"],["SQ_ACC","mul+acc"],["RSQRT_NR","LUT+3x iter"],["NORMALIZE","(t)*rsqrt"],["AFFINE","g*x"],["TBUF","2x72KB"]]},
+  "05-rms": {f:"pages/05-rmsnorm.html", l:"05 RMSNorm", up:""
+    ,chips:[["RES_ADD","t=x+r FXP16"],["SQR_MEAN","sq+mean"],["SQ_ACC","mul+acc"],["RSQRT_NR","LUT+3x iter"],["NORMALIZE","(t)*rsqrt"],["AFFINE","g*x"],["TBUF","2x72KB"]]},
   "06-ffn": {f:"pages/06-ffn-tile.html", l:"06 FFN", up:""
     ,chips:[["IN_FIFO","token rows"],["GATEUP_TILE","digital 6-chunk"],["H_SRAM","96KB/bank"],["SILU_PIPE","LUT silu"],["DOWN_TILE","digital 6-chunk"],["Y_FIFO","Sx576 out"]]},
-  "07-pool": {f:"pages/07-pooler-classifier.html", l:"07 Pooler+Cls", up:""
-    ,chips:[["LAST_MUX","token[last]"],["W_SRAM","Wlm 18MB"],["LM_MAC","576x32k rows"],["LOGITS","32k x16"],["CLS_MAC","z=x*Wlm"],["ARGMAX","32000-way"],["SCOREBOARD","correct/total"]]},
+  "07-lm": {f:"pages/07-lm-head.html", l:"07 LM head", up:""
+    ,chips:[["LAST_BUF","last-token FIFO"],["W_SRAM","Wlm 18MB"],["LM_MAC","576x32k rows"],["LOGITS","32k x16"],["ARGMAX","32000-way"],["PRED_FIFO","pred id FIFO"],["HEAD_SEQ","layer ctrl"]]},
   "08-loop": {f:"pages/08-loop-mem-seq.html", l:"08 Loop+Mem", up:""
     ,chips:[["X_BANK","2x36KB+resid"],["STRM_FIFO","12xDEPTH8"],["LAYER_FSM","30-state"],["RECAL_SEQ","coeff CRC"],["SEQ_FSM","hardwired FSM"],["OVERFLOW","AXI DRAM"],["WCAL_SRAM","slope+zero"]]}
 };
@@ -104,9 +104,9 @@ function render(route) {
   }
   det.appendChild(ul);
   bar.appendChild(det);
-  document.title = "ALBERT — " + r.l;
+  document.title = "MobileLLM — " + r.l;
   crumb.textContent = "/ " + r.l;
-  frame.setAttribute("title", "ALBERT diagram: " + r.l);
+  frame.setAttribute("title", "MobileLLM diagram: " + r.l);
   announcer.textContent = "Showing " + r.l;
 }
 let first = true;

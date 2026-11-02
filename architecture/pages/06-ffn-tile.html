@@ -5259,15 +5259,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
         <g data-graph-role="automatic-crossover" style="--step:1">
           <path data-graph-role="automatic-crossover-underlay" d="M 310 90 L 380 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="fc1" data-edge-to="hbuf" data-edge-label="3072x16" data-edge-key="1" data-composition-points="310,90;380,90" data-composition-crossover="halo" data-composition-independent="true" d="M 310 90 L 380 90" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="fc1" data-edge-to="hbuf" data-edge-label="1536x16" data-edge-key="1" data-composition-points="310,90;380,90" data-composition-crossover="halo" data-composition-independent="true" d="M 310 90 L 380 90" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:2">
           <path data-graph-role="automatic-crossover-underlay" d="M 490 90 L 560 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="hbuf" data-edge-to="gelu" data-edge-label="3072x16" data-edge-key="2" data-composition-points="490,90;560,90" data-composition-crossover="halo" data-composition-independent="true" d="M 490 90 L 560 90" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="hbuf" data-edge-to="silu" data-edge-label="1536x16" data-edge-key="2" data-composition-points="490,90;560,90" data-composition-crossover="halo" data-composition-independent="true" d="M 490 90 L 560 90" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:3">
           <path data-graph-role="automatic-crossover-underlay" d="M 670 90 L 740 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="gelu" data-edge-to="fc2" data-edge-label="3072x16" data-edge-key="3" data-composition-points="670,90;740,90" data-composition-crossover="halo" data-composition-independent="true" d="M 670 90 L 740 90" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="silu" data-edge-to="fc2" data-edge-label="1536x16" data-edge-key="3" data-composition-points="670,90;740,90" data-composition-crossover="halo" data-composition-independent="true" d="M 670 90 L 740 90" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:4">
           <path data-graph-role="automatic-crossover-underlay" d="M 850 90 L 920 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
@@ -5311,7 +5311,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="435" y="104" class="t-muted" font-size="9" text-anchor="middle">96KB/bank</text>
         </g>
 
-        <g id="node-gelu" data-node-id="gelu" data-node-label="SILU_PIPE" tabindex="0" role="button" aria-label="Focus SILU_PIPE, LUT silu, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="LUT silu" data-node-context="Architecture component">
+        <g id="node-silu" data-node-id="silu" data-node-label="SILU_PIPE" tabindex="0" role="button" aria-label="Focus SILU_PIPE, LUT silu, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="LUT silu" data-node-context="Architecture component">
           <title>SILU_PIPE · LUT silu · Architecture component</title>
           <rect x="560" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="560" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:3" stroke-width="1.5"/>
@@ -5351,17 +5351,17 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="148" y="70" width="34" height="14" rx="3" class="c-mask"/>
           <text x="165" y="80" class="t-edge-default" font-size="8" text-anchor="middle">768x8</text>
         </g>
-        <g data-detail="context" data-edge-from="fc1" data-edge-to="hbuf" data-edge-label="3072x16" data-edge-key="1">
+        <g data-detail="context" data-edge-from="fc1" data-edge-to="hbuf" data-edge-label="1536x16" data-edge-key="1">
           <rect x="323.2" y="70" width="43.6" height="14" rx="3" class="c-mask"/>
-          <text x="345" y="80" class="t-edge-default" font-size="8" text-anchor="middle">3072x16</text>
+          <text x="345" y="80" class="t-edge-default" font-size="8" text-anchor="middle">1536x16</text>
         </g>
-        <g data-detail="context" data-edge-from="hbuf" data-edge-to="gelu" data-edge-label="3072x16" data-edge-key="2">
+        <g data-detail="context" data-edge-from="hbuf" data-edge-to="silu" data-edge-label="1536x16" data-edge-key="2">
           <rect x="503.2" y="70" width="43.6" height="14" rx="3" class="c-mask"/>
-          <text x="525" y="80" class="t-edge-default" font-size="8" text-anchor="middle">3072x16</text>
+          <text x="525" y="80" class="t-edge-default" font-size="8" text-anchor="middle">1536x16</text>
         </g>
-        <g data-detail="context" data-edge-from="gelu" data-edge-to="fc2" data-edge-label="3072x16" data-edge-key="3">
+        <g data-detail="context" data-edge-from="silu" data-edge-to="fc2" data-edge-label="1536x16" data-edge-key="3">
           <rect x="683.2" y="70" width="43.6" height="14" rx="3" class="c-mask"/>
-          <text x="705" y="80" class="t-edge-default" font-size="8" text-anchor="middle">3072x16</text>
+          <text x="705" y="80" class="t-edge-default" font-size="8" text-anchor="middle">1536x16</text>
         </g>
         <g data-detail="context" data-edge-from="fc2" data-edge-to="yfifo" data-edge-label="768x8" data-edge-key="4">
           <rect x="868" y="70" width="34" height="14" rx="3" class="c-mask"/>
@@ -5566,7 +5566,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>FFN_TILE</h3>
         </div>
         <ul>
-          <li>Up: ../albert-top.html and blocks hub</li>
+          <li>Up: ../mobilellm-top.html and blocks hub</li>
           <li>Block file: ../blocks/06-ffn-tile.md</li>
           <li>G = SiLU(X*Wg^T); U = X*Wu^T; Y = (G.*U)*Wd^T; 576->1536->576</li>
         </ul>
