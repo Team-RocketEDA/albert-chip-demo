@@ -5290,26 +5290,26 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="75" y="104" class="t-muted" font-size="9" text-anchor="middle">t=x+r FXP16</text>
         </g>
 
-        <g id="node-mean" data-node-id="mean" data-node-label="MEAN_DIV" tabindex="0" role="button" aria-label="Focus MEAN_DIV, adder+DIV, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="adder+DIV" data-node-context="Architecture component">
-          <title>MEAN_DIV · adder+DIV · Architecture component</title>
+        <g id="node-mean" data-node-id="mean" data-node-label="MEANSQ" tabindex="0" role="button" aria-label="Focus MEANSQ, mul+DIV, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="mul+DIV" data-node-context="Architecture component">
+          <title>MEANSQ · mul+DIV · Architecture component</title>
           <rect x="200" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="200" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:1" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(206 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="255" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">MEAN_DIV</text>
-        <text data-detail="context" x="255" y="104" class="t-muted" font-size="9" text-anchor="middle">adder+DIV</text>
+          <text data-node-label="" data-detail-anchor="" x="255" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">MEANSQ</text>
+        <text data-detail="context" x="255" y="104" class="t-muted" font-size="9" text-anchor="middle">mul+DIV</text>
         </g>
 
-        <g id="node-var" data-node-id="var" data-node-label="VAR_SSA" tabindex="0" role="button" aria-label="Focus VAR_SSA, sub+mul+acc, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="sub+mul+acc" data-node-context="Architecture component">
-          <title>VAR_SSA · sub+mul+acc · Architecture component</title>
+        <g id="node-var" data-node-id="var" data-node-label="SQ_ACC" tabindex="0" role="button" aria-label="Focus SQ_ACC, mul+acc, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="mul+acc" data-node-context="Architecture component">
+          <title>SQ_ACC · mul+acc · Architecture component</title>
           <rect x="380" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="380" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:2" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(386 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="435" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">VAR_SSA</text>
-        <text data-detail="context" x="435" y="104" class="t-muted" font-size="9" text-anchor="middle">sub+mul+acc</text>
+          <text data-node-label="" data-detail-anchor="" x="435" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">SQ_ACC</text>
+        <text data-detail="context" x="435" y="104" class="t-muted" font-size="9" text-anchor="middle">mul+acc</text>
         </g>
 
         <g id="node-rsqrt" data-node-id="rsqrt" data-node-label="RSQRT_NR" tabindex="0" role="button" aria-label="Focus RSQRT_NR, LUT+3x iter, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="LUT+3x iter" data-node-context="Architecture component">
@@ -5323,30 +5323,30 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="615" y="104" class="t-muted" font-size="9" text-anchor="middle">LUT+3x iter</text>
         </g>
 
-        <g id="node-norm" data-node-id="norm" data-node-label="NORMALIZE" tabindex="0" role="button" aria-label="Focus NORMALIZE, (t-mu)*s, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="(t-mu)*s" data-node-context="Architecture component">
-          <title>NORMALIZE · (t-mu)*s · Architecture component</title>
+        <g id="node-norm" data-node-id="norm" data-node-label="NORMALIZE" tabindex="0" role="button" aria-label="Focus NORMALIZE, (t)*rsqrt, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="(t)*rsqrt" data-node-context="Architecture component">
+          <title>NORMALIZE · (t)*rsqrt · Architecture component</title>
           <rect x="740" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="740" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:4" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(746 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="795" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">NORMALIZE</text>
-        <text data-detail="context" x="795" y="104" class="t-muted" font-size="9" text-anchor="middle">(t-mu)*s</text>
+        <text data-detail="context" x="795" y="104" class="t-muted" font-size="9" text-anchor="middle">(t)*rsqrt</text>
         </g>
 
-        <g id="node-affine" data-node-id="affine" data-node-label="AFFINE" tabindex="0" role="button" aria-label="Focus AFFINE, g*x+b, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="g*x+b" data-node-context="Architecture component">
-          <title>AFFINE · g*x+b · Architecture component</title>
+        <g id="node-affine" data-node-id="affine" data-node-label="AFFINE" tabindex="0" role="button" aria-label="Focus AFFINE, g*x, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="g*x" data-node-context="Architecture component">
+          <title>AFFINE · g*x · Architecture component</title>
           <rect x="920" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="920" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:5" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(926 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="975" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">AFFINE</text>
-        <text data-detail="context" x="975" y="104" class="t-muted" font-size="9" text-anchor="middle">g*x+b</text>
+        <text data-detail="context" x="975" y="104" class="t-muted" font-size="9" text-anchor="middle">g*x</text>
         </g>
 
-        <g id="node-tbuf" data-node-id="tbuf" data-node-label="TBUF" tabindex="0" role="button" aria-label="Focus TBUF, 2x96KB, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="2x96KB" data-node-context="Architecture component">
-          <title>TBUF · 2x96KB · Architecture component</title>
+        <g id="node-tbuf" data-node-id="tbuf" data-node-label="TBUF" tabindex="0" role="button" aria-label="Focus TBUF, 2x72KB, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="2x72KB" data-node-context="Architecture component">
+          <title>TBUF · 2x72KB · Architecture component</title>
           <rect x="380" y="200" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="380" y="200" width="110" height="60" rx="8" class="c-database" data-animate="node" style="--step:5" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(386 206) scale(0.6875)">
@@ -5354,7 +5354,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="435" y="228" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">TBUF</text>
-        <text data-detail="context" x="435" y="244" class="t-muted" font-size="9" text-anchor="middle">2x96KB</text>
+        <text data-detail="context" x="435" y="244" class="t-muted" font-size="9" text-anchor="middle">2x72KB</text>
         </g>
 
         <!-- Connection labels -->
@@ -5583,7 +5583,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>Up: ../albert-top.html and blocks hub</li>
           <li>Block file: ../blocks/05-layernorm.md</li>
-          <li>y = gamma*(t-mu)/sqrt(v+eps)+beta; two passes need the frame buffer</li>
+          <li>y = gamma*t/sqrt(mean(t^2)+eps); one reduction, frame buffer holds t</li>
         </ul>
       </div>
 
@@ -5593,9 +5593,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>Ports</h3>
         </div>
         <ul>
-          <li>x/resid:in:Sx768 FXP16+valid/ready</li>
-          <li>y:out:Sx768 FXP16 stream</li>
-          <li>gamma/beta:static 768x16b (loaded once)</li>
+          <li>x/resid:in:Sx576 FXP16+valid/ready</li>
+          <li>y:out:Sx576 FXP16 stream</li>
+          <li>gamma:static 576x16b (loaded once; no beta)</li>
           <li>cfg:S/D/eps; clk/rst/done</li>
         </ul>
       </div>

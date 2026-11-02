@@ -5,16 +5,16 @@
   "status": "fail",
   "type": "architecture",
   "quality": "showcase",
-  "startedAt": "2026-11-02T16:16:24.569Z",
+  "startedAt": "2026-11-02T17:53:20.519Z",
   "specification": {
     "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
-    "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
-    "bytes": 6120
+    "sha256": "3264b382e5dd3ce015738c76550ea98d1b65d0136c4d719d7088669f32247226",
+    "bytes": 6308
   },
   "artifact": {
     "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
-    "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
-    "bytes": 858850
+    "sha256": "6edc7f02c7b8a7fb394ed23d081949efeed8d47a68da75c79f67926f7785c5e4",
+    "bytes": 859092
   },
   "stages": {
     "validate": {
@@ -38,8 +38,8 @@
         "ok": true,
         "command": "validate",
         "specification": {
-          "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
-          "bytes": 6120
+          "sha256": "3264b382e5dd3ce015738c76550ea98d1b65d0136c4d719d7088669f32247226",
+          "bytes": 6308
         },
         "validation": {
           "checksPassed": 9,
@@ -54,7 +54,7 @@
     "deliver": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 355,
+      "durationMs": 350,
       "command": [
         "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
         "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
@@ -68,19 +68,19 @@
       ],
       "receipt": {
         "schemaVersion": 1,
-        "receiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a",
+        "receiptId": "5eaf73a6-4d8c-41a4-80be-a0c734c6f675",
         "ok": true,
         "command": "deliver",
         "type": "architecture",
         "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
         "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
         "specification": {
-          "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
-          "bytes": 6120
+          "sha256": "3264b382e5dd3ce015738c76550ea98d1b65d0136c4d719d7088669f32247226",
+          "bytes": 6308
         },
         "artifact": {
-          "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
-          "bytes": 858850
+          "sha256": "6edc7f02c7b8a7fb394ed23d081949efeed8d47a68da75c79f67926f7785c5e4",
+          "bytes": 859092
         },
         "validation": {
           "checksPassed": 9,
@@ -106,7 +106,7 @@
     "check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 175,
+      "durationMs": 172,
       "command": [
         "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
         "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
@@ -118,8 +118,8 @@
         "ok": true,
         "file": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
         "artifact": {
-          "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
-          "bytes": 858850
+          "sha256": "6edc7f02c7b8a7fb394ed23d081949efeed8d47a68da75c79f67926f7785c5e4",
+          "bytes": 859092
         },
         "checks": [
           {
@@ -245,13 +245,13 @@
           "issues": []
         },
         "provenance": "current",
-        "deliveryReceiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a"
+        "deliveryReceiptId": "5eaf73a6-4d8c-41a4-80be-a0c734c6f675"
       }
     },
     "browser-check": {
       "status": "fail",
       "exitCode": 1,
-      "durationMs": 8,
+      "durationMs": 11,
       "command": [
         "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
         "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
@@ -269,11 +269,11 @@
         "status": "fail",
         "visualReview": "not-requested",
         "provenance": "current",
-        "deliveryReceiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a",
+        "deliveryReceiptId": "5eaf73a6-4d8c-41a4-80be-a0c734c6f675",
         "artifact": {
           "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
-          "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
-          "bytes": 858850
+          "sha256": "6edc7f02c7b8a7fb394ed23d081949efeed8d47a68da75c79f67926f7785c5e4",
+          "bytes": 859092
         },
         "state": {
           "detail": "read",
@@ -363,8 +363,8 @@
   },
   "visualReview": "not-requested",
   "failedStage": "browser-check",
-  "finishedAt": "2026-11-02T16:16:25.196Z",
-  "durationMs": 627,
+  "finishedAt": "2026-11-02T17:53:21.144Z",
+  "durationMs": 625,
   "update": {
     "status": "unavailable",
     "installedVersion": null,

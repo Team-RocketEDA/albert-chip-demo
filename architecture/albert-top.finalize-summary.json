@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
-    "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
-    "bytes": 6120
+    "sha256": "3264b382e5dd3ce015738c76550ea98d1b65d0136c4d719d7088669f32247226",
+    "bytes": 6308
   },
   "artifact": {
     "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
-    "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
-    "bytes": 858850
+    "sha256": "6edc7f02c7b8a7fb394ed23d081949efeed8d47a68da75c79f67926f7785c5e4",
+    "bytes": 859092
   },
   "gates": {
     "validate": "pass",
@@ -52,7 +52,7 @@
     "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json"
   },
   "visualReview": "not-requested",
-  "durationMs": 627,
+  "durationMs": 625,
   "browserCheck": {
     "requested": true,
     "ran": false

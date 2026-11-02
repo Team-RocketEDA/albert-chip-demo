@@ -17,13 +17,13 @@ ROUTER = "albert-router.html"
 
 TOP_MAP = {
     "tok_in": "01-embed", "embed": "01-embed",
-    "inproj": "02-inproj", "tilemem": "02-inproj", "codec": "02-inproj",
-    "attn": "03-attn",
-    "outproj": "04-outproj",
-    "ln": "05-ln",
-    "ffn": "06-ffn",
-    "pool": "07-pool", "glue": "07-pool",
     "loop": "08-loop", "wmem": "08-loop", "mcu": "08-loop",
+    "p0": "02-inproj",
+    "attn": "03-attn",
+    "p1": "04-outproj",
+    "ln1": "05-ln", "ln2": "05-ln",
+    "p2": "06-ffn", "p3": "06-ffn",
+    "pool": "07-pool", "glue": "07-pool",
 }
 TREE_L1 = {
     "embed": "01-embed", "inproj": "02-inproj", "attn": "03-attn",

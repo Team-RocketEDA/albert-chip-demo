@@ -5259,7 +5259,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
         <g data-graph-role="automatic-crossover" style="--step:1">
           <path data-graph-role="automatic-crossover-underlay" d="M 310 90 L 380 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="dac" data-edge-to="xbar" data-edge-label="512xV" data-edge-key="1" data-composition-points="310,90;380,90" data-composition-crossover="halo" data-composition-independent="true" d="M 310 90 L 380 90" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="dac" data-edge-to="xbar" data-edge-label="512x8" data-edge-key="1" data-composition-points="310,90;380,90" data-composition-crossover="halo" data-composition-independent="true" d="M 310 90 L 380 90" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:2">
           <path data-graph-role="automatic-crossover-underlay" d="M 490 90 L 560 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
@@ -5267,7 +5267,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
         <g data-graph-role="automatic-crossover" style="--step:3">
           <path data-graph-role="automatic-crossover-underlay" d="M 670 90 L 740 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="integ" data-edge-to="adc" data-edge-label="512xV" data-edge-key="3" data-composition-points="670,90;740,90" data-composition-crossover="halo" data-composition-independent="true" d="M 670 90 L 740 90" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="integ" data-edge-to="adc" data-edge-label="512x8" data-edge-key="3" data-composition-points="670,90;740,90" data-composition-crossover="halo" data-composition-independent="true" d="M 670 90 L 740 90" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:4">
           <path data-graph-role="automatic-crossover-underlay" d="M 850 90 L 920 90" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
@@ -5275,8 +5275,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
 
         <!-- Components -->
-        <g id="node-in_fifo" data-node-id="in_fifo" data-node-label="IN_FIFO" tabindex="0" role="button" aria-label="Focus IN_FIFO, 2x512B, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="2x512B" data-node-context="Architecture component">
-          <title>IN_FIFO · 2x512B · Architecture component</title>
+        <g id="node-in_fifo" data-node-id="in_fifo" data-node-label="IN_FIFO" tabindex="0" role="button" aria-label="Focus IN_FIFO, 2x576B, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="2x576B" data-node-context="Architecture component">
+          <title>IN_FIFO · 2x576B · Architecture component</title>
           <rect x="20" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="20" y="60" width="110" height="60" rx="8" class="c-database" data-animate="node" style="--step:0" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(26 66) scale(0.6875)">
@@ -5284,52 +5284,52 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="75" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">IN_FIFO</text>
-        <text data-detail="context" x="75" y="104" class="t-muted" font-size="9" text-anchor="middle">2x512B</text>
+        <text data-detail="context" x="75" y="104" class="t-muted" font-size="9" text-anchor="middle">2x576B</text>
         </g>
 
-        <g id="node-dac" data-node-id="dac" data-node-label="DACx512" tabindex="0" role="button" aria-label="Focus DACx512, T=|x|xT0, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="T=|x|xT0" data-node-context="Architecture component">
-          <title>DACx512 · T=|x|xT0 · Architecture component</title>
+        <g id="node-dac" data-node-id="dac" data-node-label="W_SRAM" tabindex="0" role="button" aria-label="Focus W_SRAM, stationary slice, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="stationary slice" data-node-context="Architecture component">
+          <title>W_SRAM · stationary slice · Architecture component</title>
           <rect x="200" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="200" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:1" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(206 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="255" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">DACx512</text>
-        <text data-detail="context" x="255" y="104" class="t-muted" font-size="9" text-anchor="middle">T=|x|xT0</text>
+          <text data-node-label="" data-detail-anchor="" x="255" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">W_SRAM</text>
+        <text data-detail="context" x="255" y="104" class="t-muted" font-size="9" text-anchor="middle">stationary slice</text>
         </g>
 
-        <g id="node-xbar" data-node-id="xbar" data-node-label="PCM_XBAR" tabindex="0" role="button" aria-label="Focus PCM_XBAR, 512^2x4dev, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="512^2x4dev" data-node-tag="HW" data-node-context="Architecture component">
-          <title>PCM_XBAR · 512^2x4dev · Architecture component · HW</title>
+        <g id="node-xbar" data-node-id="xbar" data-node-label="MAC_ARRAY" tabindex="0" role="button" aria-label="Focus MAC_ARRAY, 32-lane MAC, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="32-lane MAC" data-node-tag="HW" data-node-context="Architecture component">
+          <title>MAC_ARRAY · 32-lane MAC · Architecture component · HW</title>
           <rect x="380" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="380" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:2" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(386 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="435" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">PCM_XBAR</text>
-        <text data-detail="context" x="435" y="104" class="t-muted" font-size="9" text-anchor="middle">512^2x4dev</text>
+          <text data-node-label="" data-detail-anchor="" x="435" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">MAC_ARRAY</text>
+        <text data-detail="context" x="435" y="104" class="t-muted" font-size="9" text-anchor="middle">32-lane MAC</text>
         <text data-detail="fine" x="435" y="112" class="t-backend" font-size="7" text-anchor="middle">HW</text>
         </g>
 
-        <g id="node-integ" data-node-id="integ" data-node-label="SUM+INT" tabindex="0" role="button" aria-label="Focus SUM+INT, TIA+C, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="TIA+C" data-node-context="Architecture component">
-          <title>SUM+INT · TIA+C · Architecture component</title>
+        <g id="node-integ" data-node-id="integ" data-node-label="ACCUM_RF" tabindex="0" role="button" aria-label="Focus ACCUM_RF, 960xs32, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="960xs32" data-node-context="Architecture component">
+          <title>ACCUM_RF · 960xs32 · Architecture component</title>
           <rect x="560" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="560" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:3" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="615" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">SUM+INT</text>
-        <text data-detail="context" x="615" y="104" class="t-muted" font-size="9" text-anchor="middle">TIA+C</text>
+          <text data-node-label="" data-detail-anchor="" x="615" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ACCUM_RF</text>
+        <text data-detail="context" x="615" y="104" class="t-muted" font-size="9" text-anchor="middle">960xs32</text>
         </g>
 
-        <g id="node-adc" data-node-id="adc" data-node-label="SAR_ADC" tabindex="0" role="button" aria-label="Focus SAR_ADC, 7b OLP, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="7b OLP" data-node-context="Architecture component">
-          <title>SAR_ADC · 7b OLP · Architecture component</title>
+        <g id="node-adc" data-node-id="adc" data-node-label="REQUANT" tabindex="0" role="button" aria-label="Focus REQUANT, clip int8, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="clip int8" data-node-context="Architecture component">
+          <title>REQUANT · clip int8 · Architecture component</title>
           <rect x="740" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="740" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:4" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(746 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="795" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">SAR_ADC</text>
-        <text data-detail="context" x="795" y="104" class="t-muted" font-size="9" text-anchor="middle">7b OLP</text>
+          <text data-node-label="" data-detail-anchor="" x="795" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">REQUANT</text>
+        <text data-detail="context" x="795" y="104" class="t-muted" font-size="9" text-anchor="middle">clip int8</text>
         </g>
 
         <g id="node-calib" data-node-id="calib" data-node-label="CALIB_ALU" tabindex="0" role="button" aria-label="Focus CALIB_ALU, slope+off, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="slope+off" data-node-context="Architecture component">
@@ -5348,17 +5348,17 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="148" y="70" width="34" height="14" rx="3" class="c-mask"/>
           <text x="165" y="80" class="t-edge-default" font-size="8" text-anchor="middle">512x8</text>
         </g>
-        <g data-detail="context" data-edge-from="dac" data-edge-to="xbar" data-edge-label="512xV" data-edge-key="1">
+        <g data-detail="context" data-edge-from="dac" data-edge-to="xbar" data-edge-label="512x8" data-edge-key="1">
           <rect x="328" y="70" width="34" height="14" rx="3" class="c-mask"/>
-          <text x="345" y="80" class="t-edge-default" font-size="8" text-anchor="middle">512xV</text>
+          <text x="345" y="80" class="t-edge-default" font-size="8" text-anchor="middle">512x8</text>
         </g>
         <g data-detail="context" data-edge-from="xbar" data-edge-to="integ" data-edge-label="512xI" data-edge-key="2">
           <rect x="508" y="70" width="34" height="14" rx="3" class="c-mask"/>
           <text x="525" y="80" class="t-edge-default" font-size="8" text-anchor="middle">512xI</text>
         </g>
-        <g data-detail="context" data-edge-from="integ" data-edge-to="adc" data-edge-label="512xV" data-edge-key="3">
+        <g data-detail="context" data-edge-from="integ" data-edge-to="adc" data-edge-label="512x8" data-edge-key="3">
           <rect x="688" y="70" width="34" height="14" rx="3" class="c-mask"/>
-          <text x="705" y="80" class="t-edge-default" font-size="8" text-anchor="middle">512xV</text>
+          <text x="705" y="80" class="t-edge-default" font-size="8" text-anchor="middle">512x8</text>
         </g>
         <g data-detail="context" data-edge-from="adc" data-edge-to="calib" data-edge-label="512x7b" data-edge-key="4">
           <rect x="865.6" y="70" width="38.8" height="14" rx="3" class="c-mask"/>
@@ -5565,7 +5565,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>Up: ../albert-top.html and blocks hub</li>
           <li>Block file: ../blocks/02-inproj-tile.md</li>
-          <li>Y = Xl*W^T; T_on=|x|*T_lsb; y=clip(d*slope+off)</li>
+          <li>Y = QKV(Xl); 960 cols; y=clip(acc*scale+zero)</li>
         </ul>
       </div>
 
@@ -5575,9 +5575,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>Ports</h3>
         </div>
         <ul>
-          <li>tok_in:in:512xint8 streamed</li>
-          <li>w_pinned:internal:512x512 analog-G static</li>
-          <li>y_out:out:512xint8 calibrated</li>
+          <li>tok_in:in:576xint8 streamed</li>
+          <li>w_pinned:internal:960x576 s8 SRAM static</li>
+          <li>y_out:out:960xint8 calibrated</li>
           <li>slope/off:in:512x16b coeffs</li>
           <li>clk/rst/valid-ready:control</li>
         </ul>
@@ -5591,7 +5591,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>p0: ilp0-1 drive, olp0-4 drain (5 lanes)</li>
           <li>tile_sel: inProj group + QKV-third col enables</li>
-          <li>cal_addr: {block,phase,tile,col}; per-col slope+off</li>
+          <li>cal_addr: {layer5b,block2b,phase2b,chunk6b,col8b} (23b); per-col slope+off</li>
           <li>QKV thirds separable per lane -&gt; ATTN_WAIT</li>
         </ul>
       </div>

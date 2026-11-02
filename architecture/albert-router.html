@@ -40,25 +40,25 @@
 "use strict";
 const ROUTES = {
   "":  {f:"albert-top.html", l:"L0 Top", up:null,
-        ents:[["tok_in","Token IDs","01-embed"],["embed","Embed+proj","01-embed"],["loop","Layer loop","08-loop"],["wmem","Weights","08-loop"],["inproj","inProj","02-inproj"],["attn","Attention","03-attn"],["outproj","outProj","04-outproj"],["ln","LayerNorm","05-ln"],["ffn","FFN","06-ffn"],["tilemem","PCM tiles","02-inproj"],["codec","DAC/ADC","02-inproj"],["pool","Pooler+Cls","07-pool"],["glue","GLUE","07-pool"],["mcu","MCU","08-loop"]]},
+        ents:[["tok_in","Token IDs","01-embed"],["embed","Embed+proj","01-embed"],["loop","Layer loop","08-loop"],["wmem","Weights","08-loop"],["p0","p0 INPROJ","02-inproj"],["attn","Attention","03-attn"],["p1","p1 OUTPROJ","04-outproj"],["ln1","LN-1","05-ln"],["p2","p2 FC1+GELU","06-ffn"],["p3","p3 FC2","06-ffn"],["ln2","LN-2","05-ln"],["pool","Pooler+Cls","07-pool"],["glue","GLUE","07-pool"],["mcu","MCU","08-loop"]]},
   "tree": {f:"blocks-tree.html", l:"Tree", up:"",
         ents:[["embed","EMBED_TOP","01-embed"],["inproj","INPROJ_TILE","02-inproj"],["attn","ATTENTION","03-attn"],["outproj","OUTPROJ_TILE","04-outproj"],["ln","LAYERNORM","05-ln"],["ffn","FFN_TILE","06-ffn"],["pool","POOLER+CLS","07-pool"],["loop","LOOP_MEM_SEQ","08-loop"]]},
   "01-embed": {f:"pages/01-embed.html", l:"01 Embed", up:"",
-    chips:[["ID_FIFO","64xu15 in"],["EMB_LUT","30000x128 s8"],["DOT128_MAC","768-lane s8"],["ACCUM_RF","768xs32"],["BIAS_ADD","+b s32"],["REQUANT",">>shift clip"],["X0_DBUF","2x64x768 s8"],["PROJ_W","128x768 stationary"]]},
+    chips:[["ID_FIFO","64xu15 in"],["EMB_LUT","32000x576 s8"],["DOT576_MAC","576-lane s8"],["ACCUM_RF","576xs32"],["BIAS_ADD","+b s32"],["REQUANT",">>shift clip"],["X0_DBUF","2x64x576 s8"],["PROJ_W","576x576 tied"]]},
   "02-inproj": {f:"pages/02-inproj-tile.html", l:"02 inProj", up:""
-    ,chips:[["IN_FIFO","2x512B"],["DACx512","T=|x|*T0"],["PCM_XBAR","512^2x4dev"],["SUM+INT","TIA+C"],["SAR_ADC","7b OLP"],["CALIB_ALU","slope+offset"]]},
+    ,chips:[["IN_FIFO","2x576B"],["W_SRAM","stationary slice"],["MAC_ARRAY","32-lane MAC"],["ACCUM_RF","960xs32"],["REQUANT","clip int8"],["CALIB_ALU","slope+offset"]]},
   "03-attn": {f:"pages/03-attention-core.html", l:"03 Attention", up:""
-    ,chips:[["QKV_BUF","3x2x48KB"],["SYSTOLIC","8x8 PE"],["SCALE",">>3 /sqrt64"],["SOFTMAX","max/LUT/recip"],["SCORE","SxS 4KB"],["AV_MAC","reuse PEs"],["OUT_FIFO","to DAC"]]},
+    ,chips:[["QKV_BUF","Q2x36+KV2x12KB"],["SYSTOLIC","8x8 PE"],["SCALE",">>3 /sqrt64"],["SOFTMAX","max/LUT/recip+causal"],["SCORE","SxS 4KB"],["AV_MAC","reuse PEs"],["OUT_FIFO","to tile FIFO"]]},
   "04-outproj": {f:"pages/04-outproj-tile.html", l:"04 outProj", up:""
-    ,chips:[["IN_FIFO","96KB DBUF"],["DACx768","duration rows"],["PCM_XBAR","768^2 pinned"],["SUMMER","TIA per col"],["SAR_ADC","per col"],["REQUANT","scale+shift"],["OUT_FIFO","32KB/slice"],["CONCAT_MUX","no analog sum"]]},
+    ,chips:[["IN_FIFO","36KB DBUF"],["W_SRAM","stationary slice"],["MAC_ARRAY","576x256 pinned"],["ACCUM","psum s32"],["SCALE_SHIFT","shift+bias"],["REQUANT","scale+shift"],["OUT_FIFO","16KB/slice"],["CONCAT_MUX","disjoint concat"]]},
   "05-ln": {f:"pages/05-layernorm.html", l:"05 LayerNorm", up:""
-    ,chips:[["RES_ADD","t=x+r FXP16"],["MEAN_DIV","adder+DIV"],["VAR_SSA","sub+mul+acc"],["RSQRT_NR","LUT+3x iter"],["NORMALIZE","(t-mu)*s"],["AFFINE","g*x+b"],["TBUF","2x96KB"]]},
+    ,chips:[["RES_ADD","t=x+r FXP16"],["MEANSQ","mul+DIV"],["SQ_ACC","mul+acc"],["RSQRT_NR","LUT+3x iter"],["NORMALIZE","(t)*rsqrt"],["AFFINE","g*x"],["TBUF","2x72KB"]]},
   "06-ffn": {f:"pages/06-ffn-tile.html", l:"06 FFN", up:""
-    ,chips:[["IN_FIFO","token rows"],["FC1_TILE","analog 2-chunk"],["H_SRAM","384KB/bank"],["GELU_PIPE","LUT tanh"],["FC2_TILE","analog 6-chunk"],["Y_FIFO","Sx768 out"]]},
+    ,chips:[["IN_FIFO","token rows"],["GATEUP_TILE","digital 6-chunk"],["H_SRAM","96KB/bank"],["SILU_PIPE","LUT silu"],["DOWN_TILE","digital 6-chunk"],["Y_FIFO","Sx576 out"]]},
   "07-pool": {f:"pages/07-pooler-classifier.html", l:"07 Pooler+Cls", up:""
-    ,chips:[["CLS_MUX","token[0]"],["W_SRAM","Wp 576KB"],["POOL_MAC","Wp*x+b"],["TANH_LUT","PWL lerp"],["CLS_MAC","z=Wc*h"],["ARGMAX","2/3-way"],["SCOREBOARD","correct/total"]]},
+    ,chips:[["LAST_MUX","token[last]"],["W_SRAM","Wlm 18MB"],["LM_MAC","576x32k rows"],["LOGITS","32k x16"],["CLS_MAC","z=x*Wlm"],["ARGMAX","32000-way"],["SCOREBOARD","correct/total"]]},
   "08-loop": {f:"pages/08-loop-mem-seq.html", l:"08 Loop+Mem", up:""
-    ,chips:[["X_BANK","2x49KB+resid"],["STRM_FIFO","12xDEPTH8"],["LAYER_FSM","12-state"],["RECAL_SEQ","drift comp"],["MCU","Ibex RV32"],["OVERFLOW","AXI DRAM"],["WCAL_SRAM","slope+drift"]]}
+    ,chips:[["X_BANK","2x36KB+resid"],["STRM_FIFO","12xDEPTH8"],["LAYER_FSM","30-state"],["RECAL_SEQ","coeff CRC"],["SEQ_FSM","hardwired FSM"],["OVERFLOW","AXI DRAM"],["WCAL_SRAM","slope+zero"]]}
 };
 const ALL = Object.entries(ROUTES).map(([k,r]) => ({k, l:r.l}));
 const bar = document.getElementById("ctxbar"),

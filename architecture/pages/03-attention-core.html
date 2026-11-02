@@ -5279,8 +5279,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
 
         <!-- Components -->
-        <g id="node-qkv" data-node-id="qkv" data-node-label="QKV_BUF" tabindex="0" role="button" aria-label="Focus QKV_BUF, 3x2x48KB, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="3x2x48KB" data-node-context="Architecture component">
-          <title>QKV_BUF · 3x2x48KB · Architecture component</title>
+        <g id="node-qkv" data-node-id="qkv" data-node-label="QKV_BUF" tabindex="0" role="button" aria-label="Focus QKV_BUF, Q2x36+KV2x12KB, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="Q2x36+KV2x12KB" data-node-context="Architecture component">
+          <title>QKV_BUF · Q2x36+KV2x12KB · Architecture component</title>
           <rect x="20" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="20" y="60" width="110" height="60" rx="8" class="c-database" data-animate="node" style="--step:0" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(26 66) scale(0.6875)">
@@ -5288,7 +5288,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="75" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">QKV_BUF</text>
-        <text data-detail="context" x="75" y="104" class="t-muted" font-size="9" text-anchor="middle">3x2x48KB</text>
+        <text data-detail="context" x="75" y="104" class="t-muted" font-size="9" text-anchor="middle">Q2x36+KV2x12KB</text>
         </g>
 
         <g id="node-syst" data-node-id="syst" data-node-label="SYSTOLIC" tabindex="0" role="button" aria-label="Focus SYSTOLIC, 8x8 PE MAC, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="8x8 PE MAC" data-node-context="Architecture component">
@@ -5313,15 +5313,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="435" y="104" class="t-muted" font-size="9" text-anchor="middle">&gt;&gt;3 /sqrt64</text>
         </g>
 
-        <g id="node-smax" data-node-id="smax" data-node-label="SOFTMAX" tabindex="0" role="button" aria-label="Focus SOFTMAX, max/LUT/recip, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="max/LUT/recip" data-node-context="Architecture component">
-          <title>SOFTMAX · max/LUT/recip · Architecture component</title>
+        <g id="node-smax" data-node-id="smax" data-node-label="SOFTMAX" tabindex="0" role="button" aria-label="Focus SOFTMAX, max/LUT/recip+causal, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="max/LUT/recip+causal" data-node-context="Architecture component">
+          <title>SOFTMAX · max/LUT/recip+causal · Architecture component</title>
           <rect x="560" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="560" y="60" width="110" height="60" rx="8" class="c-backend" data-animate="node" style="--step:3" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 66) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="615" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">SOFTMAX</text>
-        <text data-detail="context" x="615" y="104" class="t-muted" font-size="9" text-anchor="middle">max/LUT/recip</text>
+        <text data-detail="context" x="615" y="104" class="t-muted" font-size="9" text-anchor="middle">max/LUT/recip+causal</text>
         </g>
 
         <g id="node-score" data-node-id="score" data-node-label="SCORE" tabindex="0" role="button" aria-label="Focus SCORE, SxS 4KB, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="SxS 4KB" data-node-context="Architecture component">
@@ -5347,8 +5347,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="975" y="104" class="t-muted" font-size="9" text-anchor="middle">reuse PEs</text>
         </g>
 
-        <g id="node-ofifo" data-node-id="ofifo" data-node-label="OUT_FIFO" tabindex="0" role="button" aria-label="Focus OUT_FIFO, to DAC bnd, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="to DAC bnd" data-node-context="Architecture component">
-          <title>OUT_FIFO · to DAC bnd · Architecture component</title>
+        <g id="node-ofifo" data-node-id="ofifo" data-node-label="OUT_FIFO" tabindex="0" role="button" aria-label="Focus OUT_FIFO, to tile FIFO, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="to tile FIFO" data-node-context="Architecture component">
+          <title>OUT_FIFO · to tile FIFO · Architecture component</title>
           <rect x="1100" y="60" width="110" height="60" rx="8" class="c-mask"/>
           <rect x="1100" y="60" width="110" height="60" rx="8" class="c-database" data-animate="node" style="--step:6" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1106 66) scale(0.6875)">
@@ -5356,7 +5356,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1155" y="88" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">OUT_FIFO</text>
-        <text data-detail="context" x="1155" y="104" class="t-muted" font-size="9" text-anchor="middle">to DAC bnd</text>
+        <text data-detail="context" x="1155" y="104" class="t-muted" font-size="9" text-anchor="middle">to tile FIFO</text>
         </g>
 
         <!-- Connection labels -->
@@ -5585,7 +5585,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>Up: ../albert-top.html and blocks hub</li>
           <li>Block file: ../blocks/03-attention-core.md</li>
-          <li>Y = softmax(QK^T/8)*V; H=12, dk=64 inferred</li>
+          <li>Y = softmax(QK^T/8+mask)*V causal; H=9, kv=3, dk=64</li>
         </ul>
       </div>
 
@@ -5595,9 +5595,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>Ports</h3>
         </div>
         <ul>
-          <li>q/k/v:in:512x8 words+valid/ready</li>
+          <li>q:in:576x8, k/v:in:192x8 words+valid/ready</li>
           <li>s_cfg:in:7b (S&lt;=64/128)</li>
-          <li>y_stream:out:512x8+valid/ready</li>
+          <li>y_stream:out:576x8+valid/ready</li>
           <li>clk/rst:control</li>
         </ul>
       </div>

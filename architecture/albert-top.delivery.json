@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a",
+  "receiptId": "bc71af40-101d-452d-a20f-b274b32d073b",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-223832/candidate.json",
   "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
   "specification": {
-    "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
-    "bytes": 6120
+    "sha256": "f416e4ba067d38e7ebdfce7282a8a9abbd814a7b954bdc36c75d25cb29a98a9b",
+    "bytes": 6326
   },
   "artifact": {
-    "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
-    "bytes": 858850
+    "sha256": "b32bcf5c3bec941433746dab11a88287968a1e07221cff16f1309b9f440225a7",
+    "bytes": 859564
   }
 }
