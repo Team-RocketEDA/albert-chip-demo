@@ -27,9 +27,8 @@ module lm_head #(
     .clk(clk), .rst_n(rst_n), .ce(x_valid), .clr(1'b0),
     .avec(), .bvec(), .acc_in(32'b0), .acc_out(lm_psum)
   );
-  cmp #(.W(16)) u_argmax (
-    .a(16'b0), .b(16'b0), .y(), .gt(pred_out[0])
-  ); // argmax over 32k logits at implementation; winning id -> pred_out
+  // argmax over 32k logits: inferred compare loop at implementation;
+  // winning id -> pred_out
   fifo_sync #(.W(15), .D(128)) u_predfifo (
     .clk(clk), .rst_n(rst_n), .wdata(pred_out), .wr(done),
     .rd(), .rdata(), .full(), .empty()

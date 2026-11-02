@@ -37,20 +37,12 @@ module attention_core #(
   sram_1r1w #(.W(192), .N(2048)) u_vcache (
     .clk(clk), .ra(), .wa(), .wdata(192'b0), .we(1'b0), .rdata()
   );
-  // RoPE rotation on Q/K: sin/cos mult-add pairs (wired at implementation).
-  mult #(.W(16)) u_rope_q (
-    .a(16'b0), .b(16'b0), .y()
-  );
-  mult #(.W(16)) u_rope_k (
-    .a(16'b0), .b(16'b0), .y()
-  );
+  // RoPE rotation on Q/K: sin/cos mult-add pairs, inferred * at implementation.
   mac_array #(.W(8), .P(32)) u_qk (
     .clk(clk), .rst_n(rst_n), .ce(qkv_valid), .clr(1'b0),
     .avec(), .bvec(), .acc_in(32'b0), .acc_out()
   );
-  shifter #(.W(32)) u_scale (
-    .din(32'b0), .shamt(5'd3), .dout()
-  );
+  // scale L_raw/8: inferred >>3 at implementation.
   softmax_d #(.W(16), .S(S)) u_softmax (
     .clk(clk), .rst_n(rst_n), .scores(scores),
     .scores_valid(qkv_valid), .causal(1'b1),

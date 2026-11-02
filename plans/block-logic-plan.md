@@ -23,7 +23,8 @@ PARAMS §2 budget; proxy tables load in iverilog.
 Out of scope: retraining, new quant schemes (absmax only), pushing binaries
 to git (gitignored).
 
-## Steps 1–11 — Block logic (one agent per step, red-green-refactor)
+## Steps 1–11 — Block logic (one agent per live step, red-green-refactor;
+step 2 culled → 10 agents)
 
 Loop per block: RED (iverilog tb fails against the skeleton) → GREEN
 (minimal logic) → REFACTOR (clean, parametric) → VERIFY (tb + `slang`
@@ -38,9 +39,11 @@ their `src/components/<block>.v` + new `src/tb/tb_<block>.v`.
 1. MAC family (`mac_unit`, `mac_array`, `dotK`). Formal: accumuland
    equals unbounded python sum (sby assert). Acceptance: randomized
    int8 vectors incl. saturation corners match golden bit-exact.
-2. Arith glue (`adder`, `sub`, `mult`, `shifter`, `alu_bit`, `dff`,
-   `muxN`, `cmp`). Acceptance: exhaustive (small widths) + randomized
-   iverilog tb; yosys sat-equiv vs `+`/`*` inference.
+2. Inferred operators (CULLED — no modules, no agent). `adder`/`sub`/
+   `mult`/`muxN`/`cmp`/`alu_bit`/`shifter` are deleted: Yosys/Verilator
+   infers `+`/`-`/`*` and `if`/`case` from expressions at logic write-up.
+   Policy: no new single-operator modules, ever; inference is checked by
+   `yosys sat-equiv` spot-checks inside the parent blocks that use them.
 3. `requant` (shift/scale/clip). Formal: clip boundaries + shift exactness.
 4. `fifo_sync` (+ `irq_sync`). Formal: no overflow/underflow, full/empty
    correctness, FWFT ordering.

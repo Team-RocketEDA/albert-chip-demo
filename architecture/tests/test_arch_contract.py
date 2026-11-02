@@ -461,9 +461,9 @@ class TestDigitalPivot(unittest.TestCase):
 class TestSkeleton(unittest.TestCase):
     """src/components wiring-only contract: ports + hierarchy, no logic."""
     SRC = REPO / "src" / "components"
-    LEAVES = {"fifo_sync", "regfile_dp", "sram_1r1w", "dram_ctrl", "muxN",
-              "adder", "sub", "mult", "mac_unit", "mac_array", "dotK",
-              "dff", "alu_bit", "shifter", "requant", "cmp", "exp_lut",
+    LEAVES = {"fifo_sync", "regfile_dp", "sram_1r1w", "dram_ctrl",
+              "mac_unit", "mac_array", "dotK",
+              "dff", "requant", "exp_lut",
               "silu_lut", "embed_lut", "irq_sync", "seq_fsm",
               "div_unit"}
     WIRING = {"mobilellm_top", "embed_top", "loop_mem_seq", "inproj_tile",

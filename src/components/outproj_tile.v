@@ -31,19 +31,12 @@ module outproj_tile #(
     .clk(clk), .ra(), .rb(), .wa(), .wdata(psum), .we(1'b1),
     .rda(), .rdb()
   );
-  shifter #(.W(32)) u_shift (
-    .din(psum), .shamt(5'd0), .dout()
-  );
-  adder #(.W(32)) u_bias (
-    .a(psum), .b(32'b0), .y(), .cout()
-  );
+  // no bias, no shift (MobileLLM dense mats ship none); psum flows direct.
   fifo_sync #(.W(2048), .D(8)) u_outfifo (
     .clk(clk), .rst_n(rst_n), .wdata(), .wr(slice_valid),
     .rd(), .rdata(), .full(), .empty()
   );
-  muxN #(.W(8), .N(3)) u_concat (
-    .sel(2'b0), .din(24'b0), .dout()
-  ); // 3-slice column concat
+  // 3-slice column concat: inferred case/if on column index at implementation
   seq_fsm u_ctrl (
     .clk(clk), .rst_n(rst_n), .irq_row_done(z_valid),
     .prefill(1'b1),

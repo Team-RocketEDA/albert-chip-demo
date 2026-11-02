@@ -21,28 +21,17 @@ module softmax_d #(
   wire [W-1:0] recip;
   wire [2*W-1:0] norm_full;
 
-  cmp #(.W(W)) u_rowmax (
-    .a(scores[W-1:0]), .b(scores[2*W-1:W]), .y(row_max), .gt()
-  );
-  sub #(.W(W)) u_sub (
-    .a(scores[W-1:0]), .b(row_max), .y(sub_e), .sign()
-  );
+  // row_max/sub_e/exp_sum driven by inferred cmp/-/+ at implementation.
   exp_lut #(.W(W)) u_exp (
     .x(sub_e), .y(exp_e)
   );
-  adder #(.W(W)) u_sum (
-    .a(exp_e), .b({W{1'b0}}), .y(exp_sum), .cout()
-  );
-  // Row accumulation over S lanes closes at implementation; u_sum shows
-  // one accumulate step.
+  // Row accumulation over S lanes closes at implementation.
   div_unit #(.W(W)) u_recip (
     .clk(clk), .rst_n(rst_n), .start(scores_valid),
     .numer({1'b1, {(W-1){1'b0}}}), .denom(exp_sum),
     .quot(recip), .done()
   );
-  mult #(.W(W)) u_norm (
-    .a(exp_e), .b(recip), .y(norm_full)
-  );
+  // norm_full = exp_e*recip inferred at implementation.
   // Causal mask add (scores + mask_bias) wired at implementation when
   // causal=1. First-lane probability tap; S lanes replicate at implementation.
   // probs driven at implementation from norm_full taps.

@@ -44,9 +44,7 @@ module ffn_tile #(
   silu_lut #(.W(16)) u_silu (
     .x(gate_psum[15:0]), .y(gate_act)
   );
-  mult #(.W(16)) u_gatemul (
-    .a(gate_act), .b(up_psum[15:0]), .y()
-  );
+  // gate*up elementwise: inferred * at implementation.
   fifo_sync #(.W(128), .D(8)) u_midffo (
     .clk(clk), .rst_n(rst_n), .wdata(), .wr(1'b0),
     .rd(), .rdata(), .full(), .empty()

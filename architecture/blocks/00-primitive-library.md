@@ -135,17 +135,17 @@ the implementation is one-line expressions Yosys infers.
 | `regfile_dp #(W,N)` | `ra,rb,wa,wdata,we,clk -> rda,rdb` | dual-port scratch |
 | `sram_1r1w #(W,N)` | `ra,wa,wdata,we,clk -> rdata` | weight-stationary tile SRAM bank |
 | `dram_ctrl` | `req,addr -> rdata,ack` | off-chip DRAM (embed spill only) |
-| `muxN #(W,N)` | `sel,din[N] -> dout` | datapath steering |
-| `adder #(W)` / `sub #(W)` / `mult #(W)` | `a,b -> y (+flags)` | add / subtract / multiply |
+| `case`/`if` steering (no module) | `sel,din[N] -> dout` | datapath steering, inferred |
+| `+` / `-` / `*` (no modules) | `a,b -> y (+flags)` | add / subtract / multiply, inferred |
 | `div_unit #(W)` | `numer,denom,start -> quot,done` | restoring/NR divider (softmax recip, norm mean/var) |
 | `mac_unit #(W)` | `a,b,acc_in -> acc_out` | `acc += a*b`, 1 MAC/cycle (folded) |
 | `mac_array #(W,P)` | `avec[P],bvec[P],acc_in -> acc_out` | P-wide parallel MACs (cycles/P) |
 | `dotK #(W,K)` | `avec,bvec -> y` | K-fold MAC loop reuse (DOT128 = K=128) |
 | `dff #(W)` / `dff_en` / `dff_sr` | `d,clk(,en/rst) -> q` | pipeline regs; toggle chain = div-2N clock divider |
-| `alu_bit #(W,OPS)` | `a,b,op -> y,flags` | ALU slice for FSM-adjacent ops |
-| `shifter #(W)` | `din,shamt -> dout` | requant scale-by-shift |
+| ALU slice (no module) | `a,b,op -> y,flags` | FSM-adjacent ops, inferred |
+| `>>` / `>>>` (no module) | `din,shamt -> dout` | requant scale-by-shift, inferred |
 | `requant #(W)` | `acc_wide,scale,zero -> act_int` | accum to int8 rescale |
-| `cmp #(W)` / `maxK` | `a,b -> y,flags` | softmax-max / top-k compare trees |
+| `>` / `?:` compare (no module) | `a,b -> y,flags` | softmax-max / top-k compare trees, inferred |
 | `exp_lut` / `silu_lut` | `x -> y` | table-lookup nonlinearities (`gelu_lut`/`tanh_lut` retired with the ALBERT encoder) |
 | `rmsnorm_d #(W)` | `vec,gamma -> y` | mean-square normalize datapath |
 | `softmax_d #(W)` | `scores -> probs` | max-sub / exp-LUT / sum / div pipe |

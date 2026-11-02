@@ -36,9 +36,7 @@ module inproj_tile #(
     .clk(clk), .ra(), .rb(), .wa(), .wdata(psum), .we(1'b1),
     .rda(), .rdb()
   );
-  adder #(.W(32)) u_bias (
-    .a(psum), .b(32'b0), .y(), .cout()
-  );
+  // no bias (MobileLLM dense mats ship none); requant takes psum direct.
   requant #(.W(8)) u_requant (
     .clk(clk), .rst_n(rst_n), .acc_wide(psum),
     .scale(16'b0), .zero(16'b0), .act_int(), .valid(y_valid)

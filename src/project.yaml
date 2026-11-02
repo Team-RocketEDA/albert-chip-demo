@@ -21,18 +21,13 @@ leaves:
   regfile_dp:       { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/regfile_dp.v }
   sram_1r1w:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/sram_1r1w.v }
   dram_ctrl:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/dram_ctrl.v }
-  muxN:             { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/muxN.v }
-  adder:            { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/adder.v }
-  sub:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/sub.v }
-  mult:             { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/mult.v }
+  # NOTE: pure-operator leaves (adder/sub/mult/muxN/cmp/alu_bit/shifter)
+  # were culled — Yosys/Verilator infers +/-/* and if/case from expressions.
   mac_unit:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/mac_unit.v }
   mac_array:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/mac_array.v }
   dotK:             { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/dotK.v }
   dff:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/dff.v }
-  alu_bit:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/alu_bit.v }
-  shifter:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/shifter.v }
   requant:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/requant.v }
-  cmp:              { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/cmp.v }
   exp_lut:          { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/exp_lut.v }
   silu_lut:         { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/silu_lut.v }
   rmsnorm_d:        { doc: architecture/blocks/05-rmsnorm.md,          rtl: src/components/rmsnorm_d.v }

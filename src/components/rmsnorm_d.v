@@ -20,12 +20,9 @@ module rmsnorm_d #(
   wire [2*W-1:0]   nm;
   wire [2*W-1:0]   af;
 
-  adder #(.W(W)) u_resadd (.a(x), .b(resid), .y(t), .cout());
-  mult  #(.W(W)) u_square (.a(t), .b(t), .y(sq));
+  // t/sq/nm/af/y driven by inferred +/-/* at implementation
+  // (t = x+resid; sq = t*t; nm = t*rsqrt; af = gamma*xhat).
   // mean(x^2) accumulates over the frame at implementation; seed below taps it.
   exp_lut #(.W(W)) u_seed (.x(var_v), .y(rsqrt));
-  mult  #(.W(W)) u_norm   (.a(t), .b(rsqrt), .y(nm));
-  mult  #(.W(W)) u_affm   (.a(gamma), .b(xhat), .y(af));
   // af narrows to y here; full requant wired at implementation.
-  adder #(.W(W)) u_affa   (.a(af[W-1:0]), .b({W{1'b0}}), .y(y), .cout());
 endmodule
