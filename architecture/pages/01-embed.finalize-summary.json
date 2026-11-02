@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-01-embed/candidate.json",
+    "sha256": "79afdb3b12ba82dcb33af783bd14502f96cdc7b770bc7f6398135e84af94fe64",
+    "bytes": 1944
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.html",
+    "sha256": "d13442f03564d4019dca19af54d5dc095d33b781dd8ffe05c3e9d32084983987",
+    "bytes": 839284
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/01-embed.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 605,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

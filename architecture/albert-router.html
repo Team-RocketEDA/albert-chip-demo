@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ALBERT drill-down router</title>
+<style>
+  html,body{margin:0;height:100%;font-family:system-ui,sans-serif;background:#0b0e14;color:#e6edf3}
+  .skip{position:absolute;left:-999px;top:0;background:#1f6feb;color:#fff;padding:8px 12px;border-radius:0 0 8px 0;z-index:10}
+  .skip:focus{left:0}
+  header{padding:8px 12px 0}
+  h1{font-size:15px;margin:0 0 6px;font-weight:600}
+  h1 .crumb{color:#8b949e;font-weight:400}
+  #ctxbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:#11161f;border:1px solid #232b38;border-radius:8px;padding:6px 8px}
+  #ctxbar .lbl{font-size:12px;color:#8b949e}
+  #ctxbar a,#ctxbar button{color:#9ecbff;text-decoration:none;padding:4px 8px;border:1px solid #2a3342;border-radius:6px;font-size:13px;background:transparent;cursor:pointer;font-family:inherit}
+  #ctxbar a:hover,#ctxbar button:hover{border-color:#3b82f6}
+  #ctxbar a:focus-visible,#ctxbar button:focus-visible,summary:focus-visible{outline:2px solid #58a6ff;outline-offset:2px}
+  #ctxbar .chip{font-size:12px;color:#c9d1d9;border:1px dashed #2a3342;border-radius:6px;padding:4px 8px}
+  #ctxbar details{font-size:13px;color:#9ecbff}
+  #ctxbar summary{cursor:pointer;padding:4px 8px;border:1px solid #2a3342;border-radius:6px}
+  #ctxbar details ul{margin:6px 0 2px;padding-left:18px}
+  #ctxbar details a{border:0;padding:2px 0;display:list-item;list-style:disc}
+  #up{font-weight:600}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #frame{width:100%;height:calc(100% - 118px);min-height:300px;border:0;display:block;background:#fff}
+  @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#frame">Skip to diagram</a>
+<header>
+  <h1 id="pg" tabindex="-1">ALBERT drill-down <span class="crumb" id="crumb"></span></h1>
+  <nav aria-label="Hierarchy and visible blocks">
+    <div id="ctxbar"></div>
+  </nav>
+</header>
+<p id="announcer" class="sr" role="status" aria-live="polite"></p>
+<iframe id="frame" title="ALBERT diagram" tabindex="-1"></iframe>
+<script>
+"use strict";
+const ROUTES = {
+  "":  {f:"albert-top.html", l:"L0 Top", up:null,
+        ents:[["tok_in","Token IDs","01-embed"],["embed","Embed+proj","01-embed"],["loop","Layer loop","08-loop"],["wmem","Weights","08-loop"],["inproj","inProj","02-inproj"],["attn","Attention","03-attn"],["outproj","outProj","04-outproj"],["ln","LayerNorm","05-ln"],["ffn","FFN","06-ffn"],["tilemem","PCM tiles","02-inproj"],["codec","DAC/ADC","02-inproj"],["pool","Pooler+Cls","07-pool"],["glue","GLUE","07-pool"],["mcu","MCU","08-loop"]]},
+  "tree": {f:"blocks-tree.html", l:"Tree", up:"",
+        ents:[["embed","EMBED_TOP","01-embed"],["inproj","INPROJ_TILE","02-inproj"],["attn","ATTENTION","03-attn"],["outproj","OUTPROJ_TILE","04-outproj"],["ln","LAYERNORM","05-ln"],["ffn","FFN_TILE","06-ffn"],["pool","POOLER+CLS","07-pool"],["loop","LOOP_MEM_SEQ","08-loop"]]},
+  "01-embed": {f:"pages/01-embed.html", l:"01 Embed", up:"",
+    chips:[["ID_FIFO","64xu15 in"],["EMB_LUT","30000x128 s8"],["DOT128_MAC","768-lane s8"],["ACCUM_RF","768xs32"],["BIAS_ADD","+b s32"],["REQUANT",">>shift clip"],["X0_DBUF","2x64x768 s8"],["PROJ_W","128x768 stationary"]]},
+  "02-inproj": {f:"pages/02-inproj-tile.html", l:"02 inProj", up:""
+    ,chips:[["IN_FIFO","2x512B"],["DACx512","T=|x|*T0"],["PCM_XBAR","512^2x4dev"],["SUM+INT","TIA+C"],["SAR_ADC","7b OLP"],["CALIB_ALU","slope+offset"]]},
+  "03-attn": {f:"pages/03-attention-core.html", l:"03 Attention", up:""
+    ,chips:[["QKV_BUF","3x2x48KB"],["SYSTOLIC","8x8 PE"],["SCALE",">>3 /sqrt64"],["SOFTMAX","max/LUT/recip"],["SCORE","SxS 4KB"],["AV_MAC","reuse PEs"],["OUT_FIFO","to DAC"]]},
+  "04-outproj": {f:"pages/04-outproj-tile.html", l:"04 outProj", up:""
+    ,chips:[["IN_FIFO","96KB DBUF"],["DACx768","duration rows"],["PCM_XBAR","768^2 pinned"],["SUMMER","TIA per col"],["SAR_ADC","per col"],["REQUANT","scale+shift"],["OUT_FIFO","32KB/slice"],["CONCAT_MUX","no analog sum"]]},
+  "05-ln": {f:"pages/05-layernorm.html", l:"05 LayerNorm", up:""
+    ,chips:[["RES_ADD","t=x+r FXP16"],["MEAN_DIV","adder+DIV"],["VAR_SSA","sub+mul+acc"],["RSQRT_NR","LUT+3x iter"],["NORMALIZE","(t-mu)*s"],["AFFINE","g*x+b"],["TBUF","2x96KB"]]},
+  "06-ffn": {f:"pages/06-ffn-tile.html", l:"06 FFN", up:""
+    ,chips:[["IN_FIFO","token rows"],["FC1_TILE","analog 2-chunk"],["H_SRAM","384KB/bank"],["GELU_PIPE","LUT tanh"],["FC2_TILE","analog 6-chunk"],["Y_FIFO","Sx768 out"]]},
+  "07-pool": {f:"pages/07-pooler-classifier.html", l:"07 Pooler+Cls", up:""
+    ,chips:[["CLS_MUX","token[0]"],["W_SRAM","Wp 576KB"],["POOL_MAC","Wp*x+b"],["TANH_LUT","PWL lerp"],["CLS_MAC","z=Wc*h"],["ARGMAX","2/3-way"],["SCOREBOARD","correct/total"]]},
+  "08-loop": {f:"pages/08-loop-mem-seq.html", l:"08 Loop+Mem", up:""
+    ,chips:[["X_BANK","2x49KB+resid"],["STRM_FIFO","12xDEPTH8"],["LAYER_FSM","12-state"],["RECAL_SEQ","drift comp"],["MCU","Ibex RV32"],["OVERFLOW","AXI DRAM"],["WCAL_SRAM","slope+drift"]]}
+};
+const ALL = Object.entries(ROUTES).map(([k,r]) => ({k, l:r.l}));
+const bar = document.getElementById("ctxbar"),
+      frame = document.getElementById("frame"),
+      crumb = document.getElementById("crumb"),
+      announcer = document.getElementById("announcer"),
+      pg = document.getElementById("pg");
+function el(tag, text, attrs) {
+  const n = document.createElement(tag);
+  if (text != null) n.textContent = text;
+  for (const k in (attrs || {})) n.setAttribute(k, attrs[k]);
+  return n;
+}
+function render(route) {
+  const r = ROUTES[route];
+  bar.textContent = "";
+  if (r.up !== null) {
+    const up = el("a", "↑ Up", {href: "#/" + r.up, id: "up", title: "Go up one level (Alt+U)"});
+    bar.appendChild(up);
+  }
+  const here = el("span", r.l, {class: "lbl", "aria-current": "page"});
+  here.id = "cur";
+  bar.appendChild(el("span", "On this page:", {class: "lbl"}));
+  if (r.ents) for (const [id, label, target] of r.ents) {
+    bar.appendChild(el("a", label, {href: "#/" + target, title: "Drill into " + label}));
+  } else if (r.chips) {
+    const list = el("span", null, {class: "lbl", role: "group", "aria-label": "Blocks on this page (leaf level, no deeper page)"});
+    for (const [label, sub] of r.chips) {
+      const c = el("span", label, {class: "chip", title: sub + " — leaf block, see blocks/*.md"});
+      list.appendChild(c);
+    }
+    bar.appendChild(list);
+  }
+  const det = document.createElement("details");
+  const sum = el("summary", "Index");
+  det.appendChild(sum);
+  const ul = document.createElement("ul");
+  for (const {k, l} of ALL) {
+    const li = document.createElement("li");
+    const a = el("a", l, {href: "#/" + k});
+    if (k === route) a.setAttribute("aria-current", "page");
+    li.appendChild(a); ul.appendChild(li);
+  }
+  det.appendChild(ul);
+  bar.appendChild(det);
+  document.title = "ALBERT — " + r.l;
+  crumb.textContent = "/ " + r.l;
+  frame.setAttribute("title", "ALBERT diagram: " + r.l);
+  announcer.textContent = "Showing " + r.l;
+}
+let first = true;
+function go() {
+  let k = location.hash.replace(/^#\//, "");
+  if (!(k in ROUTES)) k = "";
+  render(k);
+  frame.src = ROUTES[k].f;
+  if (!first) pg.focus({preventScroll: true});
+  first = false;
+}
+document.addEventListener("keydown", e => {
+  if (e.altKey && (e.key === "u" || e.key === "U")) {
+    const k = location.hash.replace(/^#\//, "");
+    const up = ROUTES[k in ROUTES ? k : ""].up;
+    if (up !== null) { location.hash = "#/" + up; e.preventDefault(); }
+  }
+});
+addEventListener("hashchange", go); go();
+</script>
+</body>
+</html>

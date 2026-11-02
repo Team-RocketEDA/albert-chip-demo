@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-06-ffn/candidate.json",
+    "sha256": "3c639fb4631cc6f0790d0d27ffe4b32bb2d954ad77af13286f9c0ea126ac97c6",
+    "bytes": 1899
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+    "sha256": "a37a10b7fcdd12446803638d9e0bc67945b8adb211aefb65af56f1e8a563c11a",
+    "bytes": 835612
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 574,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

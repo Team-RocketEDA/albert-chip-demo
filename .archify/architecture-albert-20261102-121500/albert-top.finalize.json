@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "skipped",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-02T11:46:50.280Z",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/candidate.json",
+    "sha256": "f215b4c1da21023dbca4652a43037f0b9e225e38d7d02bf8d82d7593a9db4166",
+    "bytes": 4583
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+    "sha256": "36b55b39c3b27dae90a2be9bcd1253f650ee62808d1f5dce82ef5b4e3eb1bb06",
+    "bytes": 857651
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "f215b4c1da21023dbca4652a43037f0b9e225e38d7d02bf8d82d7593a9db4166",
+          "bytes": 4583
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 328,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "7c93c30a-3a6e-428d-b373-7d88cddc285c",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/candidate.json",
+        "output": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+        "specification": {
+          "sha256": "f215b4c1da21023dbca4652a43037f0b9e225e38d7d02bf8d82d7593a9db4166",
+          "bytes": 4583
+        },
+        "artifact": {
+          "sha256": "36b55b39c3b27dae90a2be9bcd1253f650ee62808d1f5dce82ef5b4e3eb1bb06",
+          "bytes": 857651
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 174,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+        "artifact": {
+          "sha256": "36b55b39c3b27dae90a2be9bcd1253f650ee62808d1f5dce82ef5b4e3eb1bb06",
+          "bytes": 857651
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 20,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7,
+            "maxBends": 2,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 35,
+            "minInteriorSegmentPx": 143,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 40,
+            "emptyTopRatio": 0.069,
+            "occupiedTop": 40,
+            "viewBoxTop": 0,
+            "canvasHeight": 578,
+            "typicalNodeHeight": 64,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1210,
+            "actualBudgetPx": 1210,
+            "actualReaderWidth": 1240,
+            "desiredReaderWidth": 1240,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "loop"
+            },
+            "minimumSourceTextPx": 7,
+            "minimumProjectedTextPx": 7,
+            "semanticTextCount": 43
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "7c93c30a-3a6e-428d-b373-7d88cddc285c"
+      }
+    },
+    "browser-check": {
+      "status": "skipped",
+      "exitCode": 2,
+      "durationMs": 23,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "skipped",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "7c93c30a-3a6e-428d-b373-7d88cddc285c",
+        "artifact": {
+          "path": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+          "sha256": "36b55b39c3b27dae90a2be9bcd1253f650ee62808d1f5dce82ef5b4e3eb1bb06",
+          "bytes": 857651
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "unavailable",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/chrome-unavailable",
+            "severity": "warning",
+            "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+            "subject": {
+              "artifact": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html"
+            },
+            "evidence": {
+              "executable": null
+            },
+            "supportedFixes": [
+              "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "skipped",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "skipped",
+          "viewports": []
+        },
+        "readability": {
+          "status": "skipped",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "skipped",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "albert-top.browser-check.json",
+          "files": []
+        },
+        "error": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-02T11:46:50.878Z",
+  "durationMs": 598,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

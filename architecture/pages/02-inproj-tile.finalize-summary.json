@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-02-inproj/candidate.json",
+    "sha256": "8431d4c1561b89020e03f55676f44fcb274ade494004f38ae8e41b63d005be38",
+    "bytes": 1847
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.html",
+    "sha256": "65570934f995a4230ce716fe600fbcfba3d34380ed0f09f42cd0b9ee0a47d0f1",
+    "bytes": 835201
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/02-inproj-tile.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 592,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

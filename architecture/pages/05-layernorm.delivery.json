@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "05026df9-7298-4e24-ad87-0e9c35f9197b",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-05-layernorm/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/05-layernorm.html",
+  "specification": {
+    "sha256": "25a3b17f6fcad6cda8c6f1602f0d5a904efc2a2199ebc043ebcac8d986f97996",
+    "bytes": 1728
+  },
+  "artifact": {
+    "sha256": "3aa45aa4b946b50d2b5d710186cc69ad5830d3db92b3bdc94ec091051e478a2c",
+    "bytes": 836577
+  }
+}

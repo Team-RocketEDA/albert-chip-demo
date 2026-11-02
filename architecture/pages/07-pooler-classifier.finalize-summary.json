@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-07-pooler/candidate.json",
+    "sha256": "7a34e3cb2719f9f7eba4a1de32eb81236d40d01cac4845083b0a09222ca20d02",
+    "bytes": 1735
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+    "sha256": "f5969c7236f0d74ed41d86711411353ac26c5c161ae385f9868b8c5c01bcb29c",
+    "bytes": 836817
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 631,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-02T16:04:17.584Z",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-07-pooler/candidate.json",
+    "sha256": "7a34e3cb2719f9f7eba4a1de32eb81236d40d01cac4845083b0a09222ca20d02",
+    "bytes": 1735
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+    "sha256": "f5969c7236f0d74ed41d86711411353ac26c5c161ae385f9868b8c5c01bcb29c",
+    "bytes": 836817
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-07-pooler/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "7a34e3cb2719f9f7eba4a1de32eb81236d40d01cac4845083b0a09222ca20d02",
+          "bytes": 1735
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 341,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-07-pooler/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "6dbc6b46-17c2-446c-b03e-4a9946282b58",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-07-pooler/candidate.json",
+        "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "specification": {
+          "sha256": "7a34e3cb2719f9f7eba4a1de32eb81236d40d01cac4845083b0a09222ca20d02",
+          "bytes": 1735
+        },
+        "artifact": {
+          "sha256": "f5969c7236f0d74ed41d86711411353ac26c5c161ae385f9868b8c5c01bcb29c",
+          "bytes": 836817
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 164,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "artifact": {
+          "sha256": "f5969c7236f0d74ed41d86711411353ac26c5c161ae385f9868b8c5c01bcb29c",
+          "bytes": 836817
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 44.7,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7.5,
+            "maxBends": 2,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1.133,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 24,
+            "minInteriorSegmentPx": 360,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 60,
+            "emptyTopRatio": 0.283,
+            "occupiedTop": 60,
+            "viewBoxTop": 0,
+            "canvasHeight": 212,
+            "typicalNodeHeight": 60,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1171.875,
+            "actualBudgetPx": 1171.875,
+            "actualReaderWidth": 1201.875,
+            "desiredReaderWidth": 1201.875,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": true,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "edge",
+              "id": null,
+              "from": "cls_mux",
+              "to": "pmac"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 7.5,
+            "semanticTextCount": 20
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "6dbc6b46-17c2-446c-b03e-4a9946282b58"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 10,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "6dbc6b46-17c2-446c-b03e-4a9946282b58",
+        "artifact": {
+          "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+          "sha256": "f5969c7236f0d74ed41d86711411353ac26c5c161ae385f9868b8c5c01bcb29c",
+          "bytes": 836817
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "not-checked",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/evidence-path-conflict",
+            "severity": "error",
+            "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json\".",
+            "subject": {
+              "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+              "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json"
+            },
+            "evidence": {
+              "reason": {
+                "code": "ownership-artifact-mismatch"
+              }
+            },
+            "supportedFixes": [
+              "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "07-pooler-classifier.browser-check.json",
+          "files": []
+        },
+        "error": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json\"."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-02T16:04:18.216Z",
+  "durationMs": 631,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

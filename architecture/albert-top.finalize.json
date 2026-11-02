@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-02T16:16:24.569Z",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
+    "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
+    "bytes": 6120
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+    "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
+    "bytes": 858850
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
+          "bytes": 6120
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 355,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/architecture-albert-20261102-121500/candidate.json",
+        "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "specification": {
+          "sha256": "3c4de83a9517864c2b8ae5e34e93d21e21d5e1669ac34769f910f999c459bbca",
+          "bytes": 6120
+        },
+        "artifact": {
+          "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
+          "bytes": 858850
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 175,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "artifact": {
+          "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
+          "bytes": 858850
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 20,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7,
+            "maxBends": 2,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 35,
+            "minInteriorSegmentPx": 143,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 40,
+            "emptyTopRatio": 0.067,
+            "occupiedTop": 40,
+            "viewBoxTop": 0,
+            "canvasHeight": 598,
+            "typicalNodeHeight": 64,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1210,
+            "actualBudgetPx": 1210,
+            "actualReaderWidth": 1240,
+            "desiredReaderWidth": 1240,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "loop"
+            },
+            "minimumSourceTextPx": 7,
+            "minimumProjectedTextPx": 7,
+            "semanticTextCount": 43
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 8,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "5e3150ec-fa50-4ce4-8ef8-4825b60f839a",
+        "artifact": {
+          "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+          "sha256": "b9df362d4cde4f2574d7bd20fdb7864ff413ebece5f037efd12a21d43350b2b5",
+          "bytes": 858850
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "not-checked",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/evidence-path-conflict",
+            "severity": "error",
+            "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json\".",
+            "subject": {
+              "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+              "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json"
+            },
+            "evidence": {
+              "reason": {
+                "code": "ownership-artifact-mismatch"
+              }
+            },
+            "supportedFixes": [
+              "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "albert-top.browser-check.json",
+          "files": []
+        },
+        "error": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json\"."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/albert-top.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-02T16:16:25.196Z",
+  "durationMs": 627,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

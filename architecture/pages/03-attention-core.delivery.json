@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "3b4b708d-0705-4e4b-9430-c145f62a0b03",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-03-attention/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/03-attention-core.html",
+  "specification": {
+    "sha256": "2d96a73c62f5e94d7006630bff13ecf7c061bc893c841ec824c232494c8d9894",
+    "bytes": 1701
+  },
+  "artifact": {
+    "sha256": "9e369dd37029ec8db37a3e137e113005b0e21ad0ae8d4c2000ab707419804a15",
+    "bytes": 836772
+  }
+}

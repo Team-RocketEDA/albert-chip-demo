@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-02T16:16:26.739Z",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-06-ffn/candidate.json",
+    "sha256": "3c639fb4631cc6f0790d0d27ffe4b32bb2d954ad77af13286f9c0ea126ac97c6",
+    "bytes": 1899
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+    "sha256": "a37a10b7fcdd12446803638d9e0bc67945b8adb211aefb65af56f1e8a563c11a",
+    "bytes": 835612
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-06-ffn/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "3c639fb4631cc6f0790d0d27ffe4b32bb2d954ad77af13286f9c0ea126ac97c6",
+          "bytes": 1899
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 306,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-06-ffn/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "6044c040-66ff-4ad8-b0d7-63aa8a646068",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-06-ffn/candidate.json",
+        "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "specification": {
+          "sha256": "3c639fb4631cc6f0790d0d27ffe4b32bb2d954ad77af13286f9c0ea126ac97c6",
+          "bytes": 1899
+        },
+        "artifact": {
+          "sha256": "a37a10b7fcdd12446803638d9e0bc67945b8adb211aefb65af56f1e8a563c11a",
+          "bytes": 835612
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 160,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "artifact": {
+          "sha256": "a37a10b7fcdd12446803638d9e0bc67945b8adb211aefb65af56f1e8a563c11a",
+          "bytes": 835612
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 123.3,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7.5,
+            "maxBends": 0,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 70,
+            "minInteriorSegmentPx": null,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 60,
+            "emptyTopRatio": 0.319,
+            "occupiedTop": 60,
+            "viewBoxTop": 0,
+            "canvasHeight": 188,
+            "typicalNodeHeight": 60,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1003.125,
+            "actualBudgetPx": 1003.125,
+            "actualReaderWidth": 1033.125,
+            "desiredReaderWidth": 1033.125,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": true,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "edge",
+              "id": null,
+              "from": "in_fifo",
+              "to": "fc1"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 7.5,
+            "semanticTextCount": 17
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "6044c040-66ff-4ad8-b0d7-63aa8a646068"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 11,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "6044c040-66ff-4ad8-b0d7-63aa8a646068",
+        "artifact": {
+          "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+          "sha256": "a37a10b7fcdd12446803638d9e0bc67945b8adb211aefb65af56f1e8a563c11a",
+          "bytes": 835612
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "not-checked",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/evidence-path-conflict",
+            "severity": "error",
+            "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json\".",
+            "subject": {
+              "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+              "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json"
+            },
+            "evidence": {
+              "reason": {
+                "code": "ownership-artifact-mismatch"
+              }
+            },
+            "supportedFixes": [
+              "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "06-ffn-tile.browser-check.json",
+          "files": []
+        },
+        "error": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json\"."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-02T16:16:27.314Z",
+  "durationMs": 574,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "9ddb3bca-4566-46d4-a3f0-d28a3dc6b8df",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-04-outproj/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/04-outproj-tile.html",
+  "specification": {
+    "sha256": "52ac4bdc029995f1bda0a31b389ce9b7afc9f2b77bd6bfe6120f13e4e3577aa2",
+    "bytes": 2205
+  },
+  "artifact": {
+    "sha256": "0f1083a18147a5f6bbce7bcc01e300b2c11f7dee482df80fbc2fb67af5079e45",
+    "bytes": 839362
+  }
+}

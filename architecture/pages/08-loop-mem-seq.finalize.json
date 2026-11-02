@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-02T16:16:27.431Z",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-08-loop/candidate.json",
+    "sha256": "e130f3eccdc6a81e2805a8da515907447680bc801e508e4ecff184f376f3d103",
+    "bytes": 2030
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+    "sha256": "a04ab60837f70a9aee773ba9f51c5646dadde0e25bd0ba32e6d49a25d8c14df4",
+    "bytes": 837911
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-08-loop/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "e130f3eccdc6a81e2805a8da515907447680bc801e508e4ecff184f376f3d103",
+          "bytes": 2030
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 314,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-08-loop/candidate.json",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "8a8c8e8a-9348-4eba-9fbc-28d56708af50",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-08-loop/candidate.json",
+        "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "specification": {
+          "sha256": "e130f3eccdc6a81e2805a8da515907447680bc801e508e4ecff184f376f3d103",
+          "bytes": 2030
+        },
+        "artifact": {
+          "sha256": "a04ab60837f70a9aee773ba9f51c5646dadde0e25bd0ba32e6d49a25d8c14df4",
+          "bytes": 837911
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 152,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "artifact": {
+          "sha256": "a04ab60837f70a9aee773ba9f51c5646dadde0e25bd0ba32e6d49a25d8c14df4",
+          "bytes": 837911
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 81.4,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7.5,
+            "maxBends": 0,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 70,
+            "minInteriorSegmentPx": null,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 60,
+            "emptyTopRatio": 0.183,
+            "occupiedTop": 60,
+            "viewBoxTop": 0,
+            "canvasHeight": 328,
+            "typicalNodeHeight": 60,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1003.125,
+            "actualBudgetPx": 1003.125,
+            "actualReaderWidth": 1033.125,
+            "desiredReaderWidth": 1033.125,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": true,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "edge",
+              "id": null,
+              "from": "xbank",
+              "to": "sfifo"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 7.5,
+            "semanticTextCount": 20
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "8a8c8e8a-9348-4eba-9fbc-28d56708af50"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 10,
+      "command": [
+        "/home/alrida-ismail/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/alrida-ismail/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "8a8c8e8a-9348-4eba-9fbc-28d56708af50",
+        "artifact": {
+          "path": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+          "sha256": "a04ab60837f70a9aee773ba9f51c5646dadde0e25bd0ba32e6d49a25d8c14df4",
+          "bytes": 837911
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "not-checked",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/evidence-path-conflict",
+            "severity": "error",
+            "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.browser-check.json\".",
+            "subject": {
+              "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+              "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.browser-check.json"
+            },
+            "evidence": {
+              "reason": {
+                "code": "ownership-artifact-mismatch"
+              }
+            },
+            "supportedFixes": [
+              "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "08-loop-mem-seq.browser-check.json",
+          "files": []
+        },
+        "error": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.browser-check.json\"."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.html",
+        "evidencePath": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/08-loop-mem-seq.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-02T16:16:28.003Z",
+  "durationMs": 572,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

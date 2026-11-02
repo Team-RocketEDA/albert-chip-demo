@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "cba8d95a-64e7-44ff-b9b9-4feb1c90d0aa",
+  "status": "current",
+  "command": "deliver",
+  "type": "tree",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/tree-albert-20261102-163000/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/blocks-tree.html",
+  "specification": {
+    "sha256": "373d4569c2758aa9bc5cb61c125b58e4e91f9c74f1edb6fb3482cfc096e7f272",
+    "bytes": 3416
+  },
+  "artifact": {
+    "sha256": "aa0d7646fbf940aa79627f371dd92c82d440edbcfc537085b1ab67e18a5143b8",
+    "bytes": 887530
+  }
+}

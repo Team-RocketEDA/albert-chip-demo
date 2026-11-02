@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "6044c040-66ff-4ad8-b0d7-63aa8a646068",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-06-ffn/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/06-ffn-tile.html",
+  "specification": {
+    "sha256": "3c639fb4631cc6f0790d0d27ffe4b32bb2d954ad77af13286f9c0ea126ac97c6",
+    "bytes": 1899
+  },
+  "artifact": {
+    "sha256": "a37a10b7fcdd12446803638d9e0bc67945b8adb211aefb65af56f1e8a563c11a",
+    "bytes": 835612
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "skipped",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/candidate.json",
+    "sha256": "f215b4c1da21023dbca4652a43037f0b9e225e38d7d02bf8d82d7593a9db4166",
+    "bytes": 4583
+  },
+  "artifact": {
+    "path": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+    "sha256": "36b55b39c3b27dae90a2be9bcd1253f650ee62808d1f5dce82ef5b4e3eb1bb06",
+    "bytes": 857651
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "skipped"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.finalize.json",
+    "summaryReceipt": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.finalize-summary.json",
+    "browserCheckReceipt": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 598,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

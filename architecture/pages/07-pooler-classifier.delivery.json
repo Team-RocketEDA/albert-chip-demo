@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "6dbc6b46-17c2-446c-b03e-4a9946282b58",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/.archify/pages-07-pooler/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/architecture/pages/07-pooler-classifier.html",
+  "specification": {
+    "sha256": "7a34e3cb2719f9f7eba4a1de32eb81236d40d01cac4845083b0a09222ca20d02",
+    "bytes": 1735
+  },
+  "artifact": {
+    "sha256": "f5969c7236f0d74ed41d86711411353ac26c5c161ae385f9868b8c5c01bcb29c",
+    "bytes": 836817
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "7c93c30a-3a6e-428d-b373-7d88cddc285c",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/candidate.json",
+  "output": "/home/alrida-ismail/github/rocketEDA/.archify/architecture-albert-20261102-121500/albert-top.html",
+  "specification": {
+    "sha256": "f215b4c1da21023dbca4652a43037f0b9e225e38d7d02bf8d82d7593a9db4166",
+    "bytes": 4583
+  },
+  "artifact": {
+    "sha256": "36b55b39c3b27dae90a2be9bcd1253f650ee62808d1f5dce82ef5b4e3eb1bb06",
+    "bytes": 857651
+  }
+}
