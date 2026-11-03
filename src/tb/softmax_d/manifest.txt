@@ -1,0 +1,2 @@
+softmax_d goldens: N=24 rows x S=8 (row0 baked seed 0xB0CB, LCG rows, 5 directed edges)
+Q4.12 round-half-away; golden_causal row i = prefix softmax over lanes 0..7

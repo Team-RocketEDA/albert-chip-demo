@@ -1,0 +1,14 @@
+[options]
+mode bmc
+depth 6
+
+[engines]
+smtbmc
+
+[script]
+read -formal div_formal.v div_unit.v
+prep -top div_formal
+
+[files]
+src/tb/div_unit/div_formal.v
+src/components/div_unit.v

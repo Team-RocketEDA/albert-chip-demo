@@ -1,0 +1,15 @@
+[options]
+mode bmc
+depth 8
+
+[engines]
+smtbmc
+
+[script]
+read -formal embed_lut.v
+read -formal embed_lut_formal.v
+prep -top embed_lut_formal
+
+[files]
+../../components/embed_lut.v
+embed_lut_formal.v

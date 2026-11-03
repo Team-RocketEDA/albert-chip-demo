@@ -1,0 +1,15 @@
+[options]
+mode prove
+depth 6
+
+[engines]
+smtbmc
+
+[script]
+read -formal mac_unit.v
+read -formal proof_mac_unit.v
+prep -top proof_mac_unit
+
+[files]
+../components/mac_unit.v
+proof_mac_unit.v

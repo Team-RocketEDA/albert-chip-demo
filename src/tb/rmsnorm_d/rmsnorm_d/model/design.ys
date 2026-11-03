@@ -1,0 +1,9 @@
+# running in src/tb/rmsnorm_d/rmsnorm_d/src/
+read -formal rmsnorm_d.v
+chparam -set D 8 rmsnorm_d
+prep -top rmsnorm_d
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

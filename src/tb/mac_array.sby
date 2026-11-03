@@ -1,0 +1,15 @@
+[options]
+mode prove
+depth 6
+
+[engines]
+smtbmc
+
+[script]
+read -formal mac_array.v
+read -formal proof_mac_array.v
+prep -top proof_mac_array
+
+[files]
+../components/mac_array.v
+proof_mac_array.v

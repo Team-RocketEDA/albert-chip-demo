@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-11-03T07:30:44" hostname="pop-os" package="rmsnorm_d" id="0" name="default" tests="4" errors="0" failures="0" time="448" skipped="1">
+<properties>
+<property name="os" value="Linux"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="default" name="build execution" time="0">
+</testcase>
+<testcase classname="default" name="Property ASSERT in rmsnorm_d at rmsnorm_d.v:203.27-204.49" time="0" type="ASSERT" location="rmsnorm_d.v:203.27-204.49" id="_witness_.check_rmsnorm_d_v_203_assert_274">
+</testcase>
+<testcase classname="default" name="Property ASSERT in rmsnorm_d at rmsnorm_d.v:204.50-205.50" time="0" type="ASSERT" location="rmsnorm_d.v:204.50-205.50" id="_witness_.check_rmsnorm_d_v_204_assert_277">
+</testcase>
+<testcase classname="default" name="Property ASSERT in rmsnorm_d at rmsnorm_d.v:205.51-206.33" time="0" type="ASSERT" location="rmsnorm_d.v:205.51-206.33" id="_witness_.check_rmsnorm_d_v_205_assert_279">
+</testcase>
+<testcase classname="default" name="Property COVER in rmsnorm_d at rmsnorm_d.v:206.34-211.33" time="0" type="COVER" location="rmsnorm_d.v:206.34-211.33" id="_witness_.check_rmsnorm_d_v_206_cover_281">
+<skipped />
+</testcase>
+<system-out>SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] Removing directory '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/rmsnorm_d/rmsnorm_d'.
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] Copy '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/components/rmsnorm_d.v' to '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/rmsnorm_d/rmsnorm_d/src/rmsnorm_d.v'.
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: smtbmc boolector
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] base: starting process &quot;cd src/tb/rmsnorm_d/rmsnorm_d/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] base: Warning: Replacing memory \gmem with list of registers. See rmsnorm_d.v:234
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] base: Warning: Replacing memory \tmem with list of registers. See rmsnorm_d.v:233
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] base: finished (returncode=0)
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] prep: starting process &quot;cd src/tb/rmsnorm_d/rmsnorm_d/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] prep: finished (returncode=0)
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] smt2: starting process &quot;cd src/tb/rmsnorm_d/rmsnorm_d/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] smt2: finished (returncode=0)
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: starting process &quot;cd src/tb/rmsnorm_d/rmsnorm_d; yosys-smtbmc -s boolector --presat --unroll --noprogress -t 28  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Solver: boolector
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assumptions in step 5..
+SBY  7:23:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:00  Checking assertions in step 5..
+SBY  7:23:32 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:16  Checking assumptions in step 6..
+SBY  7:23:32 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:16  Checking assertions in step 6..
+SBY  7:23:41 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:25  Checking assumptions in step 7..
+SBY  7:23:41 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:25  Checking assertions in step 7..
+SBY  7:24:00 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:44  Checking assumptions in step 8..
+SBY  7:24:00 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:00:44  Checking assertions in step 8..
+SBY  7:24:21 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:05  Checking assumptions in step 9..
+SBY  7:24:21 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:05  Checking assertions in step 9..
+SBY  7:24:31 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:15  Checking assumptions in step 10..
+SBY  7:24:31 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:15  Checking assertions in step 10..
+SBY  7:24:53 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:37  Checking assumptions in step 11..
+SBY  7:24:53 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:37  Checking assertions in step 11..
+SBY  7:25:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:59  Checking assumptions in step 12..
+SBY  7:25:15 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:01:59  Checking assertions in step 12..
+SBY  7:25:28 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:02:13  Checking assumptions in step 13..
+SBY  7:25:29 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:02:13  Checking assertions in step 13..
+SBY  7:25:37 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:02:21  Checking assumptions in step 14..
+SBY  7:25:37 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:02:21  Checking assertions in step 14..
+SBY  7:26:03 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:02:48  Checking assumptions in step 15..
+SBY  7:26:03 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:02:48  Checking assertions in step 15..
+SBY  7:26:27 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:03:11  Checking assumptions in step 16..
+SBY  7:26:27 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:03:11  Checking assertions in step 16..
+SBY  7:26:44 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:03:29  Checking assumptions in step 17..
+SBY  7:26:44 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:03:29  Checking assertions in step 17..
+SBY  7:26:58 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:03:43  Checking assumptions in step 18..
+SBY  7:26:58 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:03:43  Checking assertions in step 18..
+SBY  7:27:21 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:04:05  Checking assumptions in step 19..
+SBY  7:27:21 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:04:05  Checking assertions in step 19..
+SBY  7:27:35 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:04:19  Checking assumptions in step 20..
+SBY  7:27:35 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:04:19  Checking assertions in step 20..
+SBY  7:28:08 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:04:52  Checking assumptions in step 21..
+SBY  7:28:08 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:04:52  Checking assertions in step 21..
+SBY  7:28:32 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:05:16  Checking assumptions in step 22..
+SBY  7:28:32 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:05:16  Checking assertions in step 22..
+SBY  7:28:52 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:05:36  Checking assumptions in step 23..
+SBY  7:28:52 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:05:36  Checking assertions in step 23..
+SBY  7:29:13 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:05:57  Checking assumptions in step 24..
+SBY  7:29:13 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:05:57  Checking assertions in step 24..
+SBY  7:29:33 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:06:17  Checking assumptions in step 25..
+SBY  7:29:33 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:06:17  Checking assertions in step 25..
+SBY  7:29:52 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:06:36  Checking assumptions in step 26..
+SBY  7:29:52 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:06:36  Checking assertions in step 26..
+SBY  7:30:27 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:07:11  Checking assumptions in step 27..
+SBY  7:30:27 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:07:11  Checking assertions in step 27..
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: ##   0:07:28  Status: passed
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: finished (returncode=0)
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] engine_0: Status returned by engine: pass
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] summary: Elapsed clock time [H:MM:SS (secs)]: 0:07:28 (448)
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] summary: Elapsed process time [H:MM:SS (secs)]: 0:07:28 (448)
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] summary: engine_0 (smtbmc boolector) returned pass
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] summary: engine_0 did not produce any traces
+SBY  7:30:44 [src/tb/rmsnorm_d/rmsnorm_d] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

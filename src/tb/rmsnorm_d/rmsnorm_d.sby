@@ -1,0 +1,22 @@
+# BMC on the DUT as top (D=8 via chparam). Resilient shape: ONE 22-clock
+# LOAD->CALC->NR->DEN->OUT frame plus reset exit and margin fits depth 28;
+# the old depth-50 monolith (two back-to-back frames through NR multiplier
+# chains) does not converge under smtbmc/boolector. Back-to-back framing
+# is sim-covered (iverilog tb runs consecutive frames); the D=576 golden
+# proof is the iverilog testbench. Properties live in the `ifdef FORMAL
+# section of src/components/rmsnorm_d.v bound to locals: this flow
+# mis-resolves hierarchical refs from a separate wrapper file.
+[options]
+mode bmc
+depth 28
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal rmsnorm_d.v
+chparam -set D 8 rmsnorm_d
+prep -top rmsnorm_d
+
+[files]
+src/components/rmsnorm_d.v

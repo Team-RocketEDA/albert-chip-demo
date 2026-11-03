@@ -1,0 +1,3095 @@
+{
+  "$schema": "https://raw.githubusercontent.com/YosysHQ/yosys/main/misc/jny.schema.json",
+  "generator": "Yosys 0.70+219 (git sha1 5053d0e26, Release, Clang /usr/bin/clang++ 21.1.8)",
+  "version": "0.0.1",
+  "invocation": "write_jny -no-connections ../model/design.json ",
+  "features": ["attributes", "properties"],
+  "modules": [
+      {
+        "name": "rmsnorm_d",
+        "cell_sorts": [
+          {
+            "type": "$shr",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [40, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [6, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [30, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:145$shr$243",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:145.53-145.77"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000101000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000011110"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$le",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [6, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [5, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:144$le$239",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:144.29-144.43"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000101",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:205$le$278",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:205.20-205.49"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000110000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000100010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:206$le$280",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:206.20-206.32"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000001010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$mul",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [32, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:133$mul$237",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:133.32-133.45"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000100000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:152$mul$247",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:152.27-152.36"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000011111",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000011111",
+                    "Y_WIDTH": "00000000000000000000000000111110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:155$mul$250",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:155.27-155.39"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000011110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000100000",
+                    "Y_WIDTH": "00000000000000000000000000111110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:159$mul$254",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:159.28-159.39"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000011111",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000100000",
+                    "Y_WIDTH": "00000000000000000000000000111110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:166$mul$257",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:166.31-166.60"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010001",
+                    "Y_WIDTH": "00000000000000000000000000100000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:168$mul$258",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:168.27-168.42"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000100001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:170$mul$259",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:170.31-170.44"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000100000",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:179$mul$265",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:179.32-179.47"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000100000"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$sshr",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [65, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [6, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [65, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:126$sshr$390",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.27-126.43"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$sshr$393",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.50-126.69"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$sshr$408",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.27-126.43"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$sshr$411",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.50-126.69"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$reduce_or",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$auto$opt_reduce.cc:131:opt_pmux$1108",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$auto$opt_reduce.cc:131:opt_pmux$1110",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$mux",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "S",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [16, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1000",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1007",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1014",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1021",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1028",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1035",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1042",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1049",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1056",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1063",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$1070",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$965",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$972",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$979",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$986",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$auto$proc_dff.cc:243:proc_dff$993",
+                  "attributes": {
+
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$459",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$462",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$465",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$468",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$471",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$474",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$477",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$480",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$483",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$486",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$489",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$492",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$495",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$498",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$501",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$504",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$507",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$510",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$513",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$516",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$519",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$522",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$525",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$528",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$531",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$534",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$537",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$540",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$543",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$546",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$549",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$552",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$555",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$558",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$561",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$564",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$567",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$570",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$573",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:91.13-91.17|rmsnorm_d.v:91.9-91.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$578",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:81.16-81.31|rmsnorm_d.v:81.12-82.49"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$584",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:80.11-80.25|rmsnorm_d.v:80.7-82.49"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$638",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$640",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$648",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$650",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$659",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$661",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$671",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$673",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$684",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$686",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$698",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$700",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$713",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$715",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$729",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:234.11-234.38"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$731",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$738",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$740",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$748",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$750",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$759",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$761",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$771",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$773",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$784",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$786",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$798",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$800",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$813",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$815",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$829",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$831",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$835",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:258.12-258.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$839",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:258.12-258.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$851",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:242.12-242.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000011110"
+                  }
+                },
+                {
+                  "name": "$procmux$857",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:242.12-242.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procmux$867",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:266.15-266.27|rmsnorm_d.v:266.11-272.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000110000"
+                  }
+                },
+                {
+                  "name": "$procmux$876",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:253.15-253.26|rmsnorm_d.v:253.11-257.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procmux$891",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:236.15-236.27|rmsnorm_d.v:236.11-241.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001010"
+                  }
+                },
+                {
+                  "name": "$procmux$896",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:266.15-266.27|rmsnorm_d.v:266.11-272.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$procmux$901",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:253.15-253.26|rmsnorm_d.v:253.11-257.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$procmux$906",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:236.15-236.27|rmsnorm_d.v:236.11-241.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$procmux$909",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:201.14-201.21|rmsnorm_d.v:201.10-201.51"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ternary$376",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.15-126.71"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ternary$395",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.15-126.71"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ternary$413",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.15-126.71"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ternary$426",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.15-126.71"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:144$ternary$244",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:144.28-145.78"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000011110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:172$ternary$260",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:172.32-174.39"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:175$ternary$264",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:175.31-177.44"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:176$ternary$263",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:176.31-177.44"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:183$ternary$269",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:183.30-185.42"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:184$ternary$268",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:184.30-185.42"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$mem_v2",
+            "ports": [
+                {
+                  "name": "RD_ADDR",
+                  "direction": "io",
+                  "range": [4, 0]
+                },
+                {
+                  "name": "RD_ARST",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "RD_CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "RD_DATA",
+                  "direction": "",
+                  "range": [31, 0]
+                },
+                {
+                  "name": "RD_EN",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "RD_SRST",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "WR_ADDR",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "WR_CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "WR_DATA",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "WR_EN",
+                  "direction": "io",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$auto$proc_rom.cc:155:do_switch$437",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:100.7-117.14"
+                  },
+                  "parameters": {
+                    "ABITS": "00000000000000000000000000000100",
+                    "INIT": "1000000100000011000010100010010100000110001110000011001100100010000101010100000011110111101101000011110100001110100100010111100010100001001101111101011000010001100101010000011111101101001000111101100011100000001001001100100100100100100100100100100110010101010111011010000111100001001100010100110000111101100101100111000010100010010101110100110011111111011000000001111000001010001111111000101000101000000101010000101100000110101010010010101101000101100110110001100101011001001000001011010011011111",
+                    "MEMID": "$auto$proc_rom.cc:155:do_switch$437",
+                    "OFFSET": "00000000000000000000000000000000",
+                    "RD_ARST_VALUE": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "RD_CE_OVER_SRST": "0",
+                    "RD_CLK_ENABLE": "0",
+                    "RD_CLK_POLARITY": "1",
+                    "RD_COLLISION_X_MASK": "0",
+                    "RD_INIT_VALUE": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "RD_PORTS": "00000000000000000000000000000001",
+                    "RD_SRST_VALUE": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "RD_TRANSPARENCY_MASK": "0",
+                    "RD_WIDE_CONTINUATION": "0",
+                    "SIZE": "00000000000000000000000000010000",
+                    "WIDTH": "00000000000000000000000000011111",
+                    "WR_CLK_ENABLE": "0",
+                    "WR_CLK_POLARITY": "0",
+                    "WR_PORTS": "00000000000000000000000000000000",
+                    "WR_PRIORITY_MASK": "0",
+                    "WR_WIDE_CONTINUATION": "0"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$gt",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [65, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:175$gt$261",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:175.32-175.52"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:183$gt$266",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:183.31-183.50"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:80$gt$315",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:80.11-80.25"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$adff",
+            "ports": [
+                {
+                  "name": "ARST",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "D",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Q",
+                  "direction": "",
+                  "range": [16, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procdff$1107",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:199.3-202.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$915",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "100",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$procdff$920",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000111",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001010"
+                  }
+                },
+                {
+                  "name": "$procdff$925",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "00",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procdff$930",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000000000000000000000000000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000110000"
+                  }
+                },
+                {
+                  "name": "$procdff$940",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$procdff$945",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000000000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000011110"
+                  }
+                },
+                {
+                  "name": "$procdff$950",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000011111"
+                  }
+                },
+                {
+                  "name": "$procdff$955",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$960",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000110"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$ge",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [65, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:126$ge$369",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.16-126.22"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ge$388",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.16-126.22"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ge$406",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.16-126.22"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$ge$419",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.16-126.22"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$pmux",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [128, 0]
+                },
+                {
+                  "name": "S",
+                  "direction": "io",
+                  "range": [8, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [16, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procmux$440",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:165.31-165.35"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000001000",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$449",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:164.31-164.35"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000001000",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$844",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:250.12-250.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000010",
+                    "WIDTH": "00000000000000000000000000011111"
+                  }
+                },
+                {
+                  "name": "$procmux$869",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:264.12-264.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000010",
+                    "WIDTH": "00000000000000000000000000110000"
+                  }
+                },
+                {
+                  "name": "$procmux$878",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:250.12-250.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000010",
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procmux$885",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:264.12-264.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000011",
+                    "WIDTH": "00000000000000000000000000001010"
+                  }
+                },
+                {
+                  "name": "$procmux$898",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:264.12-264.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000100",
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$add",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [65, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [31, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [65, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:126$add$370",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.28-126.36"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000011111",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$373",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.51-126.62"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000011111",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$389",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.28-126.36"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$392",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.51-126.62"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$407",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.28-126.36"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$410",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.51-126.62"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$420",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.28-126.36"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000001001",
+                    "Y_WIDTH": "00000000000000000000000000100001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$add$423",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.51-126.62"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000001001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:131$add$236",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:131.30-131.57"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000010001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:142$add$238",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:142.23-142.44"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000101000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000001001",
+                    "Y_WIDTH": "00000000000000000000000000101000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:149$add$245",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:149.27-149.42"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000011111",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000100000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:153$add$248",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:153.28-153.54"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000111110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000011111",
+                    "Y_WIDTH": "00000000000000000000000000111110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:156$add$251",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:156.28-156.54"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000111110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000011111",
+                    "Y_WIDTH": "00000000000000000000000000111110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:160$add$255",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:160.29-160.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000111110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000011111",
+                    "Y_WIDTH": "00000000000000000000000000111110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:173$add$383",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:173.29-173.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:173$add$385",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:173.20-173.48"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000101",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:174$add$403",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:174.19-174.38"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000101",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:201$add$273",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:201.35-201.50"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:235$add$303",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:235.20-235.44"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000110000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000100000",
+                    "Y_WIDTH": "00000000000000000000000000110000"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:256$add$308",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:256.20-256.30"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:271$add$310",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:271.20-271.31"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000001010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000001010"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$neg",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [65, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [65, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:126$neg$372",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.52-126.54"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$375",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.48-126.70"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100011",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$391",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.52-126.54"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$394",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.48-126.70"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$409",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.52-126.54"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$412",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.48-126.70"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$422",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.52-126.54"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000100000",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:126$neg$425",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:126.48-126.70"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000111001",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$eq",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [3, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [3, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procmux$739_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$749_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$760_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$772_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$785_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$799_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$814_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$887_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:258.12-258.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$899_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:264.12-264.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$903_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:250.12-250.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$904_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:242.12-242.12|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:211$eq$282",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:211.19-211.32"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000100",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:253$eq$307",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:253.15-253.26"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:266$eq$309",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:266.15-266.27"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000001010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$lt",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [65, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:176$lt$262",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:176.32-176.53"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:184$lt$267",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:184.31-184.51"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000001000001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:81$lt$317",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:81.16-81.31"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000001",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$logic_not",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [3, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procmux$830_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:233.11-233.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$908_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:231.19-231.19|rmsnorm_d.v:231.7-278.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:203$logic_not$435",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:203.19-203.25"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$check",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "ARGS",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "EN",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "TRG",
+                  "direction": "io",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "_witness_.check_rmsnorm_d_v_203_assert_274",
+                  "attributes": {
+                    "hdlname": "_witness_ check_rmsnorm_d_v_203_assert_274",
+                    "src": "rmsnorm_d.v:203.27-204.49"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "00000000000000000000000000000000",
+                    "TRG_ENABLE": "00000000000000000000000000000000",
+                    "TRG_POLARITY": "00000000000000000000000000000000",
+                    "TRG_WIDTH": "00000000000000000000000000000000"
+                  }
+                },
+                {
+                  "name": "_witness_.check_rmsnorm_d_v_203_assume_434",
+                  "attributes": {
+                    "hdlname": "_witness_ check_rmsnorm_d_v_203_assume_434",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "rmsnorm_d.v:203.11-203.26"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assume",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111111",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": true,
+                    "TRG_WIDTH": "00000000000000000000000000000000"
+                  }
+                },
+                {
+                  "name": "_witness_.check_rmsnorm_d_v_204_assert_277",
+                  "attributes": {
+                    "hdlname": "_witness_ check_rmsnorm_d_v_204_assert_277",
+                    "src": "rmsnorm_d.v:204.50-205.50"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "00000000000000000000000000000000",
+                    "TRG_ENABLE": "00000000000000000000000000000000",
+                    "TRG_POLARITY": "00000000000000000000000000000000",
+                    "TRG_WIDTH": "00000000000000000000000000000000"
+                  }
+                },
+                {
+                  "name": "_witness_.check_rmsnorm_d_v_205_assert_279",
+                  "attributes": {
+                    "hdlname": "_witness_ check_rmsnorm_d_v_205_assert_279",
+                    "src": "rmsnorm_d.v:205.51-206.33"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "00000000000000000000000000000000",
+                    "TRG_ENABLE": "00000000000000000000000000000000",
+                    "TRG_POLARITY": "00000000000000000000000000000000",
+                    "TRG_WIDTH": "00000000000000000000000000000000"
+                  }
+                },
+                {
+                  "name": "_witness_.check_rmsnorm_d_v_206_cover_281",
+                  "attributes": {
+                    "hdlname": "_witness_ check_rmsnorm_d_v_206_cover_281",
+                    "src": "rmsnorm_d.v:206.34-211.33"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "00000000000000000000000000000000",
+                    "TRG_ENABLE": "00000000000000000000000000000000",
+                    "TRG_POLARITY": "00000000000000000000000000000000",
+                    "TRG_WIDTH": "00000000000000000000000000000000"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$dff",
+            "ports": [
+                {
+                  "name": "CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "D",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Q",
+                  "direction": "",
+                  "range": [16, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procdff$1002",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1009",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1016",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1023",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1030",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1037",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1044",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1051",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1058",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1065",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$1072",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$967",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$974",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$981",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$988",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$995",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:215.3-280.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$shl",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [6, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [65, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:125$shl$387",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:125.14-125.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:125$shl$405",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:125.14-125.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000001",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000001000001"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:145$shl$241",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:145.24-145.48"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000101000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000011110"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$sub",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [6, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [6, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$rmsnorm_d.v:125$sub$386",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:125.25-125.33"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:125$sub$404",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:125.25-125.33"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:145$sub$240",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:145.34-145.47"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000101",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:145$sub$242",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:145.63-145.76"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000101",
+                    "Y_WIDTH": "00000000000000000000000000000110"
+                  }
+                },
+                {
+                  "name": "$rmsnorm_d.v:158$sub$253",
+                  "attributes": {
+                    "src": "rmsnorm_d.v:158.23-158.44"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000100000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000100000",
+                    "Y_WIDTH": "00000000000000000000000000100000"
+                  }
+                }
+            ]
+          }
+        ],
+        "attributes": {
+            "keep": "00000000000000000000000000000001",
+            "hdlname": "rmsnorm_d",
+            "dynports": "00000000000000000000000000000001",
+            "top": "00000000000000000000000000000001",
+            "src": "rmsnorm_d.v:36.1-281.10"
+        }
+      }
+  ]
+}

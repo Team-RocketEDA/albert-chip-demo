@@ -1,0 +1,21 @@
+# fifo_sync.sby — BOUNDED proof (mode bmc) of end-to-end FWFT ordering +
+# flag correctness, from reset, depth 48 (fill + drain + wrap + corners).
+# Unbounded induction of the ordering step is impossible over outputs
+# alone (arbitrary induction-start states leave non-head queue slots
+# unconstrained); the inductive flag subset is proved unbounded in
+# fifo_sync_flags.sby. Uses fifo_sync_formal.v (wrapper occupancy + data
+# model, DUT outputs only, no hierarchical register reads).
+[options]
+mode bmc
+depth 48
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal fifo_sync.v fifo_sync_formal.v
+prep -top fifo_sync_formal
+
+[files]
+src/components/fifo_sync.v
+src/tb/fifo_sync/fifo_sync_formal.v

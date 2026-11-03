@@ -1,0 +1,9 @@
+# running in embed_lut/src/
+read -formal embed_lut.v
+read -formal embed_lut_formal.v
+prep -top embed_lut_formal
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

@@ -1,0 +1,6 @@
+requant vectors: 5131 total (5115 directed, 16 baked: 8 q + 8 down)
+model: W=8 SHIFT=8; golden=clip(floor(acc*scale/256)+zero)
+baked calibration: S_OUT_Q=0.25 S_OUT_D=0.5, scale_q=round_half_away(s_w*256/S_OUT), zeros cycle [0, 2, -3, 5, 0, -2, 3, -1]
+dots recomputed from tv_*_act.hex x layer0_*.hex: match tv_*_golden.hex exactly
+baked golden spread: in-range=9 hi-clip=3 lo-clip=4
+float cross-check (in-range baked only): n=7 max|golden-round(float)|=33

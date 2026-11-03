@@ -1,0 +1,14 @@
+[options]
+mode prove
+depth 10
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal irq_sync.v irq_sync_formal.v
+prep -top irq_sync_formal
+
+[files]
+src/components/irq_sync.v
+src/tb/irq_sync/irq_sync_formal.v

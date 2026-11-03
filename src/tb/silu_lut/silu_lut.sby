@@ -1,0 +1,17 @@
+# BMC (not prove): the ROM lives in an `initial` block, which induction
+# starts symbolically. x is a free input, so depth-3 BMC already covers
+# every x (f_valid=1 from cycle 1 on).
+[options]
+mode bmc
+depth 3
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal silu_lut.v silu_lut_formal.v
+prep -top silu_lut_formal
+
+[files]
+src/components/silu_lut.v
+src/tb/silu_lut/silu_lut_formal.v

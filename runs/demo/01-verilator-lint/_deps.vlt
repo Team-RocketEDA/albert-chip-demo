@@ -1,0 +1,7 @@
+`verilator_config
+lint_off -rule DECLFILENAME
+lint_off -rule EOFNEWLINE
+lint_off -rule UNDRIVEN -file "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/runs/demo/tmp/da8cf665db3044ada0ce71e7a0e00b04.bb.v"
+lint_off -rule UNUSEDSIGNAL -file "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/runs/demo/tmp/da8cf665db3044ada0ce71e7a0e00b04.bb.v"
+lint_off -rule UNDRIVEN -file "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/runs/demo/tmp/58bf4b2aec3444ae9b09d542dca433bc.bb.v"
+lint_off -rule UNUSEDSIGNAL -file "/home/alrida-ismail/github/rocketEDA/albert-chip-demo/runs/demo/tmp/58bf4b2aec3444ae9b09d542dca433bc.bb.v"

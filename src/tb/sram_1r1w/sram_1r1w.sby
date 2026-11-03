@@ -1,0 +1,14 @@
+[options]
+mode prove
+depth 12
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal sram_1r1w.v sram_1r1w_formal.v
+prep -top sram_1r1w_formal
+
+[files]
+src/components/sram_1r1w.v
+src/tb/sram_1r1w/sram_1r1w_formal.v

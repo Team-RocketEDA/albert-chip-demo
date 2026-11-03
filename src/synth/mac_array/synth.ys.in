@@ -1,0 +1,14 @@
+# synth.ys — yosys synthesis of mac_array to sky130_fd_sc_hd (tt).
+# Run via run.sh from this dir. Paths come from the environment.
+read_verilog @REPO@/src/components/mac_array.v
+hierarchy -check -top mac_array
+proc; opt; fsm; opt; memory; opt
+booth
+techmap; opt
+dfflibmap -liberty @LIB@
+opt
+abc -liberty @LIB@
+opt; clean
+stat
+tee -o nl/report.txt stat
+write_verilog -noattr -noexpr -nohex -nodec nl/mac_array.nl.v

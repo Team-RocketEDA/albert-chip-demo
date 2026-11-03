@@ -1,0 +1,14 @@
+[options]
+mode prove
+depth 8
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal regfile_dp.v regfile_dp_formal.v
+prep -top regfile_dp_formal
+
+[files]
+src/components/regfile_dp.v
+src/tb/regfile_dp/regfile_dp_formal.v

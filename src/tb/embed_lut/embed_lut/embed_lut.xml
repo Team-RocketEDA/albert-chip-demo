@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-11-03T03:19:25" hostname="pop-os" package="embed_lut" id="0" name="default" tests="4" errors="0" failures="0" time="0" skipped="2">
+<properties>
+<property name="os" value="Linux"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="default" name="build execution" time="0">
+</testcase>
+<testcase classname="default" name="Property ASSERT in embed_lut_formal at embed_lut_formal.v:37.9-37.36" time="0" type="ASSERT" location="embed_lut_formal.v:37.9-37.36" id="_witness_.check_embed_lut_formal_v_37_assert_15">
+</testcase>
+<testcase classname="default" name="Property ASSERT in embed_lut_formal at embed_lut_formal.v:39.9-39.35" time="0" type="ASSERT" location="embed_lut_formal.v:39.9-39.35" id="_witness_.check_embed_lut_formal_v_39_assert_22">
+</testcase>
+<testcase classname="default" name="Property COVER in embed_lut_formal at embed_lut_formal.v:41.5-41.22" time="0" type="COVER" location="embed_lut_formal.v:41.5-41.22" id="_witness_.check_embed_lut_formal_v_41_cover_24">
+<skipped />
+</testcase>
+<testcase classname="default" name="Property COVER in embed_lut_formal at embed_lut_formal.v:42.5-42.24" time="0" type="COVER" location="embed_lut_formal.v:42.5-42.24" id="_witness_.check_embed_lut_formal_v_42_cover_26">
+<skipped />
+</testcase>
+<system-out>SBY  3:19:25 [embed_lut] Removing directory '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/embed_lut/embed_lut'.
+SBY  3:19:25 [embed_lut] Copy '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/embed_lut/../../components/embed_lut.v' to '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/embed_lut/embed_lut/src/embed_lut.v'.
+SBY  3:19:25 [embed_lut] Copy '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/embed_lut/embed_lut_formal.v' to '/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/tb/embed_lut/embed_lut/src/embed_lut_formal.v'.
+SBY  3:19:25 [embed_lut] engine_0: smtbmc
+SBY  3:19:25 [embed_lut] base: starting process &quot;cd embed_lut/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [14] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [13] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [12] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [11] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [10] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [9] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [8] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [7] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [6] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [5] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [4] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [3] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [2] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [1] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: Warning: Wire embed_lut_formal.\token_id [0] is used but has no driver.
+SBY  3:19:25 [embed_lut] base: finished (returncode=0)
+SBY  3:19:25 [embed_lut] prep: starting process &quot;cd embed_lut/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [14] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [13] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [12] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [11] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [10] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [9] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [8] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [7] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [6] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [5] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [4] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [3] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [2] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [1] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: Warning: Wire embed_lut_formal.\token_id [0] is used but has no driver.
+SBY  3:19:25 [embed_lut] prep: finished (returncode=0)
+SBY  3:19:25 [embed_lut] smt2: starting process &quot;cd embed_lut/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY  3:19:25 [embed_lut] smt2: finished (returncode=0)
+SBY  3:19:25 [embed_lut] engine_0: starting process &quot;cd embed_lut; yosys-smtbmc --presat --unroll --noprogress -t 8  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Solver: yices
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 5..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 5..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 6..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 6..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assumptions in step 7..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Checking assertions in step 7..
+SBY  3:19:25 [embed_lut] engine_0: ##   0:00:00  Status: passed
+SBY  3:19:25 [embed_lut] engine_0: finished (returncode=0)
+SBY  3:19:25 [embed_lut] engine_0: Status returned by engine: pass
+SBY  3:19:25 [embed_lut] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY  3:19:25 [embed_lut] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY  3:19:25 [embed_lut] summary: engine_0 (smtbmc) returned pass
+SBY  3:19:25 [embed_lut] summary: engine_0 did not produce any traces
+SBY  3:19:25 [embed_lut] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

@@ -472,11 +472,14 @@ class TestSkeleton(unittest.TestCase):
     NO_LOGIC = ["always", "assign", "initial"]
     SYSTEM_FNS = {"clog2"}
     KEYWORDS = {"generate", "end", "for", "begin", "genvar", "if", "else",
-                "case", "while"}
+                "case", "while",
+                # SystemVerilog assertion statements, not instantiations:
+                "assert", "assume", "cover", "initial", "property", "final"}
 
     def _code(self, name):
         src = (self.SRC / f"{name}.v").read_text()
-        src = re.sub(r"//[^\n]*", "", src)  # line comments only in skeletons
+        src = re.sub(r"//[^\n]*", "", src)  # line comments can't instantiate
+        src = re.sub(r"/\*.*?\*/", "", src, flags=re.S)  # nor block comments
         return src
 
     def test_project_yaml_lists_all_blocks(self):
@@ -491,9 +494,16 @@ class TestSkeleton(unittest.TestCase):
             self.assertIsNotNone(m, name)
             self.assertEqual(m.group(1), name, name)
 
+    # Logic phase (block-logic-plan): LEAVES and mid-levels legitimately
+    # contain always/assign now. Only the pure-stitch L1/top files must
+    # stay structural — they wire children, nothing else.
+    STITCH = {"mobilellm_top", "embed_top", "loop_mem_seq", "inproj_tile",
+              "attention_core", "outproj_tile", "rmsnorm_stage",
+              "ffn_tile", "lm_head"}
+
     def test_no_implementation_constructs(self):
         bad = []
-        for name in self.LEAVES | self.WIRING:
+        for name in self.STITCH:
             for kw in self.NO_LOGIC:
                 if re.search(rf"(?<![\w$]){kw}(?![\w$])", self._code(name)):
                     bad.append(f"{name}.v: {kw}")
@@ -501,8 +511,10 @@ class TestSkeleton(unittest.TestCase):
                          "\n".join(bad))
 
     def _instances(self, name):
+        # Anchored: real instantiations start their line (skeleton style);
+        # unanchored matching also catches `begin : label` + `if (` pairs.
         return {m for m in
-                re.findall(r"(\w+)\s*(?:#\s*\([^;]*?\))?\s+\w+\s*\(",
+                re.findall(r"(?m)^\s*(\w+)\s*(?:#\s*\([^;]*?\))?\s+\w+\s*\(",
                            self._code(name))
               if m not in self.SYSTEM_FNS and m not in self.KEYWORDS}
 
@@ -516,7 +528,10 @@ class TestSkeleton(unittest.TestCase):
         self.assertEqual(bad, [], "dangling instances:\n" + "\n".join(bad))
 
     def test_every_wiring_block_instantiates_child(self):
-        bad = [n for n in self.WIRING if not self._instances(n)]
+        # STITCH files wire children and nothing else: childless means
+        # empty. Mid-levels (softmax_d, rmsnorm_d) may legitimately
+        # flatten to inline datapaths (rmsnorm_d did: seed ROM inline).
+        bad = [n for n in self.STITCH if not self._instances(n)]
         self.assertEqual(bad, [], f"wiring with no children: {bad}")
 
     def test_elab_gate_passes(self):

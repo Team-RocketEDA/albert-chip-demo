@@ -1,0 +1,4 @@
+seed_random=0xD17 n32=144 m16=8
+baked_softmax_S=4676 baked_softmax_rowmax=3.2342671
+baked_rmsnorm_sqsum=12326840 baked_rmsnorm_n=576
+max_abs_err_vs_floor_div=0 (bit-exact, 0 ulp)

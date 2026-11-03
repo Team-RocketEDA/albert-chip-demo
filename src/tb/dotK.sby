@@ -1,0 +1,15 @@
+[options]
+mode prove
+depth 6
+
+[engines]
+smtbmc
+
+[script]
+read -formal dotK.v
+read -formal proof_dotK.v
+prep -top proof_dotK
+
+[files]
+../components/dotK.v
+proof_dotK.v

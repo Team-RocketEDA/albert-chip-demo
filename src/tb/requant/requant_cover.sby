@@ -1,0 +1,19 @@
+# requant_cover.sby — BINDING formal evidence for requant: every cover
+# below must REACH (clip rails/edges + negative-floor shift, each with
+# the exact correct output). All 5 reach at step 2 on oss-cad-suite
+# solvers (z3 default here; yices behaves the same).
+[options]
+mode cover
+depth 3
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal requant_formal.v
+read -formal requant.v
+prep -top requant_formal
+
+[files]
+requant_formal.v
+../../components/requant.v

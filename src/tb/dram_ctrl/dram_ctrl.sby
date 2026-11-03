@@ -1,0 +1,14 @@
+[options]
+mode prove
+depth 15
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal dram_ctrl.v dram_ctrl_formal.v
+prep -top dram_ctrl_formal
+
+[files]
+src/components/dram_ctrl.v
+src/tb/dram_ctrl/dram_ctrl_formal.v

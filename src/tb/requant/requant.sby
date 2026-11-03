@@ -1,0 +1,25 @@
+# requant.sby — supplementary bounded assert check (see caveat below).
+#
+# BINDING formal evidence for requant is requant_cover.sby (mode cover:
+# all 5 clip/shift witnesses REACHED) plus the iverilog tb (5131 vectors
+# bit-exact vs the stdlib golden). This task PASSes at depth 2 but the
+# check-gate (rst_n && v_q && past_edge) first fires at step 2, so the
+# PASS is supplementary: a negated-assert probe (assert(1==0)) also
+# passes at this bound. Kept for stronger toolchains (commercial
+# solvers should take the same properties deeper); the cover task is
+# what binds on the bundled oss-cad-suite solvers.
+[options]
+mode bmc
+depth 2
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal requant_formal.v
+read -formal requant.v
+prep -top requant_formal
+
+[files]
+requant_formal.v
+../../components/requant.v

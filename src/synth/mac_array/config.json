@@ -1,0 +1,12 @@
+{
+  "DESIGN_NAME": "mac_array",
+  "VERILOG_FILES": ["src/components/mac_array.v"],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 25,
+  "PDK": "sky130A",
+  "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+  "SYNTH_STRATEGY": "AREA 0",
+  "FP_SIZING": "absolute",
+  "DIE_AREA": "0 0 120 120",
+  "RUN_TAG": "demo"
+}

@@ -1,0 +1,22 @@
+# BMC: datapath is combinational + 1 output register, so depth 6 covers
+# accept -> check with margin for the solver-chosen reset release.
+[options]
+mode bmc
+depth 6
+
+[engines]
+smtbmc yices
+
+# exp_lut is a proven leaf (exp_lut.sby covers its image); blackbox it so
+# this task proves softmax control/safety, with arithmetic covered by the
+# golden sim. div_unit stays structural (empty skeleton, no logic).
+[script]
+read -formal softmax_d.v softmax_d_formal.v exp_lut.v div_unit.v
+blackbox exp_lut
+prep -top softmax_d_formal
+
+[files]
+src/components/softmax_d.v
+src/tb/softmax_d/softmax_d_formal.v
+src/components/exp_lut.v
+src/components/div_unit.v
