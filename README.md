@@ -44,6 +44,8 @@ Every command runs from the repo root.
 | Elaboration | `bash src/scripts/elab.sh` | ELAB-OK |
 | Unit sims (per block) | `iverilog -g2012 -s <tb> src/components/*.v src/tb/<...>.v && vvp a.out` | all PASS |
 | Verilator tokens | `make -C src/sim_verilator embed` | `EMBED_VLT PASS (8 ids)`, byte-exact |
+| Prompt test | `make -C src/sim_verilator prompt PROMPT_IDS="1 2 0x42"` | token ids in, vectors out, `waves_prompt.fst` |
+| Dashboard | `python3 src/sim_verilator/dashboard.py` | `renders/dashboard.html` — live transcripts + GDS + links |
 | Verilator norms | `make -C src/sim_verilator rmsnorm` | `RMSNORM_VLT PASS (576 lanes, tol=3 LSB)` |
 | Verilator top smoke | `make -C src/sim_verilator top` | builds, 29 modules (outputs float: top is structural) |
 | Formal proofs | `sby -f src/tb/rmsnorm_d/rmsnorm_d.sby` | PASS, 7m28s |

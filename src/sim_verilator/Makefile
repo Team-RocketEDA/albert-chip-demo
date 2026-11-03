@@ -20,6 +20,12 @@ all: embed rmsnorm top
 embed: $(HERE)/obj_embed/Vtb_embed
 	cd $(ROOT) && ./src/sim_verilator/obj_embed/Vtb_embed
 
+# Prompt mode: token ids in, vectors out, wave in waves_prompt.fst.
+# Usage: make -C src/sim_verilator prompt PROMPT_IDS="1 2 0x42"
+PROMPT_IDS ?= 1 2 0x42
+prompt: $(HERE)/obj_embed/Vtb_embed
+	cd $(ROOT) && ./src/sim_verilator/obj_embed/Vtb_embed $(PROMPT_IDS)
+
 # --trace-max-width 4608: Verilator's default (256b) silently drops the
 # 4608-bit vec from the wave; the lookup is invisible in Surfer without this.
 $(HERE)/obj_embed/Vtb_embed: $(HERE)/tb_embed.sv $(HERE)/tb_embed.cpp $(ROOT)/src/components/embed_lut.v

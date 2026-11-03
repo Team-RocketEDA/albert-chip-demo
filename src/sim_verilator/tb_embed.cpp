@@ -44,51 +44,80 @@ int main(int argc, char **argv) {
   VerilatedFstC *tfp = new VerilatedFstC;
   Verilated::traceEverOn(true);
   top->trace(tfp, 99);
-  tfp->open("src/sim_verilator/waves_embed.fst");
 
-  // Load stimulus: 8 test token ids + 8 golden 576-byte vectors.
-  std::vector<int> ids;
+  // Prompt mode: any argv ids become the prompt (decimal or 0x hex).
+  // No-arg mode replays the 8 baked golden ids plus the OOR corner.
+  bool prompt_mode = argc > 1;
+  tfp->open(prompt_mode ? "src/sim_verilator/waves_prompt.fst"
+                        : "src/sim_verilator/waves_embed.fst");
+
+  // Load baked goldens (id -> 576-byte row) for checking known ids.
+  std::vector<int> baked_ids;
   std::string line;
   std::ifstream fi("src/tb/embed_lut/ids_full.hex");
   while (std::getline(fi, line)) if (!line.empty())
-    ids.push_back((int)std::stoul(line, nullptr, 16));
-  std::vector<std::vector<uint8_t>> golden;
+    baked_ids.push_back((int)std::stoul(line, nullptr, 16));
+  std::vector<std::vector<uint8_t>> baked_vec;
   std::ifstream fg("src/tb/embed_lut/exp_full.hex");
   while (std::getline(fg, line)) if (!line.empty())
-    golden.push_back(parse_row(line, 576));
-  printf("[embed] %zu test ids loaded\n", ids.size());
+    baked_vec.push_back(parse_row(line, 576));
+  printf("[embed] %zu baked golden ids loaded\n", baked_ids.size());
 
-  int errs = 0;
-  for (size_t t = 0; t < ids.size(); t++) {
-    top->token_id = ids[t];
+  // One lookup: present the id, step the clock (1-cycle registered
+  // latency), print first 8 bytes, optionally check vs baked golden.
+  // Returns mismatching byte count, or -1 when no golden exists.
+  auto lookup = [&](int id) -> int {
+    top->token_id = id & 0x7FFF;
     tick(top, tfp);  // posedge samples the id; vec registers the row
     // vec is 4608 bits = 144 words; word w holds bytes 4w..4w+3.
-    int bad = 0;
-    for (int k = 0; k < 576; k++) {
-      uint8_t got = (top->vec[k / 4] >> (8 * (k % 4))) & 0xFF;
-      if (got != golden[t][k]) bad++;
+    int gold_idx = -1;
+    for (size_t g = 0; g < baked_ids.size(); g++)
+      if (baked_ids[g] == id) gold_idx = (int)g;
+    int bad = -1;
+    if (gold_idx >= 0) {
+      bad = 0;
+      for (int k = 0; k < 576; k++) {
+        uint8_t got = (top->vec[k / 4] >> (8 * (k % 4))) & 0xFF;
+        if (got != baked_vec[gold_idx][k]) bad++;
+      }
     }
     printf("tok 0x%04x (%5d) -> vec[0..7] = %02x %02x %02x %02x %02x %02x %02x %02x  %s\n",
-           ids[t], ids[t],
+           id, id,
            (top->vec[0] >>  0) & 0xFF, (top->vec[0] >>  8) & 0xFF,
            (top->vec[0] >> 16) & 0xFF, (top->vec[0] >> 24) & 0xFF,
            (top->vec[1] >>  0) & 0xFF, (top->vec[1] >>  8) & 0xFF,
            (top->vec[1] >> 16) & 0xFF, (top->vec[1] >> 24) & 0xFF,
-           bad == 0 ? "OK" : "MISMATCH");
-    if (bad) { printf("  .. %d of 576 bytes differ\n", bad); errs++; }
+           bad < 0 ? "(no golden)" : (bad == 0 ? "OK" : "MISMATCH"));
+    if (bad > 0) printf("  .. %d of 576 bytes differ\n", bad);
+    return bad;
+  };
+
+  int errs = 0;
+  if (prompt_mode) {
+    // The prompt is argv: token ids in, vectors out, one line each.
+    printf("[embed] prompt of %d token ids\n", argc - 1);
+    for (int a = 1; a < argc; a++) {
+      int id = (int)std::stoul(argv[a], nullptr, 0);
+      if (lookup(id) > 0) errs++;
+    }
+    if (errs == 0) printf("PROMPT DONE (%d ids, no golden mismatches)\n", argc - 1);
+    else printf("PROMPT DONE (%d ids, %d errs)\n", argc - 1, errs);
+  } else {
+    for (size_t t = 0; t < baked_ids.size(); t++)
+      if (lookup(baked_ids[t]) != 0) errs++;
+
+    // Out-of-range id (>= 32000) must read zero by contract.
+    top->token_id = 32000;
+    tick(top, tfp);
+    bool allzero = true;
+    for (int w = 0; w < 144; w++) if (top->vec[w] != 0) allzero = false;
+    printf("tok 0x7d00 (32000, out of range) -> %s\n",
+           allzero ? "all-zero OK" : "NONZERO MISMATCH");
+    if (!allzero) errs++;
+
+    if (errs == 0) printf("EMBED_VLT PASS (%zu ids)\n", baked_ids.size());
+    else printf("EMBED_VLT FAIL (%d errs)\n", errs);
   }
-
-  // Out-of-range id (>= 32000) must read zero by contract.
-  top->token_id = 32000;
-  tick(top, tfp);
-  bool allzero = true;
-  for (int w = 0; w < 144; w++) if (top->vec[w] != 0) allzero = false;
-  printf("tok 0x7d00 (32000, out of range) -> %s\n",
-         allzero ? "all-zero OK" : "NONZERO MISMATCH");
-  if (!allzero) errs++;
-
-  if (errs == 0) printf("EMBED_VLT PASS (%zu ids)\n", ids.size());
-  else printf("EMBED_VLT FAIL (%d errs)\n", errs);
   tfp->close();
   return errs == 0 ? 0 : 1;
 }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+<title>MobileLLM-125M decoder chip — sim dashboard</title>
+<style>
+body { font-family: monospace; max-width: 1000px; margin: 2em auto;
+       padding: 0 1em; background: #0d1117; color: #c9d1d9; }
+h1 small { color: #8b949e; } pre { background: #161b22; padding: 1em;
+overflow-x: auto; border: 1px solid #30363d; } .badge { background: #238636;
+padding: 0.1em 0.5em; border-radius: 1em; font-size: 0.8em; }
+.cmd { color: #8b949e; } table { border-collapse: collapse; }
+td, th { border: 1px solid #30363d; padding: 0.3em 0.8em; text-align: left; }
+img { max-width: 100%; border: 1px solid #30363d; } a { color: #58a6ff; }
+.note { color: #d29922; }
+</style></head>
+<body>
+<h1>MobileLLM-125M decoder chip <small>sim dashboard — ALL GREEN</small></h1>
+<p>Every transcript below is captured live from the benches (pure Verilator
++ baked checkpoint bytes). Token ids are the prompt language: there is no
+text tokenizer in the repo, so prompts are id lists and vectors are the
+answers. Only the 8 baked rows are programmed into the demo init image;
+other ids read zero (<span class="note">sparse init, not a model result</span>).
+Full token coverage needs the 18&nbsp;MB <tt>embed_full.hex</tt> image.</p>
+<h2>prompt <span class='badge'>PASS</span></h2>
+<p class='cmd'>make -C src/sim_verilator prompt PROMPT_IDS=&#x27;1 2 0x42 9999&#x27;</p>
+<pre>make: Entering directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;
+cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_verilator/obj_embed/Vtb_embed 1 2 0x42 9999
+[embed] 8 baked golden ids loaded
+[embed] prompt of 4 token ids
+tok 0x0001 (    1) -&gt; vec[0..7] = b7 eb fb 3e e0 f8 16 06  OK
+tok 0x0002 (    2) -&gt; vec[0..7] = c1 05 25 ed f6 c8 07 f4  OK
+tok 0x0042 (   66) -&gt; vec[0..7] = 00 00 00 00 00 00 00 00  (no golden)
+tok 0x270f ( 9999) -&gt; vec[0..7] = 00 00 00 00 00 00 00 00  (no golden)
+PROMPT DONE (4 ids, no golden mismatches)
+make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
+
+<h2>embed <span class='badge'>PASS</span></h2>
+<p class='cmd'>make -C src/sim_verilator embed</p>
+<pre>make: Entering directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;
+cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_verilator/obj_embed/Vtb_embed
+[embed] 8 baked golden ids loaded
+tok 0x0000 (    0) -&gt; vec[0..7] = 12 3e 29 fd f3 1a 14 1c  OK
+tok 0x0001 (    1) -&gt; vec[0..7] = b7 eb fb 3e e0 f8 16 06  OK
+tok 0x0002 (    2) -&gt; vec[0..7] = c1 05 25 ed f6 c8 07 f4  OK
+tok 0x7cff (31999) -&gt; vec[0..7] = eb d8 c5 2d 3e d8 20 03  OK
+tok 0x1009 ( 4105) -&gt; vec[0..7] = 12 d2 ee 1d e1 0e 12 06  OK
+tok 0x6310 (25360) -&gt; vec[0..7] = f1 40 f4 36 d5 17 05 ea  OK
+tok 0x163e ( 5694) -&gt; vec[0..7] = f3 ed e2 0f 38 cc c6 f3  OK
+tok 0x5e26 (24102) -&gt; vec[0..7] = ef e9 cd 0d de 00 f7 9f  OK
+tok 0x7d00 (32000, out of range) -&gt; all-zero OK
+EMBED_VLT PASS (8 ids)
+make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
+
+<h2>rmsnorm <span class='badge'>PASS</span></h2>
+<p class='cmd'>make -C src/sim_verilator rmsnorm</p>
+<pre>make: Entering directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;
+cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_verilator/obj_rmsnorm/Vtb_rmsnorm
+[rmsnorm] frame: 576 x lanes, 576 gamma lanes, 576 golden lanes
+ lane |    x_in |  gamma |  y_out | golden | err
+    0 |  -32768 |     54 |    -95 |    -96 | 1  ok
+    1 |   32512 |     18 |     31 |     31 | 0  ok
+    2 |  -31488 |     11 |    -19 |    -18 | 1  ok
+    3 |   30208 |    -25 |    -41 |    -40 | 1  ok
+    4 |  -12544 |     51 |    -34 |    -34 | 0  ok
+    5 |   -9216 |     21 |    -10 |    -10 | 0  ok
+    6 |   25600 |     25 |     34 |     34 | 0  ok
+    7 |    3840 |     18 |      4 |      4 | 0  ok
+ .. 568 more lanes checked silently
+zero frame: 576 pulses, 0 nonzero -&gt; ok
+RMSNORM_VLT PASS (576 lanes, tol=3 LSB)
+make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
+
+<h2>top <span class='badge'>SMOKE (top is structural)</span></h2>
+<p class='cmd'>make -C src/sim_verilator top</p>
+<pre>CLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top___024root__1.cpp
+g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top___024root__2.cpp
+g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top_exp_lut__0.cpp
+g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top__Trace__0.cpp
+g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top__Trace__1.cpp
+g++    tb_top.o verilated.o verilated_fst_c.o verilated_threads.o Vtb_top__ALL.a   -lz  -pthread -lpthread -latomic -llz4 -lz   -o Vtb_top
+rm Vtb_top__ALL.verilator_deplist.tmp
+make[1]: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator/obj_top&#x27;
+- V e r i l a t i o n   R e p o r t: Verilator 5.053 devel rev v5.052-586-g1838b6ed0 (mod)
+- Verilator: Built from 1.162 MB sources in 30 modules, into 7.392 MB in 16 C++ files needing 0.002 MB
+- Verilator: Walltime 5.852 s (elab=0.028, cvt=0.637, bld=5.121); cpu 0.768 s on 20 threads; allocated 91.207 MB
+cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_verilator/obj_top/Vtb_top
+top: ids lanes 0..2 = {1, 2, 0x42}, valid pulsed, 3000 cycles
+  cyc    0: pred_out=    0 done=0  (structural: expect 0/0)
+  cyc  500: pred_out=    0 done=0  (structural: expect 0/0)
+  cyc 1000: pred_out=    0 done=0  (structural: expect 0/0)
+  cyc 1500: pred_out=    0 done=0  (structural: expect 0/0)
+  cyc 2000: pred_out=    0 done=0  (structural: expect 0/0)
+  cyc 2500: pred_out=    0 done=0  (structural: expect 0/0)
+TOP_SMOKE done: pred_out=0 done=0 (meaningful after stitching)
+make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
+
+<h2>Silicon so far</h2>
+<table>
+<tr><th>Block</th><th>sky130 cells</th><th>Notes</th></tr>
+<tr><td>mac_unit</td><td>528</td><td>yosys 0.62, tt corner</td></tr>
+<tr><td>mac_array P=32</td><td>12,401</td><td>ABC 52 s Booth-recoded; GDS below</td></tr>
+<tr><td>dotK K=128</td><td>48,939</td><td>ABC 31 min single-threaded</td></tr>
+</table>
+<p><tt>mac_array</tt> placed+routed (LibreLane Classic, sky130A, 480x480 um):
+13,915 nets, 363,757 um wire, zero DRC, GDS 33 MB / 485,719 shapes.</p>
+<img src="mac_array_top.png" alt="mac_array GDS screenshot">
+<h2>Artifacts</h2>
+<ul>
+<li>Schematics: <a href="../architecture/mobilellm-top.html">top-level</a>,
+<a href="../architecture/blocks-tree.html">block tree</a>,
+<a href="../architecture/mobilellm-router.html">router</a>,
+<a href="../architecture/pages/">per-block pages</a></li>
+<li>Waves (open in Surfer): <tt>src/sim_verilator/waves_prompt.fst</tt>,
+<tt>waves_embed.fst</tt>, <tt>waves_rmsnorm.fst</tt>, <tt>waves_top.fst</tt></li>
+<li>GDS: <tt>renders/mac_array.gds</tt> — full-chip GDS waits on the stitching
+(<tt>mobilellm_top</tt> hierarchy is still structural; SRAM macros for the
+weight banks will come from <tt>sky130_fd_bd_sram</tt>).</li>
+</ul>
+</body></html>
