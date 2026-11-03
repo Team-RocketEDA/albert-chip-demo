@@ -11,7 +11,7 @@ LIB="$PDK/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"
 NIX=/tmp/librelane-shell/squashfs-root/nix/store
 YOSYS=$(echo $NIX/*-yosys-0.62/bin/yosys)
 OPENROAD=$(echo $NIX/*-openroad-2026-02-17/bin/openroad)
-MAGIC=$(echo $NIX/*-magic-vlsi-*/bin/magic)
+MAGIC=${TOOL_MAGIC:-$(command -v magic)}
 KLAYOUT=$(echo $NIX/*-klayout-0.30.7/bin/klayout)
 
 export REPO PDK LIB

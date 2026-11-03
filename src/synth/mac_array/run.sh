@@ -28,12 +28,12 @@ LIB="$PDK/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"
 NIX=/tmp/librelane-shell/squashfs-root/nix/store
 YOSYS=$(echo $NIX/*-yosys-0.62/bin/yosys)
 OPENROAD=$(echo $NIX/*-openroad-2026-02-17/bin/openroad)
-MAGIC=$(echo $NIX/*-magic-vlsi-*/bin/magic)
+MAGIC=${TOOL_MAGIC:-$(command -v magic)}
 KLAYOUT=$(echo $NIX/*-klayout-0.30.7/bin/klayout)
 
 export REPO PDK LIB
 mkdir -p "$HERE/nl" "$HERE/pnr"
-echo "[1/4] synth (yosys)";       sed -e "s|@REPO@|$REPO|g" -e "s|@LIB@|$LIB|g" "$HERE/synth.ys.in" > "$HERE/synth.gen.ys" && "$YOSYS" -q -s "$HERE/synth.gen.ys" | tee "$HERE/run.log"
+echo "[1/4] synth (yosys)";       sed -e "s|@REPO@|$REPO|g" -e "s|@LIB@|$LIB|g" -e "s|@HERE@|$HERE|g" "$HERE/synth.ys.in" > "$HERE/synth.gen.ys" && (cd "$REPO" && "$YOSYS" -q -s "$HERE/synth.gen.ys") 2>&1 | tee "$HERE/run.log" | tail -5
 echo "[2/4] place";                "$OPENROAD" -no_splash -exit "$HERE/pnr.tcl" 2>&1 | tee -a "$HERE/run.log" | tail -3
 echo "[2b/4] route";               "$OPENROAD" -no_splash -exit "$HERE/pnr_route.tcl" 2>&1 | tee -a "$HERE/run.log" | tail -5
 echo "[3/4] GDS merge (magic)";   (cd "$HERE" && "$MAGIC" -dnull -noconsole -rcfile "$PDK/libs.tech/magic/sky130A.magicrc" merge.tcl 2>&1 | tail -3)

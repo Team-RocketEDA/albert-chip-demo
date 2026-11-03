@@ -10,5 +10,5 @@ opt
 abc -liberty @LIB@
 opt; clean
 stat
-tee -o nl/report.txt stat
-write_verilog -noattr -noexpr -nohex -nodec nl/mac_array.nl.v
+tee -o @HERE@/nl/report.txt stat
+write_verilog -noattr -noexpr -nohex -nodec @HERE@/nl/mac_array.nl.v
