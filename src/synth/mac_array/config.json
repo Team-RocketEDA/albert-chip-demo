@@ -5,8 +5,15 @@
   "CLOCK_PERIOD": 25,
   "PDK": "sky130A",
   "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+  "LIB": {
+    "*tt*": ["/home/alrida-ismail/.local/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"],
+    "*ss*": ["/home/alrida-ismail/.local/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ss_100C_1v60.lib"],
+    "*ff*": ["/home/alrida-ismail/.local/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v95.lib"]
+  },
+  "STA_CORNERS": ["nom_tt_025C_1v80", "nom_ss_100C_1v60", "nom_ff_n40C_1v95", "min_tt_025C_1v80", "min_ss_100C_1v60", "min_ff_n40C_1v95", "max_tt_025C_1v80", "max_ss_100C_1v60", "max_ff_n40C_1v95"],
+  "DEFAULT_CORNER": "nom_tt_025C_1v80",
   "SYNTH_STRATEGY": "AREA 0",
   "FP_SIZING": "absolute",
-  "DIE_AREA": "0 0 120 120",
+  "DIE_AREA": [0, 0, 480, 480],
   "RUN_TAG": "demo"
 }

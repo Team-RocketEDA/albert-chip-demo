@@ -237,3 +237,5 @@ weights/bake/
 # Verilator sim artifacts (regenerable via make -C src/sim_verilator).
 src/sim_verilator/obj_*/
 src/sim_verilator/waves_*.fst
+# LibreLane run directories (regenerable; goldens live in src/synth/).
+runs/

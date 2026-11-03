@@ -1,0 +1,10 @@
+# Generated flow artifacts (regenerable via run.sh / librelane). Do NOT commit.
+# Golden committables live alongside: config.json, *.ys.in, *.tcl, run.sh,
+# README.md, and (once verified neat) mac_array.gds + mac_array_top.png.
+nl/
+pnr/
+synth.gen.ys
+synth.log
+run.log
+pnr.log
+pnr_route.log

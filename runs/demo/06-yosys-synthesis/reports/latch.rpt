@@ -1,4 +1,0 @@
-
-14. Executing PROC_DLATCH pass (convert process syncs to latches).
-No latch inferred for signal `\mac_array.\i' from process `\mac_array.$proc$src/components/mac_array.v:26$2'.
-No latch inferred for signal `\mac_array.\psum' from process `\mac_array.$proc$src/components/mac_array.v:26$2'.
