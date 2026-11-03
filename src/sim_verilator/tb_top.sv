@@ -21,7 +21,13 @@ module tb_top (
   output wire            tap_x0_valid,
   output wire [64*576*8-1:0] tap_x0,
   output wire            tap_layer_done,
-  output wire [64*576*8-1:0] tap_x30
+  output wire [64*576*8-1:0] tap_x30,
+  // Loop protocol taps (09-interface phase/stall checks at full dims).
+  output wire [4:0]      tap_layer_idx,
+  output wire [3:0]      tap_tile_sel,
+  output wire [5:0]      tap_ilp,
+  output wire [5:0]      tap_olp,
+  output wire            tap_theta_req
 );
   mobilellm_top #(.S(64), .H(576), .V(32000)) u_dut (
     .clk(clk), .rst_n(rst_n), .start(start),
@@ -33,4 +39,9 @@ module tb_top (
   assign tap_x0         = u_dut.u_embed.x0_out;
   assign tap_layer_done = u_dut.u_loop.layer_done;
   assign tap_x30        = u_dut.u_loop.x_out;
+  assign tap_layer_idx  = u_dut.u_loop.layer_idx;
+  assign tap_tile_sel   = u_dut.u_loop.tile_sel;
+  assign tap_ilp        = u_dut.u_loop.fifo_lane_en_ilp;
+  assign tap_olp        = u_dut.u_loop.fifo_lane_en_olp;
+  assign tap_theta_req  = u_dut.u_loop.theta_req;
 endmodule

@@ -91,12 +91,14 @@ cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_ve
 [top] baked ids + subset weights loaded
 phaseB pushed 64 ids PASS
 phaseB X0 valid after 55934 cyc PASS
-phaseB LOOP30 done after 272 cyc PASS
+phaseP stall freeze (20cyc, layer 3) PASS
+phaseB LOOP30 done after 223 cyc PASS
+phaseP layers 0..29 + phases p0..p3 all observed PASS
 phaseB X_30 = X_0+30 full-frame PASS
 phaseB oracle argmax pred=2 logit=000390ce
 phaseB head done exactly-once PASS
 phaseB pred=2 matches oracle PASS
-TOP_VLT PASS (ids-&gt;pred full model)
+TOP_VLT PASS (ids-&gt;pred full model + protocol)
 make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
 
 <h2>Silicon so far</h2>

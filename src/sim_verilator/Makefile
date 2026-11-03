@@ -44,11 +44,6 @@ $(HERE)/obj_rmsnorm/Vtb_rmsnorm: $(HERE)/tb_rmsnorm.sv $(HERE)/tb_rmsnorm.cpp $(
 inproj: $(HERE)/obj_inproj/Vtb_inproj
 	cd $(ROOT) && ./src/sim_verilator/obj_inproj/Vtb_inproj
 
-# --trace-max-width 15360: Verilator's default (256b) silently drops the
-# wide packed frames from the wave (7680-bit y_out, 15360-bit y_out2 for
-# the S=2 row-advance DUT); the Q|K|V bytes are invisible in Surfer
-# without this.
-# INPROJFLAGS suppressions (DUT-owned, do not edit to silence):
 # - UNUSEDSIGNAL: unused FIFO status/read taps + mac acc_ext headroom
 #   (same class as the rmsnorm target).
 # - WIDTHEXPAND: narrow counters compared against 32-bit loop bounds;
