@@ -30,6 +30,13 @@ PROMPT_IDS ?= 1 2 0x42
 prompt: $(HERE)/obj_embed/Vtb_embed
 	cd $(ROOT) && ./src/sim_verilator/obj_embed/Vtb_embed $(PROMPT_IDS)
 
+# Text mode: English in, vectors out (tokenizer bridge, then the same bench).
+# Usage: make -C src/sim_verilator prompt-text PROMPT_TEXT="hello world"
+# Decode model id outputs back with: python3 weights/tokenize.py --decode <ids>
+PROMPT_TEXT ?= hello world
+prompt-text: $(HERE)/obj_embed/Vtb_embed
+	cd $(ROOT) && ./src/sim_verilator/obj_embed/Vtb_embed $$(python3 $(ROOT)/weights/tokenize.py "$(PROMPT_TEXT)")
+
 # --trace-max-width 4608: Verilator's default (256b) silently drops the
 # 4608-bit vec from the wave; the lookup is invisible in Surfer without this.
 $(HERE)/obj_embed/Vtb_embed: $(HERE)/tb_embed.sv $(HERE)/tb_embed.cpp $(ROOT)/src/components/embed_lut.v
