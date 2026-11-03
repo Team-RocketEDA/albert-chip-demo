@@ -16,6 +16,8 @@ blocks:
   ffn_tile:         { doc: architecture/blocks/06-ffn-tile.md,         rtl: src/components/ffn_tile.v }
   lm_head:          { doc: architecture/blocks/07-lm-head.md,          rtl: src/components/lm_head.v }
   loop_mem_seq:     { doc: architecture/blocks/08-loop-mem-seq.md,     rtl: src/components/loop_mem_seq.v }
+  layer_etched:     { doc: architecture/top-level.md,                 rtl: src/components/layer_etched.v }
+  decoder_etched_stack: { doc: architecture/top-level.md,         rtl: src/components/decoder_etched_stack.v }
 leaves:
   fifo_sync:        { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/fifo_sync.v }
   regfile_dp:       { doc: architecture/blocks/00-primitive-library.md, rtl: src/components/regfile_dp.v }

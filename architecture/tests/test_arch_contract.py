@@ -468,7 +468,8 @@ class TestSkeleton(unittest.TestCase):
               "div_unit"}
     WIRING = {"mobilellm_top", "embed_top", "loop_mem_seq", "inproj_tile",
               "attention_core", "outproj_tile", "rmsnorm_stage",
-              "ffn_tile", "lm_head", "softmax_d", "rmsnorm_d"}
+              "ffn_tile", "lm_head", "softmax_d", "rmsnorm_d",
+              "layer_etched", "decoder_etched_stack"}
     NO_LOGIC = ["always", "assign", "initial"]
     SYSTEM_FNS = {"clog2"}
     KEYWORDS = {"generate", "end", "for", "begin", "genvar", "if", "else",
@@ -546,6 +547,45 @@ class TestSkeleton(unittest.TestCase):
                            sorted(str(p) for p in self.SRC.glob("*.v")),
                            capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stderr)
+
+
+class TestPinNames(unittest.TestCase):
+    """Exact RTL port-name lists per macro (audited from src/components)."""
+    SRC = REPO / "src" / "components"
+    EXPECTED = {
+        "mac_array": ["clk", "rst_n", "ce", "clr", "avec", "bvec",
+                      "acc_in", "acc_out"],
+        "inproj_tile": ["clk", "rst_n", "tok_in", "tok_valid", "cfg_scale",
+                        "cfg_zero", "tok_ready", "y_out", "y_valid"],
+        "attention_core": ["clk", "rst_n", "q_in", "k_in", "v_in",
+                           "qkv_valid", "s_cfg", "qkv_ready", "y_out",
+                           "y_valid"],
+        "outproj_tile": ["clk", "rst_n", "z_in", "z_valid", "z_ready",
+                         "slice_out", "slice_valid"],
+        "rmsnorm_stage": ["clk", "rst_n", "x_in", "resid_in", "in_valid",
+                          "in_ready", "y_out", "y_valid"],
+        "ffn_tile": ["clk", "rst_n", "x_in", "x_valid", "start", "x_ready",
+                     "y_out", "y_valid", "done"],
+        "lm_head": ["clk", "rst_n", "x_last_in", "x_valid", "pred_out",
+                    "done"],
+        "embed_top": ["clk", "rst_n", "ids_in", "ids_valid", "ids_ready",
+                      "x0_out", "x0_valid"],
+        "layer_etched": ["clk", "rst_n", "x_in", "x_valid", "x_ready",
+                         "x_out", "y_valid"],
+    }
+
+    def _ports(self, name):
+        src = (self.SRC / f"{name}.v").read_text()
+        m = re.search(r"module\s+" + name + r"\b(.*?)\);", src, re.S)
+        self.assertIsNotNone(m, f"{name}: module header not found")
+        hdr = re.sub(r"//[^\n]*", "", m.group(1))
+        return re.findall(r"(?:input|output|inout)\s+(?:wire|reg)?\s*"
+                          r"(?:\[.*?\]\s*)?(\w+)", hdr)
+
+    def test_exact_port_names(self):
+        for name, want in self.EXPECTED.items():
+            self.assertEqual(self._ports(name), want,
+                             f"port list drift in module {name}")
 
 
 class TestSequencer(unittest.TestCase):
