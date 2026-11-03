@@ -225,10 +225,15 @@ __marimo__/
 # graphify-out/ = tool cache. .archify run dirs = generated archify
 # reports (already-tracked candidate.json files stay tracked).
 # weights/mobilellm-125m/ = gated Meta checkpoint binaries fetched by
-# the user, never ledgered.
+# the user, never ledgered. weights/bake/ = baked int8 hex tables +
+# quant reports (regenerable from the checkpoint, possibly 100MB+).
 /vendor/
 /.rocket/
 /graphify-out/
 weights/mobilellm-125m/
+weights/bake/
 .archify/architecture-*/
 .archify/pages-*/
+# Verilator sim artifacts (regenerable via make -C src/sim_verilator).
+src/sim_verilator/obj_*/
+src/sim_verilator/waves_*.fst
