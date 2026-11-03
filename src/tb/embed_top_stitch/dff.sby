@@ -1,0 +1,15 @@
+# dff.sby — BMC proof of reset dominance + Q=D (depth 5, smtbmc/boolector).
+# Run from this dir: sby -f dff.sby
+[options]
+mode bmc
+depth 5
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal -DFORMAL dff.v
+prep -top dff
+
+[files]
+../../components/dff.v
