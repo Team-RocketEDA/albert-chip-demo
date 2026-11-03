@@ -28,7 +28,9 @@ INT8 datapaths with Q8.8/Q4.12 fixed-point islands:
   [architecture/pages/](architecture/pages/))
 - `weights/` — fetch script and manifest. The baked INT8 tables and goldens in
   `weights/bake/` (272 tensors verified from the finetuned safetensors) are local
-  and gitignored
+  and gitignored. Provenance: weights are the `h0ssn/MobileLLM-125M-e3.9.24.4.2-Agnews`
+  finetune of `facebook/MobileLLM-125M` (base architecture, shifted weights) —
+  say "finetuned checkpoint", never "base model", until a base re-bake lands
 - `src/sim_verilator/` — readable Verilator benches with Surfer waveforms
 - `src/synth/mac_array/` — one-config LibreLane flow to GDS
 - `renders/` — committed demo goldens (GDS + screenshot)
