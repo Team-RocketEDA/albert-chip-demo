@@ -1,0 +1,19 @@
+{
+  "DESIGN_NAME": "layer20_etched",
+  "VERILOG_FILES": ["src/components/attention_core.v", "src/components/div_unit.v", "src/components/exp_lut.v", "src/components/fifo_sync.v", "src/components/ffn_tile.v", "src/components/inproj_tile.v", "src/components/layer_etched.v", "src/components/mac_array.v", "src/components/outproj_tile.v", "src/components/regfile_dp.v", "src/components/requant.v", "src/components/rmsnorm_d.v", "src/components/rmsnorm_stage.v", "src/components/seq_fsm.v", "src/components/silu_lut.v", "src/components/softmax_d.v", "src/components/sram_1r1w.v"],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 25,
+  "PDK": "sky130A",
+  "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+  "LIB": {
+    "*tt*": ["/home/alrida-ismail/.local/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"],
+    "*ss*": ["/home/alrida-ismail/.local/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ss_100C_1v60.lib"],
+    "*ff*": ["/home/alrida-ismail/.local/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v95.lib"]
+  },
+  "STA_CORNERS": ["nom_tt_025C_1v80", "nom_ss_100C_1v60", "nom_ff_n40C_1v95", "min_tt_025C_1v80", "min_ss_100C_1v60", "min_ff_n40C_1v95", "max_tt_025C_1v80", "max_ss_100C_1v60", "max_ff_n40C_1v95"],
+  "DEFAULT_CORNER": "nom_tt_025C_1v80",
+  "SYNTH_STRATEGY": "AREA 0",
+  "FP_SIZING": "absolute",
+  "DIE_AREA": [0, 0, 2000, 2000],
+  "RUN_TAG": "demo"
+}
