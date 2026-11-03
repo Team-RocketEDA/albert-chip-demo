@@ -70,28 +70,33 @@ zero frame: 576 pulses, 0 nonzero -&gt; ok
 RMSNORM_VLT PASS (576 lanes, tol=3 LSB)
 make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
 
-<h2>top <span class='badge'>SMOKE (top is structural)</span></h2>
+<h2>inproj <span class='badge'>PASS</span></h2>
+<p class='cmd'>make -C src/sim_verilator inproj</p>
+<pre>make: Entering directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;
+cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_verilator/obj_inproj/Vtb_inproj
+[inproj] frame0 (Q third): accum+y exact, y_valid x1
+[inproj] frame1 (K third): accum+y exact, y_valid x1
+[inproj] frame2 (V third): accum+y exact, y_valid x1
+[inproj] S=2 frame: 2 rows x 960 bytes exact, y_valid x1
+y[0..7]   = -128 -128 -128 -128 -128 -128 -128 127
+y[576..583]= -128 -128 -128 -128 -128 -128 -128 -128
+y[768..775]= 127 127 -128 -128 127 127 127 127
+INPROJ_VLT PASS (4 frames: 3xS=1 + S=2 rows, dots + bytes exact)
+make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
+
+<h2>top <span class='badge'>PASS</span></h2>
 <p class='cmd'>make -C src/sim_verilator top</p>
-<pre>CLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top___024root__1.cpp
-g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top___024root__2.cpp
-g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top_exp_lut__0.cpp
-g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top__Trace__0.cpp
-g++ -Os  -I.  -MMD -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include -I/home/alrida-ismail/tools/oss-cad-suite/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-int-in-bool-context -Wno-shadow -Wno-sign-compare -Wno-subobject-linkage -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable  -DVM_PREFIX_INCLUDE=&quot;&lt;Vtb_top.h&gt;&quot;     -include Vtb_top__pch.h.fast -c Vtb_top__Trace__1.cpp
-g++    tb_top.o verilated.o verilated_fst_c.o verilated_threads.o Vtb_top__ALL.a   -lz  -pthread -lpthread -latomic -llz4 -lz   -o Vtb_top
-rm Vtb_top__ALL.verilator_deplist.tmp
-make[1]: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator/obj_top&#x27;
-- V e r i l a t i o n   R e p o r t: Verilator 5.053 devel rev v5.052-586-g1838b6ed0 (mod)
-- Verilator: Built from 1.162 MB sources in 30 modules, into 7.392 MB in 16 C++ files needing 0.002 MB
-- Verilator: Walltime 5.852 s (elab=0.028, cvt=0.637, bld=5.121); cpu 0.768 s on 20 threads; allocated 91.207 MB
+<pre>make: Entering directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;
 cd /home/alrida-ismail/github/rocketEDA/albert-chip-demo &amp;&amp; ./src/sim_verilator/obj_top/Vtb_top
-top: ids lanes 0..2 = {1, 2, 0x42}, valid pulsed, 3000 cycles
-  cyc    0: pred_out=    0 done=0  (structural: expect 0/0)
-  cyc  500: pred_out=    0 done=0  (structural: expect 0/0)
-  cyc 1000: pred_out=    0 done=0  (structural: expect 0/0)
-  cyc 1500: pred_out=    0 done=0  (structural: expect 0/0)
-  cyc 2000: pred_out=    0 done=0  (structural: expect 0/0)
-  cyc 2500: pred_out=    0 done=0  (structural: expect 0/0)
-TOP_SMOKE done: pred_out=0 done=0 (meaningful after stitching)
+[top] baked ids + subset weights loaded
+phaseB pushed 64 ids PASS
+phaseB X0 valid after 55934 cyc PASS
+phaseB LOOP30 done after 272 cyc PASS
+phaseB X_30 = X_0+30 full-frame PASS
+phaseB oracle argmax pred=2 logit=000390ce
+phaseB head done exactly-once PASS
+phaseB pred=2 matches oracle PASS
+TOP_VLT PASS (ids-&gt;pred full model)
 make: Leaving directory &#x27;/home/alrida-ismail/github/rocketEDA/albert-chip-demo/src/sim_verilator&#x27;</pre>
 
 <h2>Silicon so far</h2>

@@ -1,11 +1,10 @@
-// tb_top.sv — Verilator smoke top for the FULL model (structural today).
+// tb_top.sv — Verilator top for the FULL model (wired since stitching).
 //
 // This instantiates mobilellm_top with the shipped MobileLLM-125M geometry
-// (S=64/H=576/V=32000) so the whole tree elaborates under Verilator and
-// you get a real waves_top.fst in Surfer. EXPECT X OUTPUTS: the hierarchy
-// above the leaves is still wiring-only (ports unconnected by design, see
-// the STRUCTURAL ONLY headers), so pred_out/done cannot be meaningful
-// until the stitching lands. This bench proves the flow, not the model.
+// (S=64/H=576/V=32000): EMBED -> LOOP30 -> HEAD. The C++ driver
+// (tb_top.cpp) runs the loop_top Part B protocol: 64 baked ids in,
+// X_30 loopback check, subset-logit oracle, pred_out/done out.
+// Waves land in waves_top.fst for Surfer.
 `timescale 1ns / 1ps
 module tb_top (
   input  wire            clk,
@@ -14,11 +13,24 @@ module tb_top (
   input  wire [64*16-1:0] ids_in,
   input  wire            ids_valid,
   output wire [14:0]     pred_out,
-  output wire            done
+  output wire            done,
+  // Hierarchical taps (sim-owned; mirror the loop_top stitch TB's
+  // dut_top.u_embed/u_loop probes). Exporting them here as wrapper
+  // outputs keeps Verilator from deleting the cones as unused.
+  output wire            tap_ids_ready,
+  output wire            tap_x0_valid,
+  output wire [64*576*8-1:0] tap_x0,
+  output wire            tap_layer_done,
+  output wire [64*576*8-1:0] tap_x30
 );
   mobilellm_top #(.S(64), .H(576), .V(32000)) u_dut (
     .clk(clk), .rst_n(rst_n), .start(start),
     .ids_in(ids_in), .ids_valid(ids_valid),
     .pred_out(pred_out), .done(done)
   );
+  assign tap_ids_ready  = u_dut.u_embed.ids_ready;
+  assign tap_x0_valid   = u_dut.u_embed.x0_valid;
+  assign tap_x0         = u_dut.u_embed.x0_out;
+  assign tap_layer_done = u_dut.u_loop.layer_done;
+  assign tap_x30        = u_dut.u_loop.x_out;
 endmodule

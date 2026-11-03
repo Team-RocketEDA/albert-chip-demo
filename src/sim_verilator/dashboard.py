@@ -28,8 +28,6 @@ def bench(name, cmd):
     rc, out = run(cmd)
     status = "PASS" if (rc == 0 and "FAIL" not in out and "MISMATCH" not in out
                         and "ERROR" not in out) else "CHECK"
-    if "TOP_SMOKE" in out:
-        status = "SMOKE (top is structural)"
     return {"name": name, "cmd": cmd, "rc": rc, "out": out, "status": status}
 
 
@@ -38,6 +36,7 @@ def main():
         bench("prompt", "make -C src/sim_verilator prompt PROMPT_IDS='1 2 0x42 9999'"),
         bench("embed", "make -C src/sim_verilator embed"),
         bench("rmsnorm", "make -C src/sim_verilator rmsnorm"),
+        bench("inproj", "make -C src/sim_verilator inproj"),
         bench("top", "make -C src/sim_verilator top"),
     ]
 
@@ -47,7 +46,7 @@ def main():
                 f"<pre>{html.escape(b['out'][-4000:])}</pre>\n")
 
     body = "\n".join(section(b) for b in benches)
-    overall = ("ALL GREEN" if all(b["status"] in ("PASS", "SMOKE (top is structural)")
+    overall = ("ALL GREEN" if all(b["status"] == "PASS"
                                   for b in benches) else "SEE OUTPUT")
 
     page = f"""<!DOCTYPE html>

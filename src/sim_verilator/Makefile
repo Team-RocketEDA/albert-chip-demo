@@ -79,12 +79,24 @@ top: $(HERE)/obj_top/Vtb_top
 # TOPFLAGS: smoke target, defaults only (no -Wall). The tree above the
 # leaves is unfinished structural RTL, so its lint classes are suppressed
 # here with prejudice and documented: UNCONNECTED/PINMISSING ports,
-# UNDRIVEN floats, UNUSED stubs, WIDTHEXPAND in DUT expressions. The
+# UNDRIVEN floats, UNUSED stubs, WIDTHEXPAND in DUT expressions.
+# --unroll-limit 131072: the ffn y_out pack is a flat S*H=36864 generate
+# (and RoPE ~24K nested); Verilator's default 16384 trips on depth, not
+# on any real loop bug. The inproj tile packs clocked instead; unifying
+# the style is lane cleanup, not needed for the sim.
+# - WIDTHCONCAT: full-frame zero-inits ({S*H*8{1'b0}} etc., up to 491520b
+#   in inproj at S=64); legitimate wide clears, same class as inproj S=2.
+# - WIDTHTRUNC: guarded-by-construction narrowings, all covered by passing
+#   stitch sims — attention row/col counters wrap at nrows-1/S-1 so the
+#   dropped 7th bit is always 0; (l_raw>>>3) lanes are saturation-guarded
+#   to [-32768,32767] before the 16-bit take; outproj SRAM/accum indices
+#   fit their maxima by construction (C*NP-1, S*C-1 per the header). The
 # wrapper (tb_top.sv) itself must stay warning-free — verified by the
 # zero-mention check below. Tighten this the day the stitching lands.
-TOPFLAGS := --cc --exe --trace-fst --build -j 20 \
+TOPFLAGS := --cc --exe --trace-fst --build -j 20 --unroll-limit 131072 \
   -Wno-UNDRIVEN -Wno-UNUSED -Wno-UNOPTFLAT -Wno-PINMISSING \
-  -Wno-WIDTHEXPAND -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL
+  -Wno-WIDTHEXPAND -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL \
+  -Wno-WIDTHCONCAT -Wno-WIDTHTRUNC
 $(HERE)/obj_top/Vtb_top: $(HERE)/tb_top.sv $(HERE)/tb_top.cpp $(ROOT)/src/components/*.v
 	cd $(HERE) && $(VL) $(TOPFLAGS) --top-module tb_top --Mdir obj_top \
 	  tb_top.sv tb_top.cpp $(ROOT)/src/components/*.v
