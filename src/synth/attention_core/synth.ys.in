@@ -1,0 +1,20 @@
+# synth.ys — yosys synthesis of attention_core to sky130_fd_sc_hd (tt).
+# Run via run.sh (yosys CWD = repo root so baked $readmemh paths resolve).
+read_verilog @REPO@/src/components/attention_core.v
+read_verilog @REPO@/src/components/div_unit.v
+read_verilog @REPO@/src/components/exp_lut.v
+read_verilog @REPO@/src/components/fifo_sync.v
+read_verilog @REPO@/src/components/mac_array.v
+read_verilog @REPO@/src/components/softmax_d.v
+read_verilog @REPO@/src/components/sram_1r1w.v
+hierarchy -check -top attention_core
+proc; opt; fsm; opt; memory; opt
+booth
+techmap; opt
+dfflibmap -liberty @LIB@
+opt
+abc -liberty @LIB@
+opt; clean
+stat
+tee -o @HERE@/nl/report.txt stat
+write_verilog -noattr -noexpr -nohex -nodec @HERE@/nl/attention_core.nl.v
