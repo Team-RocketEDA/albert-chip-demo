@@ -2,8 +2,11 @@
 # Fetch the gated Meta checkpoint with YOUR HuggingFace account.
 # Usage: HF_TOKEN=hf_xxx ./fetch_weights.sh   (token needs license accept on
 #        https://huggingface.co/facebook/MobileLLM-125M first)
+#  But we're actually using the finetune: h0ssn/MobileLLM-125M-e3.9.24.4.2-Agnews
+#  Since we need permission to get the original MobileLLM-125 weight :)
+#  Sorry, Meta!
 set -u
-REPO_ID="facebook/MobileLLM-125M"
+REPO_ID="h0ssn/MobileLLM-125M-e3.9.24.4.2-Agnews"
 DEST="$(cd "$(dirname "$0")" && pwd)/mobilellm-125m"
 : "${HF_TOKEN:?Set HF_TOKEN to your HuggingFace token first.}"
 
