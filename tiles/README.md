@@ -19,6 +19,9 @@ Magic/KLayout stitch script has stable inputs to wire into `mobilellm-125m.gds`.
 - Only GDS + this manifest live here: no logs, no reports, no Lewis.
 - Source of truth for how each GDS was made: `src/synth/<block>/config.json`
   plus the bake manifest (`weights/bake/INDEX.md`).
+- Toolchain rule (repo-wide): every `run.sh` resolves tools from the
+  provisioned sister folder `../rocket-engine` (`RE_ROOT` override wins);
+  Magic comes from PATH (source build, canonical).
 
 ## Current contents
 

@@ -39,6 +39,15 @@ INT8 datapaths with Q8.8/Q4.12 fixed-point islands:
 
 ## How to test and verify
 
+ASSUMPTION: `rocket-engine` is cloned as a SISTER folder of this repo
+(`../rocket-engine`) and fully provisioned (its
+`scripts/provision_toolchain.sh --install`) before running anything here.
+Every tool resolves from it — iverilog/verilator/yosys/sby from its
+oss-cad-suite, klayout from its tools dir, Python (cocotb, gdsfactory,
+pytest) from its `.venv` — with Magic as the one exception (your source
+build on PATH, canonical). Override with `RE_ROOT=/path/to/rocket-engine`;
+`PDK=` for the sky130A root. Nothing in this repo carries a machine path.
+
 You need Icarus Verilog, Verilator, Yosys and SymbiYosys, LibreLane for the GDS
 flow, and Surfer for waves. Every command runs from the repo root.
 

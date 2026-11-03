@@ -11,6 +11,11 @@
 #   surfer src/sim_verilator/waves_embed.fst
 HERE := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 ROOT := $(abspath $(HERE)/../..)
+# Tools resolve via PATH — run under ./build.sh so rocket-engine's
+# provisioned bins (oss-cad-suite) and venv come first. Standalone,
+# RE_ROOT defaults to the sister folder; RE_PY to plain python3.
+RE_ROOT ?= $(abspath $(ROOT)/../rocket-engine)
+RE_PY ?= python3
 # Verilator from PATH; override with VL=/path/to/verilator. No machine paths here.
 VL ?= $(shell command -v verilator)
 ifeq ($(VL),)
@@ -35,7 +40,7 @@ prompt: $(HERE)/obj_embed/Vtb_embed
 # Decode model id outputs back with: python3 weights/tokenize.py --decode <ids>
 PROMPT_TEXT ?= hello world
 prompt-text: $(HERE)/obj_embed/Vtb_embed
-	cd $(ROOT) && ./src/sim_verilator/obj_embed/Vtb_embed $$(python3 $(ROOT)/weights/tokenize.py "$(PROMPT_TEXT)")
+	cd $(ROOT) && ./src/sim_verilator/obj_embed/Vtb_embed $$($(RE_PY) $(ROOT)/weights/tokenize.py "$(PROMPT_TEXT)")
 
 # --trace-max-width 4608: Verilator's default (256b) silently drops the
 # 4608-bit vec from the wave; the lookup is invisible in Surfer without this.

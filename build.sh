@@ -14,9 +14,19 @@
 # Stitch TB names:  embed_top attention outproj rmsnorm ffn lm_head (iverilog)
 # GDS block names:  mac_array lm_head embed_top outproj_tile rmsnorm_stage
 #                   attention_core ffn_tile layer0 .. layer29
+# ASSUMPTION (see README): rocket-engine is cloned as a SISTER folder of
+# this repo and fully provisioned (its scripts/provision_toolchain.sh
+# --install) before running anything here. Every tool below resolves from
+# it; override per variable, never by editing paths into files.
+#   RE_ROOT  rocket-engine root (default: <this-repo>/../rocket-engine)
 set -u
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
+RE_ROOT="${RE_ROOT:-$ROOT/../rocket-engine}"
+RE_PY="$RE_ROOT/.venv/bin/python"
+RE_OSS="$RE_ROOT/.tools/oss-cad-suite/bin"
+RE_KL="$RE_ROOT/.tools/klayout-0.30.12/bin"
+export RE_ROOT RE_PY PATH="$RE_OSS:$RE_KL:$PATH"
 
 # PDK lookup: $PDK wins; then well-known locations (volare, Thompson, system).
 # Override per-machine with PDK=/path/to/sky130A — never edit this file for paths.
@@ -33,11 +43,15 @@ need()  { command -v "$1" >/dev/null 2>&1 && echo "  OK       $1" || { echo "  M
 opt()   { command -v "$1" >/dev/null 2>&1 && echo "  OK       $1 (optional)" || echo "  -        $1 (optional, skipped)"; }
 
 cmd_prereqs() {
-  echo "== required =="
+  echo "== rocket-engine ($RE_ROOT) =="
   local fail=0
-  need iverilog "(oss-cad-suite)" || fail=1
-  need verilator "(oss-cad-suite)" || fail=1
-  need python3 || fail=1
+  [ -x "$RE_PY" ] && echo "  OK       venv python ($RE_PY)" || { echo "  MISSING  $RE_PY — provision rocket-engine first"; fail=1; }
+  if [ -x "$RE_PY" ]; then
+    "$RE_PY" -c "import cocotb, gdsfactory, pytest" 2>/dev/null && echo "  OK       venv modules (cocotb+gdsfactory+pytest)" || { echo "  MISSING  venv modules (cocotb/gdsfactory/pytest)"; fail=1; }
+  fi
+  echo "== required =="
+  need iverilog "($RE_OSS)" || fail=1
+  need verilator "($RE_OSS)" || fail=1
   [ -x "$MAGIC_BIN" ] && echo "  OK       magic ($MAGIC_BIN)" || { echo "  MISSING  magic (source build, /usr/local/bin/magic)"; fail=1; }
   command -v klayout >/dev/null && echo "  OK       klayout" || { echo "  MISSING  klayout"; fail=1; }
   [ -n "$PDK" ] && [ -d "$PDK" ] && echo "  OK       PDK ($PDK)" || { echo "  MISSING  PDK dir — set PDK=/path/to/sky130A"; fail=1; }
@@ -52,8 +66,8 @@ cmd_test() {
   local sel="${1:-all}"
   echo "== [1/4] elab =="
   bash src/scripts/elab.sh || return 1
-  echo "== [2/4] contract tests =="
-  python3 -m unittest discover -s architecture/tests || return 1
+  echo "== [2/4] contract tests ($RE_PY) =="
+  "$RE_PY" -m unittest discover -s architecture/tests || return 1
   echo "== [3/4] iverilog stitch TBs ($sel) =="
   if [ "$sel" = all ]; then bash src/scripts/run_stitch.sh || return 1;
   elif [ "$sel" = embed_top ] || [ "$sel" = attention ] || [ "$sel" = outproj ] || [ "$sel" = rmsnorm ] || [ "$sel" = ffn ] || [ "$sel" = lm_head ]; then bash src/scripts/run_stitch.sh "$sel" || return 1; fi
@@ -87,7 +101,7 @@ cmd_gds() {
 
 cmd_stitch() {
   export REPO="$ROOT" TILES="${TILES:-$ROOT/tiles}"
-  klayout -b -r "$ROOT/tiles/stitch.py" || return 1
+  "$RE_KL/klayout" -b -r "$ROOT/tiles/stitch.py" || return 1
 }
 
 case "${1:-help}" in

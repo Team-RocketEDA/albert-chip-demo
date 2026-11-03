@@ -23,6 +23,10 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 REPO="$(cd "$HERE/../../.." && pwd)"
+# rocket-engine (sister folder, provisioned): tools resolve from it.
+# RE_ROOT override wins; PATH gains its oss-cad-suite + klayout bins.
+RE_ROOT="${RE_ROOT:-$REPO/../rocket-engine}"
+export RE_ROOT PATH="$RE_ROOT/.tools/oss-cad-suite/bin:$RE_ROOT/.tools/klayout-0.30.12/bin:$PATH"
 PDK="${PDK:-$HOME/.local/share/pdk/sky130A}"
 LIB="$PDK/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"
 NIX=/tmp/librelane-shell/squashfs-root/nix/store

@@ -107,6 +107,10 @@ YS
 set -euo pipefail
 HERE="\$(cd "\$(dirname "\$0")" && pwd)"
 REPO="\$(cd "\$HERE/../../.." && pwd)"
+# rocket-engine (sister folder, provisioned): tools resolve from it.
+# RE_ROOT override wins; PATH gains its oss-cad-suite + klayout bins.
+RE_ROOT="\${RE_ROOT:-\$REPO/../rocket-engine}"
+export RE_ROOT PATH="\$RE_ROOT/.tools/oss-cad-suite/bin:\$RE_ROOT/.tools/klayout-0.30.12/bin:\$PATH"
 # PDK: \$PDK wins, else well-known locations (same rule as build.sh prereqs).
 if [ -z "\${PDK:-}" ]; then
   for c in "\$HOME/.volare/sky130A" "\$HOME/.local/share/pdk/sky130A" "\${PDK_ROOT:-}/sky130A" /usr/share/pdk/sky130A; do
