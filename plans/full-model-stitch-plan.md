@@ -54,10 +54,14 @@ deviation is a bug, not tolerance.
 
 ## Stage C — `attention_core`: QKV -> Y
 
-Split thirds; **RoPE sub-step (explicit):** no rope module exists and
-none will be added — implement rotation as inferred mult-add pairs in
-the wiring, fed by a baked sin/cos Q4.12 ROM; extend `bake.py` (pure
-stdlib) to emit it; acceptance vs python RoPE within 1 LSB.
+Split thirds; **RoPE sub-step (arch-cited):** `03-attention-core.md`
+item 4 already specifies `rope_Q`/`rope_K` as named inner blocks
+(mult pairs + constant sin/cos tables), and the skeleton (`attention_core.v:40`)
+states rotation as inferred mult-add pairs — so no new file, same as
+`rowmax_tree`/`q_buf`: implement as named generate-looped instance
+groups `u_rope_q`/`u_rope_k` (pair split -> mult-add -> concat) fed by
+a baked sin/cos Q4.12 ROM; extend `bake.py` (pure stdlib) to emit it
+from `rope_theta` 10000.0; acceptance vs python RoPE within 1 LSB.
 Then QK dots -> scale -> `softmax_d` (causal=1, **reset `row_q` at
 frame start** — counter alignment is a known integration trap) -> AV
 -> Y; K/V cache SRAM banks for decode, streaming prefill.
