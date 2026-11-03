@@ -1,6 +1,6 @@
 {
   "DESIGN_NAME": "layer6_etched",
-  "VERILOG_FILES": ["src/components/attention_core.v", "src/components/div_unit.v", "src/components/exp_lut.v", "src/components/fifo_sync.v", "src/components/ffn_tile.v", "src/components/inproj_tile.v", "src/components/layer_etched.v", "src/components/mac_array.v", "src/components/outproj_tile.v", "src/components/regfile_dp.v", "src/components/requant.v", "src/components/rmsnorm_d.v", "src/components/rmsnorm_stage.v", "src/components/seq_fsm.v", "src/components/silu_lut.v", "src/components/softmax_d.v", "src/components/sram_1r1w.v"],
+  "VERILOG_FILES": ["src/components/attention_core.v", "src/components/div_unit.v", "src/components/exp_lut.v", "src/components/fifo_sync.v", "src/components/ffn_tile.v", "src/components/inproj_tile.v", "src/components/layer_etched.v", "src/components/mac_array.v", "src/components/outproj_tile.v", "src/components/regfile_dp.v", "src/components/requant.v", "src/components/rmsnorm_d.v", "src/components/rmsnorm_stage.v", "src/components/seq_fsm.v", "src/components/silu_lut.v", "src/components/softmax_d.v", "src/components/sram_1r1w.v", "src/generated/layer6_etched.v"],
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 25,
   "PDK": "sky130A",

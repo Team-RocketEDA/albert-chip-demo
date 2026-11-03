@@ -231,7 +231,11 @@ __marimo__/
 /.rocket/
 /graphify-out/
 weights/mobilellm-125m/
-weights/bake/
+weights/bake/*.hex
+weights/bake/*.json
+weights/bake/*.txt
+weights/bake/*.bin
+weights/bake/*.safetensors
 .archify/architecture-*/
 .archify/pages-*/
 # Verilator sim artifacts (regenerable via make -C src/sim_verilator).
@@ -241,3 +245,6 @@ src/sim_verilator/waves_*.fst
 runs/
 
 synth.gen.ys
+
+# Metaprogrammed per-layer wrappers (emit_layers.py exhaust; re-emit, never hand-edit).
+src/generated/

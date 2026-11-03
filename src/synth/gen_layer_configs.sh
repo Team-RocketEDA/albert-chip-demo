@@ -239,8 +239,11 @@ PY
 }
 
 # 30 unrolled layer macros: ONE layer per run (DIE 2000 — one macro only).
+# Each gets its metaprogrammed wrapper (emit_layers.py exhaust) as the
+# hierarchy top, so DESIGN_NAME resolves to a distinct netlist per layer.
 for i in $(seq 0 29); do
-  emit_block "layer${i}_etched" "layer${i}_etched" 2000 "$LAYER_FILES"
+  emit_block "layer${i}_etched" "layer${i}_etched" 2000 \
+    "$LAYER_FILES src/generated/layer${i}_etched.v"
 done
 
 # Companion small blocks by the same template.

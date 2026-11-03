@@ -18,6 +18,7 @@ read_verilog @REPO@/src/components/seq_fsm.v
 read_verilog @REPO@/src/components/silu_lut.v
 read_verilog @REPO@/src/components/softmax_d.v
 read_verilog @REPO@/src/components/sram_1r1w.v
+read_verilog @REPO@/src/generated/layer11_etched.v
 hierarchy -check -top layer11_etched
 proc; opt; fsm; opt; memory; opt
 booth
