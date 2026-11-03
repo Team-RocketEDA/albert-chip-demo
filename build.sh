@@ -8,6 +8,10 @@
 #                               (default: all, small blocks first — OOM-safe)
 #   ./build.sh stitch           KLayout abut tiles/*.gds -> tiles/mobilellm-125m.gds
 #                               (v1: audit + place + merge; wiring follows)
+#   ./build.sh flow preflight [block|all]  rocket-engine digital_flow preflight
+#                               (cheap: version+inputs, no run)
+#   ./build.sh flow run <block> rocket-engine Classic flow per block (HEAVY;
+#                               never the flat top; GDS -> tiles/)
 #   ./build.sh clean            remove sim/build outputs (never weights, never tiles/)
 #
 # Test bench names: embed rmsnorm inproj top prompt  (Verilator)
@@ -109,6 +113,7 @@ case "${1:-help}" in
   test)    cmd_test "${2:-all}" ;;
   gds)     cmd_gds "${2:-all}" ;;
   stitch)  cmd_stitch ;;
+  flow)    shift; "$RE_PY" src/synth/run_librelane.py "$@" || exit 1 ;;
   clean)   make -C src/sim_verilator clean 2>/dev/null; rm -f /tmp/stitch_*.log /tmp/stitch_*.vvp; echo "CLEAN DONE (weights/ and tiles/ untouched)" ;;
   *) sed -n '2,14p' "$0" ;;
 esac
