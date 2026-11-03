@@ -41,6 +41,38 @@ $(HERE)/obj_rmsnorm/Vtb_rmsnorm: $(HERE)/tb_rmsnorm.sv $(HERE)/tb_rmsnorm.cpp $(
 	cd $(HERE) && $(VL) $(VLFLAGS) -Wno-UNUSEDSIGNAL --top-module tb_rmsnorm --Mdir obj_rmsnorm \
 	  tb_rmsnorm.sv tb_rmsnorm.cpp $(ROOT)/src/components/rmsnorm_d.v
 
+inproj: $(HERE)/obj_inproj/Vtb_inproj
+	cd $(ROOT) && ./src/sim_verilator/obj_inproj/Vtb_inproj
+
+# --trace-max-width 15360: Verilator's default (256b) silently drops the
+# wide packed frames from the wave (7680-bit y_out, 15360-bit y_out2 for
+# the S=2 row-advance DUT); the Q|K|V bytes are invisible in Surfer
+# without this.
+# INPROJFLAGS suppressions (DUT-owned, do not edit to silence):
+# - UNUSEDSIGNAL: unused FIFO status/read taps + mac acc_ext headroom
+#   (same class as the rmsnorm target).
+# - WIDTHEXPAND: narrow counters compared against 32-bit loop bounds;
+#   Verilog zero-extends, semantics preserved (same class as top).
+# - SYNCASYNCNET: seq_fsm samples rst_n synchronously while the rest of
+#   the tree is async; reset is held >=2 cycles in sim so both release
+#   together. Unify the reset topology later; not a sim bug.
+# - PINCONNECTEMPTY: u_wsram .ra/.wa intentionally empty in inference
+#   (host-loaded 4KB bank footprint, we=0; see inproj_tile header).
+# - WIDTHCONCAT: {S*NO*8{1'b0}} y_out_q zero-init exceeds the 8192-bit
+#   replication heuristic at S=2 (15360b); legitimate wide clear.
+INPROJFLAGS := $(VLFLAGS) -Wno-UNUSEDSIGNAL -Wno-WIDTHEXPAND \
+  -Wno-SYNCASYNCNET -Wno-PINCONNECTEMPTY -Wno-WIDTHCONCAT
+$(HERE)/obj_inproj/Vtb_inproj: $(HERE)/tb_inproj.sv $(HERE)/tb_inproj.cpp \
+    $(ROOT)/src/components/inproj_tile.v $(ROOT)/src/components/fifo_sync.v \
+    $(ROOT)/src/components/sram_1r1w.v $(ROOT)/src/components/mac_array.v \
+    $(ROOT)/src/components/regfile_dp.v $(ROOT)/src/components/requant.v \
+    $(ROOT)/src/components/seq_fsm.v
+	cd $(HERE) && $(VL) $(INPROJFLAGS) --trace-max-width 15360 --top-module tb_inproj --Mdir obj_inproj \
+	  tb_inproj.sv tb_inproj.cpp $(ROOT)/src/components/inproj_tile.v $(ROOT)/src/components/fifo_sync.v \
+	  $(ROOT)/src/components/sram_1r1w.v $(ROOT)/src/components/mac_array.v \
+	  $(ROOT)/src/components/regfile_dp.v $(ROOT)/src/components/requant.v \
+	  $(ROOT)/src/components/seq_fsm.v
+
 top: $(HERE)/obj_top/Vtb_top
 	cd $(ROOT) && ./src/sim_verilator/obj_top/Vtb_top
 
@@ -58,4 +90,4 @@ $(HERE)/obj_top/Vtb_top: $(HERE)/tb_top.sv $(HERE)/tb_top.cpp $(ROOT)/src/compon
 	  tb_top.sv tb_top.cpp $(ROOT)/src/components/*.v
 
 clean:
-	rm -rf obj_embed obj_rmsnorm obj_top waves_embed.fst waves_rmsnorm.fst waves_top.fst
+	rm -rf obj_embed obj_rmsnorm obj_inproj obj_top waves_embed.fst waves_rmsnorm.fst waves_inproj.fst waves_top.fst

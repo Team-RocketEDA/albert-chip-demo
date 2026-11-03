@@ -67,7 +67,15 @@ module inproj_tile #(
   reg [7:0] xrow_q [0:H-1];   // current row under the K-fold
   reg [S*NO*8-1:0] y_out_q;
   reg y_valid_q;
-  reg mac_ce_q, mac_clr_q;
+  // mac ce/clr are COMBINATIONAL (not regs): the mac samples avec/bvec/
+  // acc_in at posedges, so ce must be high DURING each MSET fold cycle and
+  // clr during the single POPC/row-advance cycle that precedes the next
+  // MSET. Registered versions arrive one cycle late, which silently drops
+  // every odd K-fold (proven: accum held only even folds).
+  // Row-advance clear: RCAP last-lane of a non-final row (S>1 path).
+  wire mac_ce  = (state_q == ST_MSET);
+  wire mac_clr = (state_q == ST_POPC) ||
+                 (state_q == ST_RCAP && j_q == NO-1 && row_q != S-1);
   reg [9:0] acc_ra_q, acc_wa_q;
   reg [31:0] acc_wdata_q;
   reg acc_we_q;
@@ -106,7 +114,7 @@ module inproj_tile #(
     .rdata(wsram_rdata_unused)
   );
   mac_array #(.W(8), .P(32)) u_mac (
-    .clk(clk), .rst_n(rst_n), .ce(mac_ce_q), .clr(mac_clr_q),
+    .clk(clk), .rst_n(rst_n), .ce(mac_ce), .clr(mac_clr),
     .avec(mac_avec_q), .bvec(mac_bvec_q), .acc_in(hold_q),
     .acc_out(mac_psum)
   );
@@ -164,12 +172,11 @@ module inproj_tile #(
       hold_q <= 32'd0;
       y_out_q <= {S*NO*8{1'b0}};
       y_valid_q <= 1'b0;
-      mac_ce_q <= 1'b0; mac_clr_q <= 1'b0;
       acc_ra_q <= 10'd0; acc_wa_q <= 10'd0;
       acc_wdata_q <= 32'd0; acc_we_q <= 1'b0;
       inf_wr_q <= 1'b0; inf_rd_q <= 1'b0; out_wr_q <= 1'b0;
     end else begin
-      mac_ce_q <= 1'b0; mac_clr_q <= 1'b0; acc_we_q <= 1'b0;
+      acc_we_q <= 1'b0;
       inf_wr_q <= 1'b0; inf_rd_q <= 1'b0; out_wr_q <= 1'b0;
       y_valid_q <= 1'b0;
       case (state_q)
@@ -189,7 +196,6 @@ module inproj_tile #(
         // POPC: capture the skid head (row 0) + tok_in rows; the pop takes
         // effect at this edge, so pre-edge rdata is still our row.
         ST_POPC: begin
-          mac_clr_q <= 1'b1;
           hold_q <= 32'd0; j_q <= 10'd0; f_q <= 5'd0;
           for (b = 0; b < H; b = b + 1)
             xrow_q[b] <= inf_rdata[b*8 +: 8];
@@ -201,7 +207,8 @@ module inproj_tile #(
           state_q <= ST_MSET;
         end
         ST_MSET: begin
-          mac_ce_q <= 1'b1; // mac samples avec/bvec/acc_in=hold at next edge
+          // mac samples avec/bvec/acc_in=hold at the MSET->MCAP edge;
+          // ce is combinational (high throughout MSET), clr in POPC.
           state_q <= ST_MCAP;
         end
         ST_MCAP: begin
@@ -241,7 +248,6 @@ module inproj_tile #(
               row_q <= row_q + 8'd1;
               for (b = 0; b < H; b = b + 1)
                 xrow_q[b] <= xbuf_q[(row_q+1)*H+b];
-              mac_clr_q <= 1'b1;
               hold_q <= 32'd0; j_q <= 10'd0; f_q <= 5'd0;
               state_q <= ST_MSET;
             end
