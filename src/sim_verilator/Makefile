@@ -11,7 +11,11 @@
 #   surfer src/sim_verilator/waves_embed.fst
 HERE := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 ROOT := $(abspath $(HERE)/../..)
-VL   := /home/alrida-ismail/tools/oss-cad-suite/bin/verilator
+# Verilator from PATH; override with VL=/path/to/verilator. No machine paths here.
+VL ?= $(shell command -v verilator)
+ifeq ($(VL),)
+$(error verilator not on PATH — install oss-cad-suite or set VL=/path/to/verilator)
+endif
 VLFLAGS := --cc --exe --trace-fst --build -j 20 -Wall -Wno-UNUSEDPARAM
 # -Wno-UNUSEDPARAM: embed_lut's E is compat-only by design (DUT-owned, do not edit).
 
