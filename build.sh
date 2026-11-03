@@ -6,6 +6,8 @@
 #                               + Verilator benches, one by one (default: all)
 #   ./build.sh gds [block|all]  per-block LibreLane runs, ONE AT A TIME
 #                               (default: all, small blocks first — OOM-safe)
+#   ./build.sh stitch           KLayout abut tiles/*.gds -> tiles/mobilellm-125m.gds
+#                               (v1: audit + place + merge; wiring follows)
 #   ./build.sh clean            remove sim/build outputs (never weights, never tiles/)
 #
 # Test bench names: embed rmsnorm inproj top prompt  (Verilator)
@@ -19,10 +21,11 @@ cd "$ROOT"
 # PDK lookup: $PDK wins; then well-known locations (volare, Thompson, system).
 # Override per-machine with PDK=/path/to/sky130A — never edit this file for paths.
 if [ -z "${PDK:-}" ]; then
-  for c in "$HOME/.volare/sky130A" "$HOME/.local/share/pdk/sky130A" "$PDK_ROOT/sky130A" /usr/share/pdk/sky130A; do
+  for c in "$HOME/.volare/sky130A" "$HOME/.local/share/pdk/sky130A" "${PDK_ROOT:-}/sky130A" /usr/share/pdk/sky130A; do
     if [ -d "$c" ]; then PDK="$c"; break; fi
   done
 fi
+PDK="${PDK:-}"
 # User's source-built magic is canonical; nix copy is ignored.
 MAGIC_BIN="$(command -v magic 2>/dev/null || echo /usr/local/bin/magic)"
 
@@ -37,7 +40,7 @@ cmd_prereqs() {
   need python3 || fail=1
   [ -x "$MAGIC_BIN" ] && echo "  OK       magic ($MAGIC_BIN)" || { echo "  MISSING  magic (source build, /usr/local/bin/magic)"; fail=1; }
   command -v klayout >/dev/null && echo "  OK       klayout" || { echo "  MISSING  klayout"; fail=1; }
-  [ -d "$PDK" ] && echo "  OK       PDK ($PDK)" || { echo "  MISSING  PDK dir ($PDK)"; fail=1; }
+  [ -n "$PDK" ] && [ -d "$PDK" ] && echo "  OK       PDK ($PDK)" || { echo "  MISSING  PDK dir — set PDK=/path/to/sky130A"; fail=1; }
   ls weights/bake/layer0_q_proj.hex >/dev/null 2>&1 && echo "  OK       weights/bake (baked hex present)" || echo "  -        weights/bake hex absent: set HF_TOKEN and run weights/fetch_weights.sh, then bake"
   echo "== optional =="
   opt surfer; opt sby; opt yosys
@@ -82,10 +85,16 @@ cmd_gds() {
   echo "GDS: ALL SELECTED DONE — outputs in src/synth/<block>/ + tiles/ assembly next"
 }
 
+cmd_stitch() {
+  export REPO="$ROOT" TILES="${TILES:-$ROOT/tiles}"
+  klayout -b -r "$ROOT/tiles/stitch.py" || return 1
+}
+
 case "${1:-help}" in
   prereqs) cmd_prereqs ;;
   test)    cmd_test "${2:-all}" ;;
   gds)     cmd_gds "${2:-all}" ;;
+  stitch)  cmd_stitch ;;
   clean)   make -C src/sim_verilator clean 2>/dev/null; rm -f /tmp/stitch_*.log /tmp/stitch_*.vvp; echo "CLEAN DONE (weights/ and tiles/ untouched)" ;;
   *) sed -n '2,14p' "$0" ;;
 esac

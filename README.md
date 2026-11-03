@@ -38,6 +38,23 @@ INT8 datapaths with Q8.8/Q4.12 fixed-point islands:
 You need Icarus Verilog, Verilator, Yosys and SymbiYosys, LibreLane for the GDS
 flow, and Surfer for waves. Every command runs from the repo root.
 
+One driver, no flag-fighting (`./build.sh`; run `./build.sh prereqs` first):
+
+```sh
+./build.sh prereqs          # check + list every prerequisite (PDK via $PDK or well-known paths)
+./build.sh test             # elab + contract tests + stitch TBs + Verilator benches (default: all)
+./build.sh test embed       # one bench: embed rmsnorm inproj top prompt (or one stitch TB)
+./build.sh gds              # all 37 blocks, ONE AT A TIME, small first (OOM-safe)
+./build.sh gds mac_array    # one block: mac_array lm_head embed_top outproj_tile
+                            # rmsnorm_stage attention_core ffn_tile layer0..layer29
+./build.sh clean            # sim/build outputs only (never weights/, never tiles/)
+```
+
+GDS blocks land per-block under `src/synth/<block>/`; the committed
+assembly set lives in `tiles/` (see `tiles/README.md`). The top-level
+`mobilellm_top` is simulation-only — it is never pushed flat through
+LibreLane; silicon comes from stitched block GDS (see Status).
+
 | Gate | Command | Current status |
 |---|---|---|
 | Architecture contract | `python3 -m unittest discover -s architecture/tests` | 52 pass, 7 skip (tools or local files absent; run `-v` for reasons) |
@@ -109,7 +126,11 @@ thousand lost files:
 
 - DONE: leaf logic + unit sims + formal proofs + default-parameter
   regressions + Verilator benches with waves + first block GDS.
-- NEXT: stitch the hierarchy (embed -> 30x loop -> head) so `pred_out`
-  goes live; the `top` bench becomes the token-in/token-out demo the day
-  it does. Then: full-model Verilator run, Sky130 signoff steps (CTS, PDN,
-  LVS), and the full-chip GDS.
+- NEXT: the top is now an unrolled etched chain (embed -> 30-deep
+  `decoder_etched_stack` -> head, no loopback; each layer macro carries
+  its baked weights). Per-block GDS via `./build.sh gds` into `tiles/`,
+  then stitch (`./build.sh stitch`, KLayout batch) abuts the 32
+  top-level macros (embed + 30 layers + head) into
+  `tiles/mobilellm-125m.gds` — v1 places and merges; top wiring follows
+  per `architecture/pins.json`. Then: full-model Verilator run,
+  Sky130 signoff steps (CTS, PDN, LVS).
