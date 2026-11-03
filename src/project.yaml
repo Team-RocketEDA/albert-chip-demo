@@ -4,8 +4,7 @@ ledger: .rocket/projects/albert-chip-demo   # engine-owned (ledger.yaml, events.
 head: p12
 format: engine components/ + scripts/ conventions (service.py: plain documents by unix path)
 
-# Every module below is STRUCTURAL ONLY: ports + submodule wiring, no logic.
-# Implementation is a later parallel pursuit, leaf by leaf.
+# Leaf RTL is implemented; stitching the hierarchy above it is in progress (see README).
 blocks:
   mobilellm_top:     { doc: architecture/top-level.md,                 rtl: src/components/mobilellm_top.v }
   embed_top:         { doc: architecture/blocks/01-embed.md,            rtl: src/components/embed_top.v }

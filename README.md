@@ -1,16 +1,15 @@
 # MobileLLM-125M Decoder Chip — vibe-coded silicon
 
 A 100%-digital MobileLLM-125M decoder (`L=30/H=576/GQA-kv3/SwiGLU/RMSNorm/RoPE`),
-designed, verified, and taped-out-to-GDS as an agentic coding demo. Everything
-below is real: every number was measured in this repo, every waveform captured
+designed and verified block by block as an agentic coding demo, with a first block
+taken through place-and-route to GDS. Everything below is real: every number was measured in this repo, every waveform captured
 from simulation, the GDS drawn by an open-source P&R flow on the sky130A PDK.
 
-Built with **Muse Spark 1.3**. The only environment you need is the
-**rocket-engine MCP** — the rest is vibe coding.
+Built with **Muse Spark 1.3** through the **rocket-engine MCP**.
 
 ![mac_array block GDS, sky130A, 480x480 um](renders/mac_array_top.png)
 
-*First silicon: `mac_array` (P=32) placed and routed in sky130A —
+*First layout: `mac_array` (P=32) placed and routed in sky130A —
 12,401 cells, 13,915 nets, 485,719 shapes, zero DRC. Full-chip GDS waits
 on the stitching; the hierarchy above the leaves is still structural.*
 
@@ -27,26 +26,27 @@ INT8 datapaths with Q8.8/Q4.12 fixed-point islands:
   [block tree](architecture/blocks-tree.html),
   [router](architecture/mobilellm-router.html), one page per block in
   [architecture/pages/](architecture/pages/))
-- `weights/bake/` — baked INT8 checkpoint tables + goldens (272 tensors
-  verified from the finetuned safetensors)
+- `weights/` — fetch script and manifest. The baked INT8 tables and goldens in
+  `weights/bake/` (272 tensors verified from the finetuned safetensors) are local
+  and gitignored
 - `src/sim_verilator/` — readable Verilator benches with Surfer waveforms
 - `src/synth/mac_array/` — one-config LibreLane flow to GDS
 - `renders/` — committed demo goldens (GDS + screenshot)
 
 ## How to test and verify
 
-No setup section: if you have the rocket-engine MCP, you have everything.
-Every command runs from the repo root.
+You need Icarus Verilog, Verilator, Yosys and SymbiYosys, LibreLane for the GDS
+flow, and Surfer for waves. Every command runs from the repo root.
 
 | Gate | Command | Current status |
 |---|---|---|
-| Architecture contract | `python3 -m unittest discover -s architecture/tests` | 59 tests OK |
+| Architecture contract | `python3 -m unittest discover -s architecture/tests` | 52 pass, 7 skip (tools or local files absent; run `-v` for reasons) |
 | Elaboration | `bash src/scripts/elab.sh` | ELAB-OK |
 | Unit sims (per block) | `iverilog -g2012 -s <tb> src/components/*.v src/tb/<...>.v && vvp a.out` | all PASS |
 | Verilator tokens | `make -C src/sim_verilator embed` | `EMBED_VLT PASS (8 ids)`, byte-exact |
 | Prompt test | `make -C src/sim_verilator prompt PROMPT_IDS="1 2 0x42"` | token ids in, vectors out, `waves_prompt.fst` |
 | Dashboard | `python3 src/sim_verilator/dashboard.py` | `renders/dashboard.html` — live transcripts + GDS + links |
-| Verilator norms | `make -C src/sim_verilator rmsnorm` | `RMSNORM_VLT PASS (576 lanes, tol=3 LSB)` |
+| Verilator norms | `make -C src/sim_verilator rmsnorm` | `RMSNORM_VLT PASS (576 lanes, tol=3 LSB)`; needs local `weights/bake/` |
 | Verilator top smoke | `make -C src/sim_verilator top` | builds, 29 modules (outputs float: top is structural) |
 | Formal proofs | `sby -f src/tb/rmsnorm_d/rmsnorm_d.sby` | PASS, 7m28s |
 | Regressions | `tb_dotK_k128`, `tb_mac_array_p32` | PASS at shipped defaults |
@@ -64,8 +64,9 @@ The terminal transcript is the readable reference (every input printed
 with its output); the FST is the inspectable proof.
 
 Weights are gated Meta files: put your `HF_TOKEN` in the environment and
-run `weights/fetch_weights.sh`, then re-bake with `weights/bake/bake.py`
-(pure stdlib). Binaries are never committed — only recipes and goldens.
+run `weights/fetch_weights.sh`. The bake script and its output in `weights/bake/` are
+not committed, so benches that read them (`rmsnorm`, `tb_rmsnorm_d`) need a local bake.
+Weight binaries are never committed; `renders/` keeps one demo GDS.
 
 ## Benchmarks (all measured here)
 
@@ -81,7 +82,7 @@ run `weights/fetch_weights.sh`, then re-bake with `weights/bake/bake.py`
 13,915 nets, 363,757 um routed wire, utilization 0.47, **zero DRC
 violations**, GDS 33 MB with 485,719 shapes across 24 layers.
 
-**Verification:** 59/59 contract tests, full-domain LUT sweeps (65,536
+**Verification:** contract tests (52 pass, 7 skip on a clean clone), full-domain LUT sweeps (65,536
 codes vs Python oracle), K=128/P=32 default-parameter regressions,
 rmsnorm formal proof PASS.
 
