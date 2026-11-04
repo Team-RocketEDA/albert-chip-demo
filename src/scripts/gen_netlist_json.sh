@@ -44,10 +44,18 @@ TMPDIR_WORK="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR_WORK"' EXIT
 RAW="$TMPDIR_WORK/raw.json"
 
-# Full-tree read: hierarchy elaborates only what $TOP reaches, so dead
-# files (loop_mem_seq, dram_ctrl) parse without elaborating.
+# Bus preservation: hierarchy-only, no flatten/techmap/ABC, so multi-bit
+# nets stay whole (netnames carry bit arrays; the renderer groups by
+# netname = compressed buses with widths, never bit-blasted).
+#
+# Dead files are EXCLUDED, not just unreached: yosys `write_json`
+# dumps every module it parsed (including unreached ones with their
+# $mem init payloads), so loop_mem_seq (5.9 Mbit dead banks) and
+# dram_ctrl (legacy, TB-only refs) stay out of the read list.
 # shellcheck disable=SC2206
 SRCS=(src/components/*.v)
+_EXCLUDE=("src/components/loop_mem_seq.v" "src/components/dram_ctrl.v")
+SRCS=($(printf '%s\n' "${SRCS[@]}" | grep -vxF -e "${_EXCLUDE[@]}" || true))
 # NETLIST_CLEAN drops the 4 unconditional ROM preloads (cos/sin,
 # head weights, norm gamma) so the render shows clean blocks with
 # no init-data bloat. Sim/synth never define it: default paths

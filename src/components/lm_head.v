@@ -138,13 +138,10 @@ module lm_head #(
     .clk(clk), .rst_n(rst_n), .wdata(x_last_in), .wr(x_valid),
     .rd(lb_rd), .rdata(lb_rdata), .full(lb_full), .empty(lb_empty)
   );
-  // WLM stationary bank placeholder (full 32k rows; host-written once, no
-  // write port during inference). The iverilog subset wmem above is rows
-  // 0..15 of this bank's baked embed-copy image.
-  wire [4607:0] wlm_rdata;
-  sram_1r1w #(.W(4608), .N(32768)) u_wlm (
-    .clk(clk), .ra(15'b0), .wa(15'b0), .wdata(4608'b0), .we(1'b0), .rdata(wlm_rdata)
-  ); // W_lm rows [Vx576]s8 stationary; 32000 of 32768 rows used
+  // WLM stationary bank REMOVED (verify-then-delete closed): 150 Mbit of
+  // zeros, read address hard-tied to 0, rdata unconsumed (Verilator
+  // UNUSEDSIGNAL-confirmed). The 16-row subset wmem above is the live
+  // weight path; full-vocab return needs rom_1r + via-ROM (dev branch).
   // LM_MAC 32-lane companion for the Verilator full-vocab time-mux path
   // (576/32 = 18 passes per class row, 32000 rows sequenced by the head
   // FSM). Idle in the iverilog subset run; subset dots above are inferred.
