@@ -10,6 +10,7 @@ Usage: run_tile.py TILE [TAG]
   TAG       run variant (default v1_2d); outputs land in out/<TAG>/
 
 Env: RE_ROOT overrides the rocket-engine checkout (default: repo/../rocket-engine).
+     PDK_ROOT overrides the ciel PDK root (default: ~/.local/share/pdk).
 """
 
 import glob
@@ -59,7 +60,7 @@ job = {
     "clock_port": cfg.get("CLOCK_PORT", "clk"),
     "clock_period": cfg.get("CLOCK_PERIOD", 25),
     "pdk": cfg.get("PDK", "sky130A"),
-    "pdk_root": os.path.expanduser("~/.local/share/pdk"),
+    "pdk_root": os.environ.get("PDK_ROOT", os.path.expanduser("~/.local/share/pdk")),
     "tag": TAG,
     "config": extra,
     "tool_dir": bins[0],
