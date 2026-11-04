@@ -239,3 +239,13 @@ synth, via plots for GDS). DOD oracle: straight HF python inference
 on the finetune; demo prompts chosen where HF argmax is confident
 (quant noise can flip close calls — compare top-k/logits, and lead
 with a confident prompt).
+
+## 12. readmemh hygiene rule (locked)
+
+$readmemh is testbench-only. Synthesis gets weights as metaprogrammed
+literals, never as preloaded memories. `src/scripts/check_synth_hygiene.py`
+is the gate: GUARDED sites (parameter-constant false-by-default, folded
+away) may stay textually; GRANDFATHERED unconditional sites
+(attention RoPE x2, lm_head WLM, norm GN) must become literals on dev;
+its binding list is the literal emitter's exact hit list. --strict
+fails the build once literals land.
