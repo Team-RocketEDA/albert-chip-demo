@@ -174,3 +174,25 @@ golden GDS is committed to the repo (no releases).
 3. **Commit the golden GDS.** That commit is the demo. DOD: tokens
    in/out verified mathematically against the software model, LVS
    clean on the final GDS via netgen, timing closed at least.
+
+## Mini-roadmap status
+
+- DONE: RTL blocks 1-to-1 with the model (audited: dims, GQA, SwiGLU,
+  RMSNorm, RoPE, causal mask, no bias, untied embed/head, final norm
+  wired); `mac_array` tile synthesized to GDS (committed); weight
+  translation (per-channel int8 bake + scales + Q8.8 norms + RoPE,
+  committed); tokenizer bridge + talking-bot test (code committed);
+  LibreLane-via-adapter path with manual PDK (code committed);
+  gdsfactory 9.51 in the albert venv; readmemh hygiene gate.
+- BLOCKED (host RAM): full-model Verilator proof — the 30-layer
+  build OOMs this 31 GB box; runs on a bigger machine, nothing
+  wrong with the bench.
+- TODO: literal emitter (hex → `localparam` per tile); single-MAC
+  GDS with blackboxed SRAM (trunk checkpoint 1); non-weight tiles;
+  merge; via-ROM generator + LEF/LIB/stubs; one-tile via proof vs
+  numpy; 30x1 abutment; full layer macro; top assembly + LVS;
+  timing closure; yosys netlist schematic for this README.
+- OPEN QUESTIONS: N=16 lock-in; `u_wlm` deletion verify;
+  `loop_mem_seq` prune; wiring the bound stack (`emit_stack.py`
+  output) into the top; activation-scale calibration (unit chain
+  vs baked scales); DOD oracle vehicle (numpy vs HF python).
