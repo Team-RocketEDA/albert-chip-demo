@@ -13,6 +13,8 @@
 #
 # No synthesis, no techmap, no ABC: `hierarchy -check` only, so this
 # is seconds per top and never elaborates memories into flops.
+# sram_1r1w/regfile_dp are `blackbox`ed: cells keep type+pins+widths,
+# internals and $mem init payloads never enter the JSON.
 # $readmemh defaults resolve from the repo root (CWD forced below);
 # absolute -D overrides still win via VERILOG_DEFINES if you add them.
 #
@@ -62,6 +64,7 @@ SRCS=($(printf '%s\n' "${SRCS[@]}" | grep -vxF -e "${_EXCLUDE[@]}" || true))
 # below are byte-identical.
 "$YOSYS" -q -p "
 read_verilog -DNETLIST_CLEAN ${SRCS[*]}
+blackbox sram_1r1w regfile_dp
 hierarchy -check -top $TOP
 write_json $RAW
 " 2>&1 | grep -i -E "error|warning.*top|no.*module" | head -5 || true
