@@ -1,14 +1,15 @@
-# pnr.tcl — OpenROAD floorplan/place/route for rmsnorm_stage (demo scope).
+# pnr.tcl — OpenROAD floorplan/place for rmsnorm_stage (demo scope).
 # Single ideal clock, no CTS, no power grid (tapcells + abutted rows).
-# Run via run.sh. Env: PDK, LIB.
+# Run via run.sh. Outputs land in out/<TAG>/ (OUT env).
 set PDK $::env(PDK)
 set LIB $::env(LIB)
 set HERE [file dirname [info script]]
+set OUT $::env(OUT)
 
 read_liberty $LIB
 read_lef $PDK/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd__nom.tlef
 read_lef $PDK/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef
-read_verilog $HERE/nl/rmsnorm_stage.nl.v
+read_verilog $OUT/nl/rmsnorm_stage.nl.v
 link_design rmsnorm_stage
 
 create_clock -name clk -period 25 [get_ports clk]
@@ -29,5 +30,5 @@ detailed_placement -disallow_one_site_gaps
 
 # DEF round-trip: drops the pinless tapcell power phantom (see README)
 # so TritonRoute only sees real SIGNAL nets.
-write_def $HERE/pnr/rmsnorm_stage.placed.def
+write_def $OUT/pnr/rmsnorm_stage.placed.def
 puts "PLACE DONE"

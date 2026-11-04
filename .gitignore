@@ -232,6 +232,7 @@ __marimo__/
 /graphify-out/
 weights/mobilellm-125m/
 weights/bake/*.hex
+weights/bake/chunks/
 weights/bake/*.json
 weights/bake/*.txt
 weights/bake/*.bin
@@ -243,8 +244,15 @@ src/sim_verilator/obj_*/
 src/sim_verilator/waves_*.fst
 # LibreLane run directories (regenerable; goldens live in src/synth/).
 runs/
+# Per-tile versioned P&R outputs: out/v1_2d = etched-weight 2D tiles,
+# out/v1_sram reserved for the SRAM-macro variant. Force-add golden
+# GDS/PNG only (git add -f) once a variant is demo-worthy.
+src/synth/*/out/
 
 synth.gen.ys
 
 # Metaprogrammed per-layer wrappers (emit_layers.py exhaust; re-emit, never hand-edit).
 src/generated/
+# Parametric chunk P&R dirs (gen_chunk_configs.sh exhaust for --chunk;
+# mono layer goldens in src/synth/layer*_etched/ stay tracked).
+src/synth/*_inproj_c*/

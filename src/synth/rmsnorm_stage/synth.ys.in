@@ -1,5 +1,6 @@
 # synth.ys — yosys synthesis of rmsnorm_stage to sky130_fd_sc_hd (tt).
 # Run via run.sh (yosys CWD = repo root so baked $readmemh paths resolve).
+# Outputs land in out/<TAG>/ (@OUT@ = run.sh $OUT).
 read_verilog @REPO@/src/components/requant.v
 read_verilog @REPO@/src/components/rmsnorm_d.v
 read_verilog @REPO@/src/components/rmsnorm_stage.v
@@ -14,5 +15,5 @@ opt
 abc -liberty @LIB@
 opt; clean
 stat
-tee -o @HERE@/nl/report.txt stat
-write_verilog -noattr -noexpr -nohex -nodec @HERE@/nl/rmsnorm_stage.nl.v
+tee -o @OUT@/nl/report.txt stat
+write_verilog -noattr -noexpr -nohex -nodec @OUT@/nl/rmsnorm_stage.nl.v

@@ -1,5 +1,6 @@
 # synth.ys — yosys synthesis of outproj_tile to sky130_fd_sc_hd (tt).
 # Run via run.sh (yosys CWD = repo root so baked $readmemh paths resolve).
+# Outputs land in out/<TAG>/ (@OUT@ = run.sh $OUT).
 read_verilog @REPO@/src/components/fifo_sync.v
 read_verilog @REPO@/src/components/mac_array.v
 read_verilog @REPO@/src/components/outproj_tile.v
@@ -16,5 +17,5 @@ opt
 abc -liberty @LIB@
 opt; clean
 stat
-tee -o @HERE@/nl/report.txt stat
-write_verilog -noattr -noexpr -nohex -nodec @HERE@/nl/outproj_tile.nl.v
+tee -o @OUT@/nl/report.txt stat
+write_verilog -noattr -noexpr -nohex -nodec @OUT@/nl/outproj_tile.nl.v

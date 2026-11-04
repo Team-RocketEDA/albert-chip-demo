@@ -1,16 +1,18 @@
-# shot.py — klayout batch GDS screenshot (run via run.sh in this dir).
-# Loads the PDK tech + lm_head.gds, fits the top cell, exports PNG.
+# shot.py — klayout batch GDS screenshot (run via run.sh; OUT/TILE/TAG env).
+# Loads the PDK tech + <tile>_<tag>.gds, fits the top cell, exports PNG.
 import os
 import pya
 
-here = os.path.dirname(os.path.abspath(__file__))
+out = os.environ["OUT"]
+tile = os.environ["TILE"]
+tag = os.environ["TAG"]
 tech_file = os.path.join(os.environ["PDK"], "libs.tech", "klayout", "tech", "sky130A.lyt")
 
 view = pya.Application.instance().main_window().create_view()
 tech = pya.Technology.technology_from_xml(tech_file)
 view.set_config("background-color", "#ffffff")
-layout = view.load_layout(os.path.join(here, "lm_head.gds"), tech, 0)
+layout = view.load_layout(os.path.join(out, f"{tile}_{tag}.gds"), tech, 0)
 view.max_hier()
 view.zoom_fit()
-view.save_image(os.path.join(here, "lm_head_top.png"), 1200, 900)
+view.save_image(os.path.join(out, f"{tile}_{tag}_top.png"), 1200, 900)
 print("SHOT DONE")

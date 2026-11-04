@@ -1,5 +1,6 @@
 # synth.ys — yosys synthesis of lm_head to sky130_fd_sc_hd (tt).
 # Run via run.sh (yosys CWD = repo root so baked $readmemh paths resolve).
+# Outputs land in out/<TAG>/ (@OUT@ = run.sh $OUT).
 read_verilog @REPO@/src/components/fifo_sync.v
 read_verilog @REPO@/src/components/lm_head.v
 read_verilog @REPO@/src/components/mac_array.v
@@ -14,5 +15,5 @@ opt
 abc -liberty @LIB@
 opt; clean
 stat
-tee -o @HERE@/nl/report.txt stat
-write_verilog -noattr -noexpr -nohex -nodec @HERE@/nl/lm_head.nl.v
+tee -o @OUT@/nl/report.txt stat
+write_verilog -noattr -noexpr -nohex -nodec @OUT@/nl/lm_head.nl.v
