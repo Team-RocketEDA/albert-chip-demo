@@ -175,30 +175,62 @@ golden GDS is committed to the repo (no releases).
    in/out verified mathematically against the software model, LVS
    clean on the final GDS via netgen, timing closed at least.
 
-## Mini-roadmap status
+## Roadmap
 
-- DONE: RTL blocks 1-to-1 with the model (audited: dims, GQA, SwiGLU,
-  RMSNorm, RoPE, causal mask, no bias, untied embed/head, final norm
-  wired); `mac_array` tile synthesized to GDS (committed); weight
-  translation (per-channel int8 bake + scales + Q8.8 norms + RoPE,
-  committed); tokenizer bridge + talking-bot test (code committed);
-  LibreLane-via-adapter path with manual PDK (code committed);
-  gdsfactory 9.51 in the albert venv; readmemh hygiene gate.
-- BLOCKED (host RAM): full-model Verilator proof — the 30-layer
-  build OOMs this 31 GB box; runs on a bigger machine, nothing
-  wrong with the bench.
-- TODO: literal emitter (hex → `localparam` per tile); single-MAC
-  GDS with blackboxed SRAM (trunk checkpoint 1); non-weight tiles;
-  merge; via-ROM generator + LEF/LIB/stubs; one-tile via proof vs
-  numpy; 30x1 abutment; full layer macro; top assembly + LVS;
-  timing closure; yosys netlist schematic for this README.
-- OPEN QUESTIONS: N=16 lock-in; `u_wlm` deletion verify;
-  `loop_mem_seq` prune; wiring the bound stack (`emit_stack.py`
-  output) into the top; activation-scale calibration (unit chain
-  vs baked scales); DOD oracle vehicle (numpy vs HF python).
-- TODO (housekeeping): prune dead loop-era files (`tb_loop_top_stitch`,
-  `obj_loop` Makefile targets, `dram_ctrl.v` if uninstantiated,
-  `run_librelane.py` vs `run_tile.py` duplication); refresh
-  `renders/dashboard.html` + waves after the full-model pass (it still
-  shows the retired loop sim); per-buffer macro mapping (PDK 1k/2k vs
-  stub) from the §13 touch map.
+Done criteria per step: the artifact listed is committed, or the
+named command passes. Steps are ordered; each is one PR.
+
+### Done
+
+- [x] RTL 1-to-1 with the model — audited dims, GQA, SwiGLU,
+  RMSNorm, RoPE, causal mask, no bias, untied embed/head, final
+  norm wired (`d62b6f2`).
+- [x] `mac_array` tile synthesized to GDS — committed with shot.
+- [x] Weight translation — per-channel int8 bake + scales + Q8.8
+  norms + RoPE, all committed.
+- [x] Tokenizer bridge + talking-bot test — code committed.
+- [x] LibreLane-via-adapter path with manual PDK — code committed.
+- [x] gdsfactory 9.51 in the albert venv.
+- [x] readmemh hygiene gate (`check_synth_hygiene.py`).
+
+### Blocked
+
+- [ ] Full-model Verilator proof — needs a bigger machine than this
+  31 GB box (build OOMs here; bench itself is ready). Done when
+  `make -C src/sim_verilator top` prints `TOP_VLT PASS`.
+
+### Next (in order)
+
+- [ ] Literal emitter — hex → per-tile `localparam`. Done when
+  `--strict` hygiene passes with zero grandfathered sites.
+- [ ] Trunk checkpoint 1: single-MAC GDS, SRAM blackboxed.
+  Done when the GDS + DRC-clean report are committed.
+- [ ] Non-weight tiles synth + merge. Done when every tile dir has
+  a committed GDS.
+- [ ] Via-ROM generator + LEF/LIB/stubs. Done when via count equals
+  popcount(hex) on smallest and largest macro.
+- [ ] One-tile via proof vs numpy. Done when the tile TB matches
+  the software reference.
+- [ ] 30x1 abutment, then full layer macro. Done when the seam DRC
+  on 2 stamps is clean.
+- [ ] Top assembly + LVS (netgen) + timing closure. Done when LVS
+  is clean and STA closes.
+- [ ] Yosys netlist schematic (SVG/HTML) embedded in this README.
+
+### Open questions
+
+- [ ] N=16 lock-in.
+- [ ] `u_wlm` deletion verify; `loop_mem_seq` prune.
+- [ ] Wire the bound stack (`emit_stack.py` output) into the top.
+- [ ] Activation-scale calibration (unit chain vs baked scales).
+- [ ] DOD oracle vehicle: numpy vs HF python.
+
+### Housekeeping
+
+- [ ] Prune dead loop-era files (`tb_loop_top_stitch`, `obj_loop`
+  targets, `dram_ctrl.v` if uninstantiated, `run_librelane.py` vs
+  `run_tile.py` duplication).
+- [ ] Refresh `renders/dashboard.html` + waves after the full-model
+  pass (still shows the retired loop sim).
+- [ ] Per-buffer macro mapping (PDK 1k/2k vs stub) from the §13
+  touch map.
