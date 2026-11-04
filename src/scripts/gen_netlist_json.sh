@@ -14,7 +14,10 @@
 # No synthesis, no techmap, no ABC: `hierarchy -check` only, so this
 # is seconds per top and never elaborates memories into flops.
 # sram_1r1w/regfile_dp are `blackbox`ed: cells keep type+pins+widths,
-# internals and $mem init payloads never enter the JSON.
+# internals and $mem init payloads never enter the JSON. embed_lut
+# joins them: its 32000x4608 zero-init ROM (~147 Mbit) serializes
+# for tens of minutes under write_json, so it renders as an opaque
+# addressed-ROM block instead.
 # $readmemh defaults resolve from the repo root (CWD forced below);
 # absolute -D overrides still win via VERILOG_DEFINES if you add them.
 #
@@ -49,6 +52,16 @@ RAW="$TMPDIR_WORK/raw.json"
 # Bus preservation: hierarchy-only, no flatten/techmap/ABC, so multi-bit
 # nets stay whole (netnames carry bit arrays; the renderer groups by
 # netname = compressed buses with widths, never bit-blasted).
+# `-defer`: parse all files but elaborate only the top's reached cone.
+# Without it, read_verilog unrolls every initial zero-fill loop
+# (embed 32000 rows, ffn/inproj ~1M-iter fills) and loads every
+# default $readmemh hex (~50 MB) even for modules the top never
+# reaches — that stalls 30+ min. Deferred modules never elaborate,
+# so only the rendered cone pays elaboration cost.
+# `blackbox` runs AFTER hierarchy: under -defer the macros don't
+# exist yet at read time (selections would match nothing), while
+# post-hierarchy they elaborate trivially (their $mem interiors and
+# any init payloads are then dropped before write_json).
 #
 # Dead files are EXCLUDED, not just unreached: yosys `write_json`
 # dumps every module it parsed (including unreached ones with their
@@ -57,15 +70,15 @@ RAW="$TMPDIR_WORK/raw.json"
 # shellcheck disable=SC2206
 SRCS=(src/components/*.v)
 _EXCLUDE=("src/components/loop_mem_seq.v" "src/components/dram_ctrl.v")
-SRCS=($(printf '%s\n' "${SRCS[@]}" | grep -vxF -e "${_EXCLUDE[@]}" || true))
+SRCS=($(printf '%s\n' "${SRCS[@]}" | grep -vxF -f <(printf '%s\n' "${_EXCLUDE[@]}") || true))
 # NETLIST_CLEAN drops the 4 unconditional ROM preloads (cos/sin,
 # head weights, norm gamma) so the render shows clean blocks with
 # no init-data bloat. Sim/synth never define it: default paths
 # below are byte-identical.
 "$YOSYS" -q -p "
-read_verilog -DNETLIST_CLEAN ${SRCS[*]}
-blackbox sram_1r1w regfile_dp
+read_verilog -defer -DNETLIST_CLEAN ${SRCS[*]}
 hierarchy -check -top $TOP
+blackbox sram_1r1w regfile_dp embed_lut
 write_json $RAW
 " 2>&1 | grep -i -E "error|warning.*top|no.*module" | head -5 || true
 [ -s "$RAW" ] || { echo "FATAL: yosys produced no JSON (see log above)"; exit 1; }
