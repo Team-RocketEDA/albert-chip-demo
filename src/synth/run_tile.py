@@ -24,7 +24,10 @@ TAG = sys.argv[2] if len(sys.argv) > 2 else "v1_2d"
 ALBERT = Path(__file__).resolve().parents[2]
 ENGINE = Path(os.environ.get("RE_ROOT", str(ALBERT.parent / "rocket-engine")))
 sys.path.insert(0, str(ENGINE / "src"))
-from src.adapters.digital_flow import LibrelaneFlowAdapter
+try:
+    from adapters.digital_flow import LibrelaneFlowAdapter
+except ImportError:  # installed package layout
+    from rocket_engine.adapters.digital_flow import LibrelaneFlowAdapter
 
 tile_dir = ALBERT / "src" / "synth" / TILE
 cfg = json.loads((tile_dir / "config.json").read_text())
