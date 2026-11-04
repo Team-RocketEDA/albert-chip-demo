@@ -163,7 +163,14 @@ golden GDS is committed to the repo (no releases).
 1. **Ship a schematic.** Yosys netlist schematic (SVG/HTML) of the
    top-level LLM into this README, so the digital blocks are visible
    even before silicon shots land.
-2. **LibreLane GDS, two branches.** (a) Monolithic GDS of the
-   agreed tiles, or (b — preferred) separately synthesized GDSes,
-   abutted, with weights applied as a via-ROM post-processing step.
-3. **Commit the golden GDS.** That commit is the demo.
+2. **LibreLane GDS, trunk + dev.** Trunk: SRAM-capable RTL with
+   macros blackboxed (LVS waived) — one MAC tile GDS first, then
+   every non-weight tile, then merge; const-register synthesis is
+   the cheap gate before any of it. Dev branch: de-SRAM for the
+   via-ROM transfer — placement script on one MAC tile proven
+   against a numpy reference, then 30x1 replication, then the full
+   layer macro, then stitch. Preferred end state: separately
+   synthesized GDSes abutted, weights as via-ROM post-processing.
+3. **Commit the golden GDS.** That commit is the demo. DOD: tokens
+   in/out verified mathematically against the software model, LVS
+   clean on the final GDS via netgen, timing closed at least.

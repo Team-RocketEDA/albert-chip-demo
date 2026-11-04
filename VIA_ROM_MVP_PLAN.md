@@ -26,6 +26,30 @@ here names its entry criteria so we can start anywhere green.
   `gdsfactory>=9.51,<10`. Use the engine venv's python directly
   where convenient; never `cp -r` a venv.
 
+## 0b. Why the macro takes space (tie vias are free; wires are not)
+
+A constant bit IS just a via to GND/VDD — the cut itself
+(~0.17 µm) plus enclosure is a fraction of a µm², and synthesis
+already does exactly this (tiehi/tielo cells) wherever a weight
+feeds combinational logic with no runtime addressing. Those cases
+need no macro at all: biases, zero-points, config constants
+constant-propagate today and cost ~nothing.
+
+The macro exists for the addressed case only. inproj/outproj/ffn
+weight rows are indexed at runtime by fold counters, so each bit
+must be *selectable*, not just tied: that needs shared wordlines,
+bitlines, row drivers, and per-column readout. The ~1 µm²/bit
+planning number is ~5% via, ~95% wire pitch + drivers + readout
+amortized per bit, plus periphery. A fully-spatial alternative
+(125M individual tied nets, no array) is worse, not better: every
+net needs a routing track, and congestion explodes long before
+area does — the array is the price of *sharing* wires across bits.
+
+Rule, locked: compile-time-constant weights → synthesis ties
+(free, no macro). Runtime-addressed weights → array ROM macro.
+The inventory in §4 already follows this split (RoPE/gamma stay
+synthesized `case()` ROMs; only folded-table reads get macros).
+
 ## 1. Cartridge: what the fabric is
 
 - **Columns = 30 layers.** `decoder_etched_stack.v` already is this:
@@ -168,3 +192,34 @@ the macro+top path. Both read the same config.jsons.
   Verilator build RAM on 30× stack (mitigated: blackboxed weights
   shrink elaboration ~10×); GF API drift (plan is pya-first, GF is
   additive).
+
+## 10. Trunk/branch execution (locked)
+
+No RTL rewrites on trunk. Trunk keeps SRAM-capable RTL; dev de-SRAMs
+for the via-ROM transfer.
+
+- Trunk checkpoint 1: ONE MAC tile with SRAM-baked weights, macros
+  blackboxed (stub views: PDK 1k/2k macros don't fit Mbit banks, so
+  stubs by construction; LVS waived on trunk), through LibreLane to
+  GDS. Candidate: inproj wide banks (~4.4 Mbit) or outproj slice.
+  Before that, one cheaper gate: const-register synthesis (tie the
+  weight nets to constants, no via-ROM, no RTL rewrite beyond an
+  additive ifdef) to prove the flow without memory blowup.
+- Trunk checkpoint 2: every NON-weight tile synths standalone.
+- Merge trunk tiles.
+- Dev: via-placement script on a single MAC GDS tile; correctness =
+  tile TB vs numpy software reference on baked hex (prove one tile,
+  true for all by construction). That is the via-ROM unit test.
+- Dev: 30-col x 1-row MACs, via-ROMs placed + replicated (synth ONE
+  MAC, rest is macros + abutment).
+- Dev: full layer macro'd and connected (symmetric, abut-ready).
+- Rest: typical LibreLane synth for other blocks, abut per RTL, stitch.
+- Research item: after layer GDS, blackbox the layer as a macro
+  (extern ports + size) and re-run LibreLane with every module so
+  top-level PNR wires everything under constraints — no man’s land
+  between dies. Needs real (not preliminary) LIBs to mean anything.
+
+DOD (locked): tokens in, tokens out, verified MATHEMATICALLY against
+the software model, plus LVS (netgen ex2spice) on the FINAL GDS
+proving the GDS is the working model. Area unconstrained. Timing
+closure required at least (sky130 is what it is).
