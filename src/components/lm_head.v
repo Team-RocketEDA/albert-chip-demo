@@ -15,14 +15,14 @@
 // embed_proxy64 head via src/tb/lm_head_stitch/wlm_subset16.hex) -> inferred
 // argmax compare loop (first-max wins) -> pred_out + single-cycle done.
 // Full 32k x 576 is the Verilator stretch (time-muxed over u_lmmac 32-lane
-// MAC + u_wlm bank), NOT iverilog serial.
+// MAC), NOT iverilog serial. (u_wlm bank removed; subset wmem is live.)
 // Control: IDLE -> CALC (16 cycles, one row dot per cycle) -> AMAX (1 cycle
 // compare) -> DONEP (done=1 for exactly one cycle) -> IDLE. done pulses
 // exactly once per x_valid; x_valid while busy is ignored (single-frame
 // tb protocol; loop_done gates x_valid at the top).
 // Inferred +,-,* and if/case only; no single-operator modules. Children
 // stay instantiated (ports/topology contract): u_lastbuf (double-buffer
-// companion), u_wlm (stationary 32k bank placeholder), u_lmmac (32-lane
+// companion), u_lmmac (32-lane
 // companion for the Verilator full-vocab path), u_predfifo (buffers pred
 // ids to the SW GenEval sink), u_ctrl (status sequencer; done is driven by
 // the inferred FSM, not layer_done).
