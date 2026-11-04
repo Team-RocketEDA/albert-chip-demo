@@ -249,3 +249,27 @@ away) may stay textually; GRANDFATHERED unconditional sites
 (attention RoPE x2, lm_head WLM, norm GN) must become literals on dev;
 its binding list is the literal emitter's exact hit list. --strict
 fails the build once literals land.
+
+## 13. State touch map (locked): de-SRAM applies to WEIGHTS ONLY
+
+Weights are static, so weight SRAMs de-SRAM into literals (synth) +
+via-ROM (layout). Buffer SRAMs are dynamic and stay SRAM in RTL;
+synth sees them blackboxed. Register/flop state is never touched.
+
+| RTL location | Object | Class | Action | Phase |
+|---|---|---|---|---|
+| inproj u_wqbank/u_wkbank/u_wvbank + wq/wv/wk_img | wide + narrow weight banks | weight-static | literals + via-ROM; delete sram instances on dev | dev 1-2 |
+| outproj u_wsram + wo_img | wide + narrow WO bank | weight-static | same as above | dev 1-2 |
+| ffn u_gatew/u_upw/u_downw | gate/up/down banks | weight-static | same as above | dev 1-2 |
+| lm_head u_wlm | 150 Mbit zero-filled vocab SRAM | dead weight | verify-then-delete (subset path uses wmem) | trunk |
+| lm_head wmem, attn cos/sin, norm gmem | frozen tables | weight-static | literals (4 unconditional $readmemh) | dev 1 |
+| attn u_qbuf/u_kbuf/u_vbuf, u_kcache/u_vcache, u_score | bufs, KV caches, scores | buffer-dynamic | KEEP sram_1r1w; blackbox for synth | trunk 1 |
+| embed u_dbuf | frame store | buffer-dynamic | KEEP; blackbox for synth | trunk 1 |
+| loop u_xbank/u_wcal | dead loop banks | dead | prune with loop_mem_seq.v | trunk |
+| regfile_dp accums, fifos, FSMs, skid regs | working state | register | no touch (flops) | — |
+| yq_mem, x_out_r, a_buf, l_raw | in-module arrays | buffer-dynamic | no touch (flops for now; extraction to sram instances is a later opt) | — |
+| dram_ctrl.v | uninstantiated legacy | dead? | verify no instantiation, then prune | trunk |
+
+Rule of thumb for later: if it has an INIT binding today it is
+weight-static (see check_synth_hygiene.py binding list); if it is
+written at runtime it is buffer-dynamic and stays SRAM.
