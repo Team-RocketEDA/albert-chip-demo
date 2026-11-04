@@ -1,6 +1,6 @@
 # MobileLLM-125M Decoder — Pure-Digital RTL Architecture
 
-Origin: `s41467-025-63794-4.md` (ALBERT-base math, analog PCIM — the
+Origin: [Nature Communications paper](https://doi.org/10.1038/s41467-025-63794-4) (ALBERT-base math, analog PCIM — the
 project's starting point, not its vehicle). Implementation vehicle:
 100% digital RTL, parametric `data_bit_width`, weight-stationary SRAM,
 tokens streamed via FIFOs. No analog, no PCM, no ADC/DAC (mixed-signal

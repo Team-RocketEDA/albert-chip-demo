@@ -230,22 +230,6 @@ class TestParams(unittest.TestCase):
                          + "\n".join(bad))
 
 class TestPaperGrounding(unittest.TestCase):
-    PAPER = REPO / "s41467-025-63794-4.md"
-    GROUNDS = [
-        "34 analog tiles",
-        "79.4%",
-        "six half-tiles (final 256 columns)",
-        "summation over only two tiles",
-        "Four PCM devices are used to program each weight",
-        "two layer-blocks sharing a tile",
-        "512 × 512 weights when using 4 PCM per weight",
-        "six input and six output landing pads",
-        "reside on the same chip, right next to the ILPs/OLPs",
-        "Each sequence of tokens is processed through one layer-block",
-        "sequence lengths ranging from",
-        "up to 128",
-    ]
-
     def test_cal_addr_carries_layer(self):
         for doc in ["08-loop-mem-seq.md", "09-interface.md"]:
             text = (ROOT / "blocks" / doc).read_text()
@@ -258,10 +242,6 @@ class TestPaperGrounding(unittest.TestCase):
         self.assertIn("30 uses", text)
         self.assertIn("720KB", text)
 
-    def test_paper_text_contains_grounds(self):
-        paper = self.PAPER.read_text()
-        for g in self.GROUNDS:
-            self.assertIn(g, paper, f"paper text missing: {g}")
 
     def test_no_contradicted_claims(self):
         bad = []
