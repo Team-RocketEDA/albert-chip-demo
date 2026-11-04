@@ -64,8 +64,12 @@ module rmsnorm_stage #(
   reg [7:0]  yq_mem [0:N-1];          // exit-requant int8 frame
   reg [S*H*16-1:0] y_packed;          // FXP16 out frame (clocked pack)
 
+  // NETLIST_CLEAN (netlist JSON only): skip ROM preload so the
+  // render shows clean blocks. Sim/synth never define it.
   initial begin
+`ifndef NETLIST_CLEAN
     $readmemh(GN_FILE, gmem);
+`endif
   end
 
   // yq_out mirrors the exit-requant frame (combinational pack of yq_mem,

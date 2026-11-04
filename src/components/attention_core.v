@@ -64,9 +64,13 @@ module attention_core #(
   // ---- RoPE sin/cos ROMs (Q4.12, 2048 rows) ----
   reg signed [15:0] cos_rom [0:2047];
   reg signed [15:0] sin_rom [0:2047];
+  // NETLIST_CLEAN (netlist JSON only): skip ROM preload so the
+  // render shows clean blocks. Sim/synth never define it.
   initial begin
+`ifndef NETLIST_CLEAN
     $readmemh(COS_F, cos_rom);
     $readmemh(SIN_F, sin_rom);
+`endif
   end
 
   // ---- frame latches ----

@@ -64,8 +64,12 @@ module lm_head #(
   assign pred_out = pred_r;
   assign done     = done_r;
 
+  // NETLIST_CLEAN (netlist JSON only): skip ROM preload so the
+  // render shows clean blocks. Sim/synth never define it.
   initial begin
+`ifndef NETLIST_CLEAN
     $readmemh(WLM_FILE, wmem);
+`endif
   end
 
   reg signed [63:0] psum_tmp;
