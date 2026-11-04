@@ -147,3 +147,23 @@ thousand lost files:
   `tiles/mobilellm-125m.gds` — v1 places and merges; top wiring follows
   per `architecture/pins.json`. Then: full-model Verilator run,
   Sky130 signoff steps (CTS, PDN, LVS).
+
+## Mini-roadmap (direction of record)
+
+DOD: a full GDS with every weight etched as vias, plus a Verilator
+waveform sim showing correct token computation. Tokenization stays
+in Python (`weights/tokenize.py`) — out of RTL scope. So: text in,
+text out is proven in sim; the GDS of everything is the deliverable;
+golden GDS is committed to the repo (no releases).
+
+0. **RTL == model.** Correct and behaving mathematically and
+   behaviourally 1-to-1 with MobileLLM-125M (see the checkpoint
+   config: L=30/H=576/GQA-9Q-3KV/FF=1536/SwiGLU/RMSNorm/RoPE).
+   Gate: component goldens + head-oracle match on the etched stack.
+1. **Ship a schematic.** Yosys netlist schematic (SVG/HTML) of the
+   top-level LLM into this README, so the digital blocks are visible
+   even before silicon shots land.
+2. **LibreLane GDS, two branches.** (a) Monolithic GDS of the
+   agreed tiles, or (b — preferred) separately synthesized GDSes,
+   abutted, with weights applied as a via-ROM post-processing step.
+3. **Commit the golden GDS.** That commit is the demo.
