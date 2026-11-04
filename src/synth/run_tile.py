@@ -60,7 +60,7 @@ extra = {
 # repo-root-relative for sim/hand flows.
 defines = []
 seen_macros = set()
-for src_file in staged:
+for src_file in sources:
     text = Path(src_file).read_text()
     for macro, rel in re.findall(r"`define\s+(\w+)\s+\"((?:src|weights)/[^\"]+)\"", text):
         if macro not in seen_macros:
