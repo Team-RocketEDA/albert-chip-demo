@@ -3,8 +3,8 @@
 // head). Parent I/O: x = X_last[576] s8 -> logits = x*W_lm^T (32000
 // classes) -> pred token id (argmax). Dtypes: INT8 weights (Q1.7), INT16
 // acts, INT32 accum, INT16 logits; host quantizes from HF golden. W_lm/B_lm
-// sharing with the embed table is ASSUMED tied per the model card (§9
-// reverify: one shared 18MB bank vs two).
+// are SEPARATE from the embed table (tie_word_embeddings=False in the
+// checkpoint config); each binds its own baked hex.
 //
 // Top ports: x_last_in (576 s8, parent pre-slices X_29 last row),
 // x_valid (1b strobe); pred_out (15b id); done (1b, single-cycle pulse).

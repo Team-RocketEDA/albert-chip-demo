@@ -6,6 +6,11 @@
 // The loopback is gone by design: an etched accelerator does not
 // time-multiplex one layer block. Each layer macro carries its own
 // baked weights (see layer_etched.v); the top only chains them.
+// Weight-path override: VERILOG_DEFINES (LibreLane) or -D (hand flow)
+// injects an absolute path; default stays repo-root-relative for sim.
+`ifndef FN_GN_PATH
+`define FN_GN_PATH "weights/bake/final_norm_q88.hex"
+`endif
 module mobilellm_top #(
   parameter S = 64,
   parameter H = 576,
@@ -32,9 +37,20 @@ module mobilellm_top #(
     .clk(clk), .rst_n(rst_n), .x_in(x0), .x_valid(x0_valid),
     .x_ready(), .x_out(x30), .y_valid(x30_valid)
   );
+  // model.norm: final RMSNorm after layer 29 (reference arch). s8 in,
+  // s8 out at the head-qualified scale (default YQ_SHIFT, same chain
+  // as the in-stack norms).
+  wire [S*H*8-1:0] xN;
+  wire             xN_valid;
+  rmsnorm_stage #(.S(S), .H(H), .GN_FILE(`FN_GN_PATH)) u_normf (
+    .clk(clk), .rst_n(rst_n), .x_in(x30),
+    .resid_in({S*H*8{1'b0}}), .in_valid(x30_valid),
+    .in_ready(), .y_out(), .y_valid(),
+    .yq_out(xN), .yq_valid(xN_valid)
+  );
   lm_head #(.H(H), .V(V)) u_head (
-    .clk(clk), .rst_n(rst_n), .x_last_in(x30[S*H*8-1:(S-1)*H*8]),
-    .x_valid(x30_valid),
+    .clk(clk), .rst_n(rst_n), .x_last_in(xN[S*H*8-1:(S-1)*H*8]),
+    .x_valid(xN_valid),
     .pred_out(pred_out), .done(done)
   );
 endmodule

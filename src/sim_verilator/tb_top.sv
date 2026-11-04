@@ -1,10 +1,13 @@
-// tb_top.sv — Verilator top for the FULL model (wired since stitching).
+// tb_top.sv — Verilator top for the FULL etched model.
 //
-// This instantiates mobilellm_top with the shipped MobileLLM-125M geometry
-// (S=64/H=576/V=32000): EMBED -> LOOP30 -> HEAD. The C++ driver
-// (tb_top.cpp) runs the loop_top Part B protocol: 64 baked ids in,
-// X_30 loopback check, subset-logit oracle, pred_out/done out.
-// Waves land in waves_top.fst for Surfer.
+// mobilellm_top at the shipped MobileLLM-125M geometry (S=64/H=576):
+// EMBED -> 30-deep ETCHED STACK (decoder_etched_stack, layer0 tables) ->
+// HEAD. The C++ driver (tb_top.cpp) pushes 64 prompt ids, waits the
+// stack frame, then checks the last-row subset-logit oracle against
+// pred_out (done exactly once). Loop-protocol taps are gone with the
+// time-muxed loop: the stack is feedforward, so there is no tile_sel
+// cycling, no theta_req, no stall lanes to check here.
+// Waves land in waves_top.fst for Surfer (NOTRACE=1 skips tracing).
 `timescale 1ns / 1ps
 module tb_top (
   input  wire            clk,
@@ -14,20 +17,13 @@ module tb_top (
   input  wire            ids_valid,
   output wire [14:0]     pred_out,
   output wire            done,
-  // Hierarchical taps (sim-owned; mirror the loop_top stitch TB's
-  // dut_top.u_embed/u_loop probes). Exporting them here as wrapper
-  // outputs keeps Verilator from deleting the cones as unused.
+  // Hierarchical taps (sim-owned). Exporting them as wrapper outputs
+  // keeps Verilator from deleting the cones as unused.
   output wire            tap_ids_ready,
   output wire            tap_x0_valid,
   output wire [64*576*8-1:0] tap_x0,
   output wire            tap_layer_done,
-  output wire [64*576*8-1:0] tap_x30,
-  // Loop protocol taps (09-interface phase/stall checks at full dims).
-  output wire [4:0]      tap_layer_idx,
-  output wire [3:0]      tap_tile_sel,
-  output wire [5:0]      tap_ilp,
-  output wire [5:0]      tap_olp,
-  output wire            tap_theta_req
+  output wire [64*576*8-1:0] tap_x30
 );
   mobilellm_top #(.S(64), .H(576), .V(32000)) u_dut (
     .clk(clk), .rst_n(rst_n), .start(start),
@@ -37,11 +33,8 @@ module tb_top (
   assign tap_ids_ready  = u_dut.u_embed.ids_ready;
   assign tap_x0_valid   = u_dut.u_embed.x0_valid;
   assign tap_x0         = u_dut.u_embed.x0_out;
-  assign tap_layer_done = u_dut.u_loop.layer_done;
-  assign tap_x30        = u_dut.u_loop.x_out;
-  assign tap_layer_idx  = u_dut.u_loop.layer_idx;
-  assign tap_tile_sel   = u_dut.u_loop.tile_sel;
-  assign tap_ilp        = u_dut.u_loop.fifo_lane_en_ilp;
-  assign tap_olp        = u_dut.u_loop.fifo_lane_en_olp;
-  assign tap_theta_req  = u_dut.u_loop.theta_req;
+  assign tap_layer_done = u_dut.u_stack.y_valid;
+  // Head input frame (post-final-norm), not the raw stack output: the
+  // oracle recomputes argmax over exactly what the head consumed.
+  assign tap_x30        = u_dut.u_normf.yq_out;
 endmodule
