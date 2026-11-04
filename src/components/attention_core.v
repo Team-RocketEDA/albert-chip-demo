@@ -26,14 +26,22 @@
 //     the Y frame out (rd held with wr: consumer-side flow-through).
 // Protocol: hold q_in/k_in/v_in/s_cfg stable from qkv_valid until y_valid.
 // qkv_ready = 1 only in IDLE; y_valid pulses 1 cycle per frame.
+// Weight-path overrides: VERILOG_DEFINES (LibreLane) or -D (hand flow)
+// injects an absolute path; defaults stay repo-root-relative for sim.
+`ifndef AC_COS_PATH
+`define AC_COS_PATH "weights/bake/rope_cos.hex"
+`endif
+`ifndef AC_SIN_PATH
+`define AC_SIN_PATH "weights/bake/rope_sin.hex"
+`endif
 module attention_core #(
   parameter S = 64,
   parameter H = 576,
   parameter KV = 192,
   // RoPE table images, repo-root-relative for sim. Formal overrides these
   // with workdir-local basenames (same INIT_FILE pattern as sram_1r1w).
-  parameter COS_F = "weights/bake/rope_cos.hex",
-  parameter SIN_F = "weights/bake/rope_sin.hex"
+  parameter COS_F = `AC_COS_PATH,
+  parameter SIN_F = `AC_SIN_PATH
 )(
   input  wire             clk,
   input  wire             rst_n,

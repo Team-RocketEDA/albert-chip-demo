@@ -16,6 +16,7 @@ Env: RE_ROOT overrides the rocket-engine checkout (default: repo/../rocket-engin
 import glob
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -53,6 +54,22 @@ extra = {
     for k, v in cfg.items()
     if k not in ("DESIGN_NAME", "VERILOG_FILES", "RUN_TAG")
 }
+# CWD-independent weight paths: every `define MAC "src/...|weights/..."
+# in the staged sources gets an absolute-path -D, because LibreLane
+# steps run with CWD=step dir (not the repo root). RTL defaults stay
+# repo-root-relative for sim/hand flows.
+defines = []
+seen_macros = set()
+for src_file in staged:
+    text = Path(src_file).read_text()
+    for macro, rel in re.findall(r"`define\s+(\w+)\s+\"((?:src|weights)/[^\"]+)\"", text):
+        if macro not in seen_macros:
+            seen_macros.add(macro)
+            target = ALBERT / rel
+            if target.is_file():
+                defines.append(f'{macro}="{target}"')
+if defines:
+    extra["VERILOG_DEFINES"] = defines
 job = {
     "operation": "run_digital_flow",
     "sources": sources,

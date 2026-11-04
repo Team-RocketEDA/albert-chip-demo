@@ -26,9 +26,19 @@
 // companion for the Verilator full-vocab path), u_predfifo (buffers pred
 // ids to the SW GenEval sink), u_ctrl (status sequencer; done is driven by
 // the inferred FSM, not layer_done).
+// Weight-path override: VERILOG_DEFINES (LibreLane) or -D (hand flow)
+// injects an absolute path; default stays repo-root-relative for sim.
+`ifndef LM_WLM_PATH
+`define LM_WLM_PATH "src/tb/lm_head_stitch/wlm_subset16.hex"
+`endif
 module lm_head #(
   parameter H = 576,
-  parameter V = 32000
+  parameter V = 32000,
+  // Full-vocab codec path: VROWS=32000 binds the tied embed table
+  // (WLM_FILE=embed_full.hex) for a TRUE argmax; 16 keeps the subset
+  // stitch golden.
+  parameter VROWS = 16,
+  parameter WLM_FILE = `LM_WLM_PATH
 )(
   input  wire          clk,
   input  wire          rst_n,
@@ -37,7 +47,6 @@ module lm_head #(
   output wire [14:0]   pred_out,   // predicted token id (< 2^15)
   output wire          done
 );
-  localparam VSUB = 16;
 
   localparam [1:0] ST_IDLE = 2'd0,
                    ST_CALC = 2'd1,
@@ -45,10 +54,10 @@ module lm_head #(
                    ST_DONE = 2'd3;
 
   reg [1:0] state;
-  reg [3:0] row; // 0..15
   reg [7:0]  xbuf [0:H-1];          // LAST_BUF latched last-token row (s8)
-  reg [7:0]  wmem [0:VSUB*H-1];     // W_lm subset rows 0..15 (s8, stationary)
-  reg [31:0] logits [0:VSUB-1];     // subset logits (s32, exact mod-2^32)
+  localparam RW = (VROWS > 1) ? $clog2(VROWS) : 1;
+  reg [7:0]  wmem [0:VROWS*H-1];    // W_lm rows (s8, stationary)
+  reg [31:0] logits [0:VROWS-1];    // logits (s32, exact mod-2^32)
   reg [14:0] pred_r;
   reg        done_r;
 
@@ -56,17 +65,18 @@ module lm_head #(
   assign done     = done_r;
 
   initial begin
-    $readmemh("src/tb/lm_head_stitch/wlm_subset16.hex", wmem);
+    $readmemh(WLM_FILE, wmem);
   end
 
   reg signed [63:0] psum_tmp;
   integer p, k;
-  reg [3:0] best;
+  reg [RW-1:0] best;
+  reg [RW-1:0] row;
 
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       state  <= ST_IDLE;
-      row    <= 4'd0;
+      row    <= {RW{1'b0}};
       pred_r <= 15'd0;
       done_r <= 1'b0;
     end else begin
@@ -76,7 +86,7 @@ module lm_head #(
           if (x_valid) begin
             for (p = 0; p < H; p = p + 1)
               xbuf[p] <= x_last_in[p*8 +: 8];
-            row   <= 4'd0;
+            row   <= {RW{1'b0}};
             state <= ST_CALC;
           end
         end
@@ -85,17 +95,17 @@ module lm_head #(
           for (p = 0; p < H; p = p + 1)
             psum_tmp = psum_tmp + $signed(xbuf[p]) * $signed(wmem[row*H+p]);
           logits[row] <= psum_tmp[31:0];
-          if (row == VSUB-1)
+          if (row == VROWS-1)
             state <= ST_AMAX;
           else
-            row <= row + 4'd1;
+            row <= row + 1;
         end
         ST_AMAX: begin
-          best = 4'd0;
-          for (k = 1; k < VSUB; k = k + 1)
+          best = {RW{1'b0}};
+          for (k = 1; k < VROWS; k = k + 1)
             if ($signed(logits[k]) > $signed(logits[best]))
-              best = k[3:0];
-          pred_r <= {11'd0, best};
+              best = k[RW-1:0];
+          pred_r <= {{15-RW{1'b0}}, best};
           state  <= ST_DONE;
         end
         ST_DONE: begin

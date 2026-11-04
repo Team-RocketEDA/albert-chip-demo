@@ -19,12 +19,17 @@
 // resolves from the repo root (benches run from there); "" keeps zeros.
 // Default backs the 8 tv_embed rows (gen: src/tb/embed_top_stitch/
 // gen_dut_init.py); unbacked in-range rows read zero under this image.
+// Weight-path override: VERILOG_DEFINES (LibreLane) or -D (hand flow)
+// injects an absolute path; default stays repo-root-relative for sim.
+`ifndef ET_INIT_PATH
+`define ET_INIT_PATH "src/tb/embed_top_stitch/dut_init.hex"
+`endif
 module embed_top #(
   parameter S = 64,
   parameter E = 576,
   parameter H = 576,
   parameter V = 32000,
-  parameter INIT_FILE = "src/tb/embed_top_stitch/dut_init.hex"
+  parameter INIT_FILE = `ET_INIT_PATH
 )(
   input  wire              clk,
   input  wire              rst_n,
