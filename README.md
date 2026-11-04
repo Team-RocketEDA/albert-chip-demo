@@ -1,4 +1,10 @@
-# MobileLLM-125M Decoder Chip — vibe-coded silicon
+<p align="center">
+  <img src=".github/assets/rocketide-logo.svg" width="72" height="72" alt="RocketIDE logo">
+</p>
+
+<h1 align="center">MobileLLM-125M Decoder Chip — vibe-coded silicon</h1>
+
+<p align="center"><sub>Part of <a href="https://github.com/Team-RocketEDA/RocketIDE"><b>RocketIDE</b></a> · demo project</sub></p>
 
 A 100%-digital MobileLLM-125M decoder (`L=30/H=576/GQA-kv3/SwiGLU/RMSNorm/RoPE`),
 designed and verified block by block as an agentic coding demo, with a first block
