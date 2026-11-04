@@ -196,3 +196,9 @@ golden GDS is committed to the repo (no releases).
   `loop_mem_seq` prune; wiring the bound stack (`emit_stack.py`
   output) into the top; activation-scale calibration (unit chain
   vs baked scales); DOD oracle vehicle (numpy vs HF python).
+- TODO (housekeeping): prune dead loop-era files (`tb_loop_top_stitch`,
+  `obj_loop` Makefile targets, `dram_ctrl.v` if uninstantiated,
+  `run_librelane.py` vs `run_tile.py` duplication); refresh
+  `renders/dashboard.html` + waves after the full-model pass (it still
+  shows the retired loop sim); per-buffer macro mapping (PDK 1k/2k vs
+  stub) from the §13 touch map.
