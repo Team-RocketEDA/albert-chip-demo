@@ -61,6 +61,10 @@ job = {
     "clock_period": cfg.get("CLOCK_PERIOD", 25),
     "pdk": cfg.get("PDK", "sky130A"),
     "pdk_root": os.environ.get("PDK_ROOT", os.path.expanduser("~/.local/share/pdk")),
+    # Proven waveform-generator recipe: manual PDK root (no ciel
+    # download, read-only PDK safe) + explicit SCL.
+    "manual_pdk": True,
+    "scl": "sky130_fd_sc_hd",
     "tag": TAG,
     "config": extra,
     "tool_dir": bins[0],
