@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+"""Run one albert-chip-demo tile through rocket-engine's LibreLane adapter.
+
+No handrolled chaining: the engine's LibrelaneFlowAdapter stages the
+RTL, makes ONE `librelane <config> --run-tag <tag> --pdk sky130A
+--overwrite` call, and judges the D11-D27 gates from machine files.
+
+Usage: run_tile.py TILE [TAG]
+  TILE      synth dir name under src/synth (e.g. lm_head, mac_array)
+  TAG       run variant (default v1_2d); outputs land in out/<TAG>/
+
+Env: RE_ROOT overrides the rocket-engine checkout (default: repo/../rocket-engine).
+"""
+
+import glob
+import json
+import os
+import sys
+from pathlib import Path
+
+TILE = sys.argv[1]
+TAG = sys.argv[2] if len(sys.argv) > 2 else "v1_2d"
+
+ALBERT = Path(__file__).resolve().parents[2]
+ENGINE = Path(os.environ.get("RE_ROOT", str(ALBERT.parent / "rocket-engine")))
+sys.path.insert(0, str(ENGINE / "src"))
+from src.adapters.digital_flow import LibrelaneFlowAdapter
+
+tile_dir = ALBERT / "src" / "synth" / TILE
+cfg = json.loads((tile_dir / "config.json").read_text())
+sources = [str(ALBERT / f) for f in cfg["VERILOG_FILES"]]
+
+bins = sorted(
+    glob.glob(
+        str(
+            ENGINE
+            / ".tools/librelane-3.0.17/squashfs-root/nix/store/*-python3.13-librelane-3.0.17/bin"
+        )
+    )
+)
+if not bins:
+    sys.exit("librelane devshell not provisioned under rocket-engine/.tools")
+
+workdir = tile_dir / "out" / TAG
+workdir.mkdir(parents=True, exist_ok=True)
+
+extra = {
+    k: v
+    for k, v in cfg.items()
+    if k not in ("DESIGN_NAME", "VERILOG_FILES", "RUN_TAG")
+}
+job = {
+    "operation": "run_digital_flow",
+    "sources": sources,
+    "top": TILE,
+    "clock_port": cfg.get("CLOCK_PORT", "clk"),
+    "clock_period": cfg.get("CLOCK_PERIOD", 25),
+    "pdk": cfg.get("PDK", "sky130A"),
+    "pdk_root": os.path.expanduser("~/.local/share/pdk"),
+    "tag": TAG,
+    "config": extra,
+    "tool_dir": bins[0],
+    "workdir": str(workdir),
+}
+
+adapter = LibrelaneFlowAdapter()
+native = adapter.execute(job)
+parsed = adapter.parse(native)
+print(f"exit={native['exit_code']} timed_out={native['timed_out']}")
+print(f"run_dir={native['run_dir']}")
+print(f"gates total={parsed['total']}")
+for v in parsed["violations"]:
+    print("VIOL:", v.get("stage"), v.get("code"), str(v.get("message"))[:200])
+meas = parsed.get("measurements", {})
+for k in ("gds", "netlist", "drc_total", "lvs_match", "librelane_version"):
+    if k in meas:
+        print(f"{k}={meas[k]}")
