@@ -223,3 +223,19 @@ DOD (locked): tokens in, tokens out, verified MATHEMATICALLY against
 the software model, plus LVS (netgen ex2spice) on the FINAL GDS
 proving the GDS is the working model. Area unconstrained. Timing
 closure required at least (sky130 is what it is).
+
+## 11. Weight embodiment: literals for synth, vias for layout (locked)
+
+Weights enter synthesis as Verilog literals (`localparam`/assign
+constants per tile, metaprogrammed from bake hex), never as
+$readmemh-preloaded memories. yosys `opt_const` + ABC then do what
+they do: constant-propagate, collapse constant-coefficient
+multipliers (mult-by-9 becomes shift+add), dead-code the rest.
+$readmemh was the blowup (memory elaborated to flops BEFORE
+optimization); literals skip that stage entirely. Sim uses the same
+emitted file, so sim/synth cannot diverge. The via-ROM generator
+consumes the same hex: metaprogram once, emit twice (literals for
+synth, via plots for GDS). DOD oracle: straight HF python inference
+on the finetune; demo prompts chosen where HF argmax is confident
+(quant noise can flip close calls — compare top-k/logits, and lead
+with a confident prompt).
