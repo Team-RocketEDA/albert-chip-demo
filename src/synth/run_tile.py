@@ -49,11 +49,18 @@ if not bins:
 workdir = tile_dir / "out" / TAG
 workdir.mkdir(parents=True, exist_ok=True)
 
-extra = {
-    k: v
-    for k, v in cfg.items()
-    if k not in ("DESIGN_NAME", "VERILOG_FILES", "RUN_TAG")
-}
+# Forward only the proven waveform-generator set. In particular STA_CORNERS
+# (9 corners) and SYNTH_STRATEGY are NOT forwarded: multi-corner STA and
+# area-first synthesis multiply runtime versus the default flow.
+_FORWARDED_KEYS = (
+    "LIB",
+    "STD_CELL_LIBRARY",
+    "SYNTH_CORNER",
+    "DEFAULT_CORNER",
+    "DIE_AREA",
+    "FP_SIZING",
+)
+extra = {k: cfg[k] for k in _FORWARDED_KEYS if k in cfg}
 # CWD-independent weight paths: every `define MAC "src/...|weights/..."
 # in the staged sources gets an absolute-path -D, because LibreLane
 # steps run with CWD=step dir (not the repo root). RTL defaults stay
