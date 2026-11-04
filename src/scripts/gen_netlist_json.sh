@@ -75,13 +75,19 @@ SRCS=($(printf '%s\n' "${SRCS[@]}" | grep -vxF -f <(printf '%s\n' "${_EXCLUDE[@]
 # head weights, norm gamma) so the render shows clean blocks with
 # no init-data bloat. Sim/synth never define it: default paths
 # below are byte-identical.
+YOSYS_LOG="$TMPDIR_WORK/yosys.log"
 "$YOSYS" -q -p "
 read_verilog -defer -DNETLIST_CLEAN ${SRCS[*]}
 hierarchy -check -top $TOP
 blackbox sram_1r1w regfile_dp embed_lut
 write_json $RAW
-" 2>&1 | grep -i -E "error|warning.*top|no.*module" | head -5 || true
-[ -s "$RAW" ] || { echo "FATAL: yosys produced no JSON (see log above)"; exit 1; }
+" >"$YOSYS_LOG" 2>&1 || true
+grep -i -E "error|warning.*top|no.*module" "$YOSYS_LOG" | head -5 || true
+if [ ! -s "$RAW" ]; then
+  cp "$YOSYS_LOG" "${OUT%.json}.yosys.log"
+  echo "FATAL: yosys produced no JSON; full log saved to ${OUT%.json}.yosys.log"
+  exit 1
+fi
 
 REPO="$REPO" TOP="$TOP" OUT="$OUT" RAW="$RAW" python3 - <<'EOF'
 import json, os, subprocess, datetime
