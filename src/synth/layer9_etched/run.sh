@@ -23,7 +23,13 @@ LIB="$PDK/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"
 # Tools: $TOOL_YOSYS/$TOOL_OPENROAD/$TOOL_MAGIC/$TOOL_KLAYOUT win when set.
 # Magic default is the source build on PATH (/usr/local/bin/magic), NOT nix.
 # Yosys/OpenROAD/KLayout default to the librelane-devshell nix layout.
-NIX=/tmp/librelane-shell/squashfs-root/nix/store
+# Toolchain: the engine-provisioned devshell wins (same tree run_tile.py
+# uses); the /tmp extract is the legacy fallback.
+if [ -d "$RE_ROOT/.tools/librelane-3.0.17/squashfs-root/nix/store" ]; then
+  NIX="$RE_ROOT/.tools/librelane-3.0.17/squashfs-root/nix/store"
+else
+  NIX=/tmp/librelane-shell/squashfs-root/nix/store
+fi
 YOSYS=${TOOL_YOSYS:-$(echo $NIX/*-yosys-0.62/bin/yosys)}
 OPENROAD=${TOOL_OPENROAD:-$(echo $NIX/*-openroad-2026-02-17/bin/openroad)}
 MAGIC=${TOOL_MAGIC:-$(command -v magic)}

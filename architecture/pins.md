@@ -64,6 +64,8 @@ ports MUST update this doc, `pins.json`, and `TestPinNames` together.
 | rst_n | in | 1 |
 | z_in | in | S*H*8 |
 | z_valid | in | 1 |
+| cfg_scale | in | 16 |
+| cfg_zero | in | 16 |
 | z_ready | out | 1 |
 | slice_out | out | S*C*8 |
 | slice_valid | out | 1 |
@@ -80,6 +82,8 @@ ports MUST update this doc, `pins.json`, and `TestPinNames` together.
 | in_ready | out | 1 |
 | y_out | out | S*H*16 |
 | y_valid | out | 1 |
+| yq_out | out | S*H*8 |
+| yq_valid | out | 1 |
 
 ## ffn_tile (`ffn_tile.v`)
 

@@ -125,6 +125,8 @@ module tb_ffn_tile_stitch;
     $display("oracle down layout: 8/8 checked errs=%0d", errs);
 
     // 2. Backdoor-load the DUT weight SRAMs (first-FF-row slices).
+    // (Slice scope FF=8: the bound INIT_FILE tables stay "" here, so the
+    // host-load path carries the weights exactly as before the bind.)
     for (j = 0; j < FF; j = j + 1)
       for (k = 0; k < H; k = k + 1) begin
         dut.u_gatew.mem[j*H+k] = Wg[j*576+k];

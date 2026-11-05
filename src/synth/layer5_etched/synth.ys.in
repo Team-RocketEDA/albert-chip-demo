@@ -10,14 +10,14 @@ read_verilog @REPO@/src/components/inproj_tile.v
 read_verilog @REPO@/src/components/layer_etched.v
 read_verilog @REPO@/src/components/mac_array.v
 read_verilog @REPO@/src/components/outproj_tile.v
-read_verilog @REPO@/src/components/regfile_dp.v
+read_verilog -lib @REPO@/src/components/regfile_dp.v
 read_verilog @REPO@/src/components/requant.v
 read_verilog @REPO@/src/components/rmsnorm_d.v
 read_verilog @REPO@/src/components/rmsnorm_stage.v
 read_verilog @REPO@/src/components/seq_fsm.v
 read_verilog @REPO@/src/components/silu_lut.v
 read_verilog @REPO@/src/components/softmax_d.v
-read_verilog @REPO@/src/components/sram_1r1w.v
+read_verilog -lib @REPO@/src/components/sram_1r1w.v
 read_verilog @REPO@/src/generated/layer5_etched.v
 hierarchy -check -top layer5_etched
 proc; opt; fsm; opt; memory; opt

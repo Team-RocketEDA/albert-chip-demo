@@ -4,8 +4,13 @@
 #   ./build.sh prereqs          check + list every prerequisite
 #   ./build.sh test [name|all]  elab + contract tests + iverilog stitch TBs
 #                               + Verilator benches, one by one (default: all)
-#   ./build.sh gds [block|all]  per-block LibreLane runs, ONE AT A TIME
+#   ./build.sh gds [--chunk=N] [block|all]
+#                               per-block LibreLane runs, ONE AT A TIME
 #                               (default: all, small blocks first — OOM-safe)
+#     --chunk=N shards each layer's inproj along output rows into C slices
+#       (C = largest divisor of 192 at/below N; --chunk=0/1 = monolithic).
+#       e.g. --chunk=56 -> C=48 slices/layer, run one at a time, stitch
+#       thirds across slices to rebuild the frame. Small blocks stay mono.
 #   ./build.sh stitch           KLayout abut tiles/*.gds -> tiles/mobilellm-125m.gds
 #                               (v1: audit + place + merge; wiring follows)
 #   ./build.sh flow preflight [block|all]  rocket-engine digital_flow preflight
@@ -14,7 +19,9 @@
 #                               never the flat top; GDS -> tiles/)
 #   ./build.sh clean            remove sim/build outputs (never weights, never tiles/)
 #
-# Test bench names: embed rmsnorm inproj top prompt  (Verilator)
+# Test bench names: embed rmsnorm inproj top prompt chunk-equiv codec  (Verilator)
+#   + l0probe (layer-0 fidelity dump for golden_l0bit.py)
+#   + stitch TBs: embed_top attention outproj rmsnorm ffn ffn_full layer lm_head
 # Stitch TB names:  embed_top attention outproj rmsnorm ffn lm_head (iverilog)
 # GDS block names:  mac_array lm_head embed_top outproj_tile rmsnorm_stage
 #                   attention_core ffn_tile layer0 .. layer29
@@ -74,20 +81,34 @@ cmd_test() {
   "$RE_PY" -m unittest discover -s architecture/tests || return 1
   echo "== [3/4] iverilog stitch TBs ($sel) =="
   if [ "$sel" = all ]; then bash src/scripts/run_stitch.sh || return 1;
-  elif [ "$sel" = embed_top ] || [ "$sel" = attention ] || [ "$sel" = outproj ] || [ "$sel" = rmsnorm ] || [ "$sel" = ffn ] || [ "$sel" = lm_head ]; then bash src/scripts/run_stitch.sh "$sel" || return 1; fi
+  elif [ "$sel" = embed_top ] || [ "$sel" = attention ] || [ "$sel" = outproj ] || [ "$sel" = rmsnorm ] || [ "$sel" = ffn ] || [ "$sel" = ffn_full ] || [ "$sel" = layer ] || [ "$sel" = lm_head ]; then bash src/scripts/run_stitch.sh "$sel" || return 1; fi
   echo "== [4/4] Verilator benches ($sel) =="
   case "$sel" in
-    all)          make -C src/sim_verilator embed && make -C src/sim_verilator rmsnorm && make -C src/sim_verilator inproj && make -C src/sim_verilator top ;;
-    embed|rmsnorm|inproj|top) make -C src/sim_verilator "$sel" ;;
+    all)          make -C src/sim_verilator embed && make -C src/sim_verilator rmsnorm && make -C src/sim_verilator inproj && make -C src/sim_verilator top && make -C src/sim_verilator chunk-equiv && make -C src/sim_verilator codec ;;
+    embed|rmsnorm|inproj|top|chunk-equiv|codec) make -C src/sim_verilator "$sel" ;;
     prompt)      make -C src/sim_verilator prompt ;;
-    embed_top|attention|outproj|ffn|lm_head) echo "(stitched above; no separate Verilator bench)" ;;
+    l0probe)     make -C src/sim_verilator l0probe ID=1 ;;
+    embed_top|attention|outproj|ffn|ffn_full|layer|lm_head) echo "(stitched above; no separate Verilator bench)" ;;
     *) echo "unknown test name: $sel"; return 1 ;;
   esac || return 1
   echo "TEST: ALL SELECTED PASS"
 }
 
 cmd_gds() {
-  local sel="${1:-all}"
+  local chunk_req="" sel="all"
+  for a in "$@"; do
+    case "$a" in
+      --chunk=*) chunk_req="${a#--chunk=}" ;;
+      --chunk) echo "use --chunk=N"; return 1 ;;
+      *) sel="$a" ;;
+    esac
+  done
+  local C=1
+  if [ -n "$chunk_req" ]; then
+    C="$("$RE_PY" weights/bake/chunk.py --resolve "$chunk_req")"
+    echo "chunk: requested $chunk_req -> C=$C slices/layer"
+  fi
+  if [ "$C" -gt 1 ]; then cmd_gds_chunked "$C" "$sel"; return $?; fi
   local seq="mac_array lm_head embed_top outproj_tile rmsnorm_stage attention_core ffn_tile"
   if [ "$sel" != all ]; then seq="$sel"; fi
   for b in $seq; do
@@ -103,6 +124,41 @@ cmd_gds() {
   echo "GDS: ALL SELECTED DONE — outputs in src/synth/<block>/ + tiles/ assembly next"
 }
 
+cmd_gds_chunked() {
+  # Chunked layer path: split hex -> emit slice wrappers -> gen slice
+  # configs -> run each slice P&R one at a time. Small blocks stay mono.
+  # Layer-rest logic (attention/ffn/outproj/norms) reuses today's small
+  # configs; slice thirds concat at stitch time (tiles/stitch.py follows).
+  local C="$1" sel="$2" layers_spec="0-29"
+  case "$sel" in
+    all) ;;
+    layer[0-9]*_etched) layers_spec="${sel#layer}"; layers_spec="${layers_spec%_etched}" ;;
+    *) echo "=== GDS $sel (mono; --chunk applies to layers only) ==="
+       bash "src/synth/$sel/run.sh" || { echo "GDS FAILED at $sel — fix before continuing"; return 1; }
+       return 0 ;;
+  esac
+  echo "=== chunk prep (C=$C, layers $layers_spec) ==="
+  "$RE_PY" weights/bake/chunk.py --chunks "$C" --layers "$layers_spec" --wide || return 1
+  "$RE_PY" weights/bake/emit_chunks.py --chunks "$C" --layers "$layers_spec" || return 1
+  bash src/synth/gen_chunk_configs.sh --chunks "$C" --layers "$layers_spec" || return 1
+  if [ "$sel" = all ]; then
+    for b in mac_array lm_head embed_top outproj_tile rmsnorm_stage attention_core ffn_tile; do
+      echo "=== GDS $b (log src/synth/$b/run.log) ==="
+      bash "src/synth/$b/run.sh" || { echo "GDS FAILED at $b — fix before continuing"; return 1; }
+    done
+  fi
+  for n in $("$RE_PY" -c "
+import sys; sys.path.insert(0, 'weights/bake')
+from chunk import parse_layers
+print(' '.join(map(str, parse_layers('$layers_spec'))))"); do
+    for k in $(seq 0 $((C - 1))); do
+      echo "=== GDS layer${n}_inproj_c${k} (C=$C) ==="
+      bash "src/synth/layer${n}_inproj_c${k}/run.sh" || { echo "GDS FAILED at layer${n} slice ${k} — fix before continuing"; return 1; }
+    done
+  done
+  echo "GDS: CHUNKED DONE (C=$C) — slice GDS in src/synth/layer*_inproj_c*/ + tiles/ stitch next"
+}
+
 cmd_stitch() {
   export REPO="$ROOT" TILES="${TILES:-$ROOT/tiles}"
   "$RE_KL/klayout" -b -r "$ROOT/tiles/stitch.py" || return 1
@@ -111,7 +167,7 @@ cmd_stitch() {
 case "${1:-help}" in
   prereqs) cmd_prereqs ;;
   test)    cmd_test "${2:-all}" ;;
-  gds)     cmd_gds "${2:-all}" ;;
+  gds)     shift; cmd_gds "$@" ;;
   stitch)  cmd_stitch ;;
   flow)    shift; "$RE_PY" src/synth/run_librelane.py "$@" || exit 1 ;;
   clean)   make -C src/sim_verilator clean 2>/dev/null; rm -f /tmp/stitch_*.log /tmp/stitch_*.vvp; echo "CLEAN DONE (weights/ and tiles/ untouched)" ;;

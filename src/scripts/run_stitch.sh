@@ -21,10 +21,14 @@ run_one() {
   local name="$1" define="$2" top="$3" pass="$4"
   shift 4
   local log="/tmp/stitch_${name}.log"
+  # The full-layer test runs 2.18M cycles (~5 min wall in iverilog);
+  # component TBs finish in seconds.
+  local budget=280
+  if [ "$name" = "layer" ]; then budget=1200; fi
   echo "=== ${name} (log ${log})"
   if [ -n "$define" ]; then set -- -g2012 "-D${define}" "$@"; else set -- -g2012 "$@"; fi
-  if timeout 280 iverilog "$@" -s "$top" -o "/tmp/stitch_${name}.vvp" >"$log" 2>&1 \
-    && timeout 280 vvp "/tmp/stitch_${name}.vvp" >>"$log" 2>&1 \
+  if timeout "$budget" iverilog "$@" -s "$top" -o "/tmp/stitch_${name}.vvp" >"$log" 2>&1 \
+    && timeout "$budget" vvp "/tmp/stitch_${name}.vvp" >>"$log" 2>&1 \
     && grep -qF "$pass" "$log"; then
     echo "PASS ${name}"
     return 0
@@ -58,6 +62,11 @@ go rmsnorm      STITCH_YQ     tb_rmsnorm_stage_stitch "RMSNORM_STAGE PASS" \
 go ffn          FFN_IMPL      tb_ffn_tile_stitch      "FFN_TILE_STITCH PASS" \
   $C/ffn_tile.v $C/fifo_sync.v $C/mac_array.v $C/regfile_dp.v $C/requant.v $C/seq_fsm.v $C/silu_lut.v $C/sram_1r1w.v \
   $T/ffn_tile_stitch/tb_ffn_tile_stitch.v
+go ffn_full     ""            tb_ffn_wbind              "FFN_WBIND PASS" \
+  $C/ffn_tile.v $C/fifo_sync.v $C/mac_array.v $C/regfile_dp.v $C/requant.v $C/seq_fsm.v $C/silu_lut.v $C/sram_1r1w.v \
+  $T/ffn_tile_stitch/tb_ffn_wbind.v
+go layer        ""            tb_layer_etched_stitch    "LAYER_STITCH PASS" \
+  $C/*.v $T/layer_etched_stitch/tb_layer_etched_stitch.v
 go lm_head      STITCH_LOGITS tb_lm_head_stitch       "LM_HEAD_STITCH PASS" \
   $C/fifo_sync.v $C/lm_head.v $C/mac_array.v $C/seq_fsm.v $C/sram_1r1w.v \
   $T/lm_head_stitch/tb_lm_head_stitch.v

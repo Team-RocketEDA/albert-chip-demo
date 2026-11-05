@@ -29,7 +29,13 @@ RE_ROOT="${RE_ROOT:-$REPO/../rocket-engine}"
 export RE_ROOT PATH="$RE_ROOT/.tools/oss-cad-suite/bin:$RE_ROOT/.tools/klayout-0.30.12/bin:$PATH"
 PDK="${PDK:-$HOME/.local/share/pdk/sky130A}"
 LIB="$PDK/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib"
-NIX=/tmp/librelane-shell/squashfs-root/nix/store
+# Toolchain: the engine-provisioned devshell wins (same tree the adapter
+# uses); the /tmp extract is the legacy fallback.
+if [ -d "$RE_ROOT/.tools/librelane-3.0.17/squashfs-root/nix/store" ]; then
+  NIX="$RE_ROOT/.tools/librelane-3.0.17/squashfs-root/nix/store"
+else
+  NIX=/tmp/librelane-shell/squashfs-root/nix/store
+fi
 YOSYS=$(echo $NIX/*-yosys-0.62/bin/yosys)
 OPENROAD=$(echo $NIX/*-openroad-2026-02-17/bin/openroad)
 MAGIC=${TOOL_MAGIC:-$(command -v magic)}

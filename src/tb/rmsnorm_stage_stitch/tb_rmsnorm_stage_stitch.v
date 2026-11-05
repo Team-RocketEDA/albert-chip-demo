@@ -32,12 +32,15 @@ module tb_rmsnorm_stage_stitch;
   wire            in_ready;
   wire [N*16-1:0] y_out;
   wire            y_valid;
+  wire [N*8-1:0]  yq_out;
+  wire            yq_valid;
 
   rmsnorm_stage #(.S(S), .H(H)) dut (
     .clk(clk), .rst_n(rst_n),
     .x_in(x_in), .resid_in(resid_in),
     .in_valid(in_valid), .in_ready(in_ready),
-    .y_out(y_out), .y_valid(y_valid)
+    .y_out(y_out), .y_valid(y_valid),
+    .yq_out(yq_out), .yq_valid(yq_valid)
   );
 
   reg [7:0]  s8row [0:H-1];   // baked s8 stimulus row
@@ -154,6 +157,23 @@ module tb_rmsnorm_stage_stitch;
         end
       end
     $display("phaseA requant narrow done errs=%0d", errs);
+    tot_errs = tot_errs + errs;
+    // yq_out port must mirror the internal int8 frame (ln1 re-entry width).
+    errs = 0;
+    if (yq_valid !== 1'b1) begin
+      $display("FAIL phaseA yq_valid=%b want 1 after frame", yq_valid);
+      errs = errs + 1;
+    end
+    for (r = 0; r < S; r = r + 1)
+      for (c = 0; c < H; c = c + 1) begin
+        if (yq_out[(r*H+c)*8 +: 8] !== dut.yq_mem[r*H+c]) begin
+          if (errs < 8)
+            $display("FAIL phaseA yq_out row%0d lane%0d got=%h want=%h",
+                     r, c, yq_out[(r*H+c)*8 +: 8], dut.yq_mem[r*H+c]);
+          errs = errs + 1;
+        end
+      end
+    $display("phaseA yq_out mirror done errs=%0d", errs);
     tot_errs = tot_errs + errs;
     // Tbuf store: spot-check bank0 rows 0/63 lanes 0/575 + a mid lane.
     errs = 0;

@@ -2,7 +2,7 @@
   "DESIGN_NAME": "mac_array",
   "VERILOG_FILES": ["src/components/mac_array.v"],
   "CLOCK_PORT": "clk",
-  "CLOCK_PERIOD": 25,
+  "CLOCK_PERIOD": 40,
   "PDK": "sky130A",
   "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
   "LIB": {

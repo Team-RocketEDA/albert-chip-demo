@@ -77,6 +77,10 @@ for src_file in sources:
                 defines.append(f'{macro}="{target}"')
 if defines:
     extra["VERILOG_DEFINES"] = defines
+# Blackbox interfaces, not elaborated macros: LibreLane's json-header step
+# turns these files into -lib blackboxes before hierarchy (the same step
+# that hung 70min walking the SRAM). Absolute paths, mirroring sources.
+extra["blackbox_models"] = [str(ALBERT / f) for f in cfg.get("blackbox_models", [])]
 job = {
     "operation": "run_digital_flow",
     "sources": sources,

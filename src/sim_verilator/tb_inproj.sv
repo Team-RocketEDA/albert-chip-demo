@@ -23,13 +23,16 @@ module tb_inproj (
   output wire [2*960*8-1:0]     y_out2,
   output wire                   y_valid2
 );
-  inproj_tile #(.S(1)) u_dut (
+  // USE_SRAM_W=0: the C++ oracle recomputes dots from the legacy
+  // per-row narrow images. The wide-SRAM (calibrated _pt) path is
+  // covered by CHUNK_EQUIV plus the full-layer probe, not here.
+  inproj_tile #(.S(1), .USE_SRAM_W(0)) u_dut (
     .clk(clk), .rst_n(rst_n),
     .tok_in(tok_in), .tok_valid(tok_valid),
     .cfg_scale(cfg_scale), .cfg_zero(cfg_zero),
     .tok_ready(tok_ready), .y_out(y_out), .y_valid(y_valid)
   );
-  inproj_tile #(.S(2)) u_dut2 (
+  inproj_tile #(.S(2), .USE_SRAM_W(0)) u_dut2 (
     .clk(clk), .rst_n(rst_n),
     .tok_in(tok_in2), .tok_valid(tok_valid2),
     .cfg_scale(cfg_scale), .cfg_zero(cfg_zero),

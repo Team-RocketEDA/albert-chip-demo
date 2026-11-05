@@ -1,6 +1,7 @@
 {
   "DESIGN_NAME": "embed_top",
   "VERILOG_FILES": ["src/components/embed_top.v", "src/components/embed_lut.v", "src/components/fifo_sync.v", "src/components/seq_fsm.v", "src/components/sram_1r1w.v"],
+  "blackbox_models": ["src/components/embed_lut.v", "src/components/sram_1r1w.v"],
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 25,
   "PDK": "sky130A",

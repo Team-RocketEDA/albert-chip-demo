@@ -566,10 +566,11 @@ class TestPinNames(unittest.TestCase):
         "attention_core": ["clk", "rst_n", "q_in", "k_in", "v_in",
                            "qkv_valid", "s_cfg", "qkv_ready", "y_out",
                            "y_valid"],
-        "outproj_tile": ["clk", "rst_n", "z_in", "z_valid", "z_ready",
-                         "slice_out", "slice_valid"],
+        "outproj_tile": ["clk", "rst_n", "z_in", "z_valid", "cfg_scale",
+                         "cfg_zero", "z_ready", "slice_out", "slice_valid"],
         "rmsnorm_stage": ["clk", "rst_n", "x_in", "resid_in", "in_valid",
-                          "in_ready", "y_out", "y_valid"],
+                          "in_ready", "y_out", "y_valid", "yq_out",
+                          "yq_valid"],
         "ffn_tile": ["clk", "rst_n", "x_in", "x_valid", "start", "x_ready",
                      "y_out", "y_valid", "done"],
         "lm_head": ["clk", "rst_n", "x_last_in", "x_valid", "pred_out",
@@ -582,9 +583,13 @@ class TestPinNames(unittest.TestCase):
 
     def _ports(self, name):
         src = (self.SRC / f"{name}.v").read_text()
+        # Strip line comments FIRST: header comments contain ');' pairs
+        # (e.g. inproj_tile's USE_SRAM_W note) that would truncate the
+        # module-header match below and yield an empty port list.
+        src = re.sub(r"//[^\n]*", "", src)
         m = re.search(r"module\s+" + name + r"\b(.*?)\);", src, re.S)
         self.assertIsNotNone(m, f"{name}: module header not found")
-        hdr = re.sub(r"//[^\n]*", "", m.group(1))
+        hdr = m.group(1)
         return re.findall(r"(?:input|output|inout)\s+(?:wire|reg)?\s*"
                           r"(?:\[.*?\]\s*)?(\w+)", hdr)
 

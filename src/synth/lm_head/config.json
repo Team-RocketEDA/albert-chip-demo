@@ -1,6 +1,7 @@
 {
   "DESIGN_NAME": "lm_head",
   "VERILOG_FILES": ["src/components/fifo_sync.v", "src/components/lm_head.v", "src/components/mac_array.v", "src/components/seq_fsm.v", "src/components/sram_1r1w.v"],
+  "blackbox_models": ["src/components/sram_1r1w.v"],
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 25,
   "PDK": "sky130A",

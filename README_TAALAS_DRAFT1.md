@@ -8,15 +8,14 @@
 <table>
 <tr>
 <td width="160"><img src="renders/talas-logo-placeholder.png" width="140" alt="Taalas logo placeholder"></td>
-<td>This is Taalas. A Toronto startup acquired by AMD (Aug 2026, undisclosed sum; ~$219M raised) because it turns AI models into chips — weights etched into silicon, not fetched from HBM.</td>
+<td>This is Taalas. A Toronto startup acquired by AMD and raised $219M because it turns AI models into silicon chips.</td>
 </tr>
 </table>
 
 <h1 align="center">So we open-sourced it</h1>
 <p align="center"><sub>(kind of)</sub></p>
 
-We took MobileLLM-125M (`L=30/H=576/GQA-kv3/SwiGLU/RMSNorm/RoPE`) and mapped it
-1-to-1 with weights to a tapeout chip in the sky130 process.
+We took MobileLLM-125M (`L=30/H=576/GQA-kv3/SwiGLU/RMSNorm/RoPE`), **but it was a fine tune *Cough* ,** and mapped it 1-to-1 with weights to a tapeout chip in the sky130 process.
 
 - GDS: `renders/mac_array.gds` (32 MB, block-level measured; full-chip TODO)
 - Picture: `renders/mac_array_top.png`
