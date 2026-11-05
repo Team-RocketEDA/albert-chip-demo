@@ -239,4 +239,6 @@ named command passes. Steps are ordered; each is one PR.
 - [ ] Refresh `renders/dashboard.html` + waves after the full-model
   pass (still shows the retired loop sim).
 - [ ] Per-buffer macro mapping (PDK 1k/2k vs stub) from the §13
-  touch map.
+  touch map. Rule of record: read-only + const-valued ⇒ via-ROM
+  etch (never a macro); anything dynamically written ⇒ register
+  file or SRAM macro.
