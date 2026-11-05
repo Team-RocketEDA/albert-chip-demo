@@ -68,7 +68,7 @@ go ffn_full     ""            tb_ffn_wbind              "FFN_WBIND PASS" \
 go layer        ""            tb_layer_etched_stitch    "LAYER_STITCH PASS" \
   $C/*.v $T/layer_etched_stitch/tb_layer_etched_stitch.v
 go lm_head      STITCH_LOGITS tb_lm_head_stitch       "LM_HEAD_STITCH PASS" \
-  $C/fifo_sync.v $C/lm_head.v $C/mac_array.v $C/seq_fsm.v $C/sram_1r1w.v \
+  $C/fifo_sync.v $C/lm_head.v $C/lm_wrom.v $C/mac_array.v $C/seq_fsm.v $C/sram_1r1w.v \
   $T/lm_head_stitch/tb_lm_head_stitch.v
 if [ "$FAIL" -ne 0 ]; then echo "STITCH: FAILURES PRESENT"; exit 1; fi
 echo "STITCH: ALL SELECTED PASS"

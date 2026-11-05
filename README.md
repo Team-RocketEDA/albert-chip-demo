@@ -66,13 +66,19 @@ One driver, no flag-fighting (`./build.sh`; run `./build.sh prereqs` first):
 ./build.sh gds              # all 37 blocks, ONE AT A TIME, small first (OOM-safe)
 ./build.sh gds mac_array    # one block: mac_array lm_head embed_top outproj_tile
                             # rmsnorm_stage attention_core ffn_tile layer0..layer29
+./build.sh gds clean        # wipe all out/<TAG>/, then run everything (clean slate)
+./build.sh gds clean mac_array  # wipe + rerun one block
 ./build.sh clean            # sim/build outputs only (never weights/, never tiles/)
 ```
 
-GDS blocks land per-block under `src/synth/<block>/`; the committed
-assembly set lives in `tiles/` (see `tiles/README.md`). The top-level
-`mobilellm_top` is simulation-only — it is never pushed flat through
-LibreLane; silicon comes from stitched block GDS (see Status).
+GDS runs are resumable: a tile with a finished `.gds` under
+`src/synth/<block>/out/<TAG>/` is skipped (`DONE — skip`), so an
+interrupted `gds all` picks up where it stopped. `--tag=NAME` selects
+the output tag (default `v1_2d`); `clean` wipes `out/<TAG>/` for the
+selection first. The committed assembly set lives in `tiles/` (see
+`tiles/README.md`). The top-level `mobilellm_top` is simulation-only —
+it is never pushed flat through LibreLane; silicon comes from stitched
+block GDS (see Status).
 
 | Gate | Command | Current status |
 |---|---|---|

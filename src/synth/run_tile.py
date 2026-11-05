@@ -112,3 +112,8 @@ meas = parsed.get("measurements", {})
 for k in ("gds", "netlist", "drc_total", "lvs_match", "librelane_version"):
     if k in meas:
         print(f"{k}={meas[k]}")
+# Propagate failure: build.sh resume/clean logic keys off our exit code —
+# without this a dead flow still reports DONE and the loop marches on.
+import sys
+failed = native["exit_code"] != 0 or native["timed_out"]
+sys.exit(1 if failed else 0)

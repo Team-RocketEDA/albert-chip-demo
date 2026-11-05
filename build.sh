@@ -9,6 +9,9 @@
 #                               ONE AT A TIME (default: all, small blocks
 #                               first — OOM-safe). TAG defaults to v1_2d;
 #                               outputs land in src/synth/<block>/out/<TAG>/.
+#                               Resumable: tiles with a .gds under out/<TAG>/
+#                               are skipped. `clean [block|all]` wipes
+#                               out/<TAG>/ for the selection first (clean slate).
 #     --chunk=N shards each layer's inproj along output rows into C slices
 #       (C = largest divisor of 192 at/below N; --chunk=0/1 = monolithic).
 #       e.g. --chunk=56 -> C=48 slices/layer, run one at a time, stitch
@@ -96,14 +99,33 @@ cmd_test() {
   echo "TEST: ALL SELECTED PASS"
 }
 
+tile_gds() { # $1=block $2=tag -> print finished .gds path (if any) under out/<tag>/
+  find "src/synth/$1/out/$2" -name '*.gds' -print -quit 2>/dev/null
+}
+
+run_one_tile() { # $1=block $2=tag — skip when already done (resume); else run
+  local gds
+  gds="$(tile_gds "$1" "$2")"
+  if [ -n "$gds" ]; then echo "=== GDS $1 [$2] DONE — skip ($gds) ==="; return 0; fi
+  echo "=== GDS $1 [$2] (log src/synth/$1/out/$2/) ==="
+  "$RE_PY" src/synth/run_tile.py "$1" "$2" || { echo "GDS FAILED at $1 — fix before continuing"; return 1; }
+}
+
+tile_clean() { # $1=block $2=tag — remove ONLY src/synth/<block>/out/<tag>/
+  case "$2" in ""|*/*|.*) echo "refusing to clean bad tag: [$2]"; return 1 ;; esac
+  local d="src/synth/$1/out/$2"
+  if [ -d "$d" ]; then rm -rf "$d" && echo "cleaned $d"; else echo "nothing to clean ($d absent)"; fi
+}
+
 cmd_gds() {
-  local chunk_req="" sel="all" tag="v1_2d"
+  local chunk_req="" sel="all" tag="v1_2d" clean_mode=0
   for a in "$@"; do
     case "$a" in
       --chunk=*) chunk_req="${a#--chunk=}" ;;
       --chunk) echo "use --chunk=N"; return 1 ;;
       --tag=*) tag="${a#--tag=}" ;;
       --tag) echo "use --tag=TAG"; return 1 ;;
+      clean) clean_mode=1 ;;
       *) sel="$a" ;;
     esac
   done
@@ -112,17 +134,21 @@ cmd_gds() {
     C="$("$RE_PY" weights/bake/chunk.py --resolve "$chunk_req")"
     echo "chunk: requested $chunk_req -> C=$C slices/layer"
   fi
-  if [ "$C" -gt 1 ]; then cmd_gds_chunked "$C" "$sel" "$tag"; return $?; fi
+  if [ "$clean_mode" = 1 ] && [ "$sel" = all ] && [ "$C" -le 1 ]; then
+    for d in src/synth/*/out/"$tag"; do [ -d "$d" ] && rm -rf "$d"; done
+    echo "cleaned all src/synth/*/out/$tag/ (clean slate)"
+  elif [ "$clean_mode" = 1 ] && [ "$C" -le 1 ]; then
+    tile_clean "$sel" "$tag" || return 1
+  fi
+  if [ "$C" -gt 1 ]; then cmd_gds_chunked "$C" "$sel" "$tag" "$clean_mode"; return $?; fi
   local seq="mac_array lm_head embed_top outproj_tile rmsnorm_stage attention_core ffn_tile"
   if [ "$sel" != all ]; then seq="$sel"; fi
   for b in $seq; do
-    echo "=== GDS $b [$tag] (log src/synth/$b/out/$tag/) ==="
-    "$RE_PY" src/synth/run_tile.py "$b" "$tag" || { echo "GDS FAILED at $b — fix before continuing"; return 1; }
+    run_one_tile "$b" "$tag" || return 1
   done
   if [ "$sel" = all ]; then
     for i in $(seq 0 29); do
-      echo "=== GDS layer${i}_etched [$tag] ==="
-      "$RE_PY" src/synth/run_tile.py "layer${i}_etched" "$tag" || { echo "GDS FAILED at layer${i} — fix before continuing"; return 1; }
+      run_one_tile "layer${i}_etched" "$tag" || return 1
     done
   fi
   echo "GDS: ALL SELECTED DONE — outputs in src/synth/<block>/out/$tag/ + tiles/ assembly next"
@@ -134,12 +160,16 @@ cmd_gds_chunked() {
   # the mono path. Small blocks stay mono.
   # Layer-rest logic (attention/ffn/outproj/norms) reuses today's small
   # configs; slice thirds concat at stitch time (tiles/stitch.py follows).
-  local C="$1" sel="$2" tag="$3" layers_spec="0-29"
+  local C="$1" sel="$2" tag="$3" clean_mode="${4:-0}" layers_spec="0-29"
   case "$sel" in
     all) ;;
-    layer[0-9]*_etched) layers_spec="${sel#layer}"; layers_spec="${layers_spec%_etched}" ;;
-    *) echo "=== GDS $sel [$tag] (mono; --chunk applies to layers only) ==="
-       "$RE_PY" src/synth/run_tile.py "$sel" "$tag" || { echo "GDS FAILED at $sel — fix before continuing"; return 1; }
+    layer[0-9]*_etched) layers_spec="${sel#layer}"; layers_spec="${layers_spec%_etched}"
+      if [ "$clean_mode" = 1 ]; then
+        for d in src/synth/layer"${layers_spec}"_inproj_c*/out/"$tag"; do [ -d "$d" ] && rm -rf "$d"; done
+        echo "cleaned layer${layers_spec} slices (clean slate)"
+      fi ;;
+    *) if [ "$clean_mode" = 1 ]; then tile_clean "$sel" "$tag" || return 1; fi
+       run_one_tile "$sel" "$tag" || return 1
        return 0 ;;
   esac
   echo "=== chunk prep (C=$C, layers $layers_spec) ==="
@@ -147,9 +177,12 @@ cmd_gds_chunked() {
   "$RE_PY" weights/bake/emit_chunks.py --chunks "$C" --layers "$layers_spec" || return 1
   bash src/synth/gen_chunk_configs.sh --chunks "$C" --layers "$layers_spec" || return 1
   if [ "$sel" = all ]; then
+    if [ "$clean_mode" = 1 ]; then
+      for d in src/synth/*/out/"$tag"; do [ -d "$d" ] && rm -rf "$d"; done
+      echo "cleaned all src/synth/*/out/$tag/ (clean slate)"
+    fi
     for b in mac_array lm_head embed_top outproj_tile rmsnorm_stage attention_core ffn_tile; do
-      echo "=== GDS $b [$tag] (log src/synth/$b/out/$tag/) ==="
-      "$RE_PY" src/synth/run_tile.py "$b" "$tag" || { echo "GDS FAILED at $b — fix before continuing"; return 1; }
+      run_one_tile "$b" "$tag" || return 1
     done
   fi
   for n in $("$RE_PY" -c "
@@ -157,8 +190,7 @@ import sys; sys.path.insert(0, 'weights/bake')
 from chunk import parse_layers
 print(' '.join(map(str, parse_layers('$layers_spec'))))"); do
     for k in $(seq 0 $((C - 1))); do
-      echo "=== GDS layer${n}_inproj_c${k} (C=$C) [$tag] ==="
-      "$RE_PY" src/synth/run_tile.py "layer${n}_inproj_c${k}" "$tag" || { echo "GDS FAILED at layer${n} slice ${k} — fix before continuing"; return 1; }
+      run_one_tile "layer${n}_inproj_c${k}" "$tag" || return 1
     done
   done
   echo "GDS: CHUNKED DONE (C=$C) — slice GDS in src/synth/layer*_inproj_c*/out/$tag/ + tiles/ stitch next"

@@ -6,6 +6,12 @@
 // and writes to them are dropped. INIT_FILE optionally preloads the bank
 // with a $readmemh hex image (one W-bit word per line); "" keeps zeros.
 // Ports and W/N parameters are unchanged from the skeleton contract.
+// LibreLane blackbox: under __librelane__ (defined by its synth/header
+// steps only) this module keeps ports but elaborates no body — the macro
+// is provided/etched, never mapped to logic. Sim flows never define it.
+`ifdef __librelane__
+(* blackbox *)
+`endif
 module sram_1r1w #(
   parameter W = 8,
   parameter N = 1024,

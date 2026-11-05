@@ -44,9 +44,11 @@ CODEC_SRCS := $(ROOT)/src/components/attention_core.v \
   $(ROOT)/src/components/embed_lut.v $(ROOT)/src/components/exp_lut.v \
   $(ROOT)/src/components/fifo_sync.v $(ROOT)/src/components/ffn_tile.v \
   $(ROOT)/src/components/inproj_tile.v $(ROOT)/src/components/layer_etched.v \
-  $(ROOT)/src/components/lm_head.v $(ROOT)/src/components/mac_array.v \
+  $(ROOT)/src/components/lm_head.v $(ROOT)/src/components/lm_wrom.v \
+  $(ROOT)/src/components/mac_array.v \
   $(ROOT)/src/components/outproj_tile.v $(ROOT)/src/components/regfile_dp.v \
-  $(ROOT)/src/components/requant.v $(ROOT)/src/components/rmsnorm_d.v \
+  $(ROOT)/src/components/requant.v $(ROOT)/src/components/rescale.v \
+  $(ROOT)/src/components/rmsnorm_d.v \
   $(ROOT)/src/components/rmsnorm_stage.v $(ROOT)/src/components/seq_fsm.v \
   $(ROOT)/src/components/silu_lut.v $(ROOT)/src/components/softmax_d.v \
   $(ROOT)/src/components/sram_1r1w.v

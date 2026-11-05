@@ -11,9 +11,10 @@
 //
 // Datapath (iverilog subset): LAST_BUF latch (x_valid -> xbuf) -> inferred
 // dots over the baked 16-row vocab subset (tv_lmhead_*, seed 0xB0C8; W image
-// is the baked embed copy: wmem holds rows 0..15 of embed_full ==
-// embed_proxy64 head via src/tb/lm_head_stitch/wlm_subset16.hex) -> inferred
-// argmax compare loop (first-max wins) -> pred_out + single-cycle done.
+// is the baked embed copy: u_wrom serves rows 0..15 of embed_full ==
+// embed_proxy64 head via src/tb/lm_head_stitch/wlm_subset16.hex, one full
+// row per cycle) -> inferred argmax compare loop (first-max wins) ->
+// pred_out + single-cycle done.
 // Full 32k x 576 is the Verilator stretch (time-muxed over u_lmmac 32-lane
 // MAC), NOT iverilog serial. (u_wlm bank removed; subset wmem is live.)
 // Control: IDLE -> CALC (16 cycles, one row dot per cycle) -> AMAX (1 cycle
@@ -25,7 +26,8 @@
 // companion), u_lmmac (32-lane
 // companion for the Verilator full-vocab path), u_predfifo (buffers pred
 // ids to the SW GenEval sink), u_ctrl (status sequencer; done is driven by
-// the inferred FSM, not layer_done).
+// the inferred FSM, not layer_done), u_wrom (16-row weight ROM; synth
+// blackbox, via-ROM etch later).
 // Weight-path override: VERILOG_DEFINES (LibreLane) or -D (hand flow)
 // injects an absolute path; default stays repo-root-relative for sim.
 `ifndef LM_WLM_PATH
@@ -56,21 +58,13 @@ module lm_head #(
   reg [1:0] state;
   reg [7:0]  xbuf [0:H-1];          // LAST_BUF latched last-token row (s8)
   localparam RW = (VROWS > 1) ? $clog2(VROWS) : 1;
-  reg [7:0]  wmem [0:VROWS*H-1];    // W_lm rows (s8, stationary)
+  wire [H*8-1:0] wrow_flat;         // live W_lm row from u_wrom (s8 each)
   reg [31:0] logits [0:VROWS-1];    // logits (s32, exact mod-2^32)
   reg [14:0] pred_r;
   reg        done_r;
 
   assign pred_out = pred_r;
   assign done     = done_r;
-
-  // NETLIST_CLEAN (netlist JSON only): skip ROM preload so the
-  // render shows clean blocks. Sim/synth never define it.
-  initial begin
-`ifndef NETLIST_CLEAN
-    $readmemh(WLM_FILE, wmem);
-`endif
-  end
 
   reg signed [63:0] psum_tmp;
   integer p, k;
@@ -97,7 +91,7 @@ module lm_head #(
         ST_CALC: begin
           psum_tmp = 64'sd0;
           for (p = 0; p < H; p = p + 1)
-            psum_tmp = psum_tmp + $signed(xbuf[p]) * $signed(wmem[row*H+p]);
+            psum_tmp = psum_tmp + $signed(xbuf[p]) * $signed(wrow_flat[p*8 +: 8]);
           logits[row] <= psum_tmp[31:0];
           if (row == VROWS-1)
             state <= ST_AMAX;
@@ -140,8 +134,11 @@ module lm_head #(
   );
   // WLM stationary bank REMOVED (verify-then-delete closed): 150 Mbit of
   // zeros, read address hard-tied to 0, rdata unconsumed (Verilator
-  // UNUSEDSIGNAL-confirmed). The 16-row subset wmem above is the live
-  // weight path; full-vocab return needs rom_1r + via-ROM (dev branch).
+  // UNUSEDSIGNAL-confirmed). The 16-row subset ROM below is the live
+  // weight path (blackboxed in synth; full-vocab etch is via-ROM).
+  lm_wrom #(.H(H), .VROWS(VROWS), .WLM_FILE(WLM_FILE)) u_wrom (
+    .addr(row), .dout(wrow_flat)
+  );
   // LM_MAC 32-lane companion for the Verilator full-vocab time-mux path
   // (576/32 = 18 passes per class row, 32000 rows sequenced by the head
   // FSM). Idle in the iverilog subset run; subset dots above are inferred.

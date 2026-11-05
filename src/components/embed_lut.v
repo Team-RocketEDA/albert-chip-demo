@@ -9,6 +9,12 @@
 // testbench/gen_embed_vectors.py). INIT_FILE="" leaves all rows zero.
 // Compare + row-select are plain inferred operators: no
 // single-operator modules (culled per block-logic-plan step 2).
+// LibreLane blackbox: under __librelane__ (defined by its synth/header
+// steps only) this module keeps ports but elaborates no body — the macro
+// is provided/etched, never mapped to logic. Sim flows never define it.
+`ifdef __librelane__
+(* blackbox *)
+`endif
 module embed_lut #(
   parameter E = 128,       // compat: tied-embedding dim (E == H here)
   parameter H = 32,        // row width in bytes
